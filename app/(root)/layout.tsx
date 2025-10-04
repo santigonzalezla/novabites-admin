@@ -2,9 +2,9 @@ import './globals.css';
 import { Toaster } from 'sonner';
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { satoshi } from 'client/app/fonts/satoshi';
 import { AuthProvider } from '@/context/AuthContext';
-import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from 'client/lib/constants';
+import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
+import { satoshi } from '@/app/fonts/satoshi';
 
 export const metadata: Metadata = {
     title: {
