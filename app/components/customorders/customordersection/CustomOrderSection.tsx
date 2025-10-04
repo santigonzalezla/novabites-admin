@@ -45,7 +45,7 @@ const CustomOrderSection = () =>
             {active === "Resumen" ? (
                 <CustomOrderContent setId={setId} />
             ) : active === "Factura" ? (
-                <OrderBill orderId={"ORD-0019"} />
+                <OrderBill />
             ) : (
                 <h1>Historial</h1>
             )}

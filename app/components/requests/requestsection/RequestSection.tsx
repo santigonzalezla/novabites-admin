@@ -50,7 +50,7 @@ const RequestSection = () =>
             {active === "Resumen" ? (
                 <RequestContent setId={setId} />
             ) : active === "Factura" ? (
-                <OrderBill orderId={"ORD-0019"} />
+                <OrderBill />
             ) : (
                 <h1>Historial</h1>
             )}

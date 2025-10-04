@@ -143,7 +143,7 @@ export interface StoreProduct extends BaseEntityWithNumId {
 }
 
 // Entidad para rastrear movimientos de stock
-export interface StoreRequest extends BaseEntity {
+export interface StoreRequest extends BaseEntityWithNumId {
     type: RequestType;
     status: RequestStatus;
     requestingStoreId: string;
