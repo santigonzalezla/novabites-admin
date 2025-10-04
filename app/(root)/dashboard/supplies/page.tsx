@@ -258,7 +258,27 @@ const Supplies = () =>
                 isFormData: true
             }, '/api/supply/upload');
 
-            if (!result && errorFile) throw new Error(errorFile);
+            console.log(result);
+            console.log('ErrorFile:', errorFile);
+
+            if (errorFile)
+            {
+                // Extrae solo el mensaje limpio
+                const cleanError = errorFile.split('Error code:')[0].trim();
+
+                toast.error('Error al procesar el archivo', {
+                    description: cleanError,
+                    duration: 5000,
+                    richColors: true,
+                    position: 'top-right'
+                });
+                return; // Sale aquí, no continúes
+            }
+
+            if (!result)
+            {
+                throw new Error();
+            }
 
             if (result)
             {
@@ -287,8 +307,11 @@ const Supplies = () =>
         catch (e)
         {
             console.error('Error al subir el archivo:', e);
+            const errorMessage = e instanceof Error
+                ? e.message.split('Error code:')[0].trim()
+                : 'Error desconocido';
             toast.error(`Error al procesar el archivo`, {
-                description: e instanceof Error ? e.message.split('Error code')[0] : 'Error desconocido',
+                description: e instanceof Error ? `El archivo no cuenta con la estructura correcta del inventario. ${errorMessage}` : 'Error desconocido',
                 duration: 3000,
                 richColors: true,
                 position: 'top-right'

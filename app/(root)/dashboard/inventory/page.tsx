@@ -238,9 +238,9 @@ const Inventory = () =>
         }
         catch (e)
         {
-            console.error('Error al subir el archivo:', e);
+            console.error('Error al subir el archivo:', `aqui ${e}`);
             toast.error(`Error al procesar el archivo`, {
-                description: e instanceof Error ? e.message : 'Error desconocido',
+                description: e instanceof Error ? `El archivo no cuenta con la estructura correcta del inventario. ${e.message}` : 'Error desconocido',
                 duration: 3000,
                 richColors: true,
                 position: 'top-right'
@@ -257,13 +257,18 @@ const Inventory = () =>
             const formData = new FormData();
             formData.append('file', file);
 
+            console.log("estoy aqui");
+
             const result = await executeFile({
                 method: 'POST',
                 body: formData,
                 isFormData: true
             }, '/api/product/upload');
 
-            if (!result && errorFile) throw new Error(errorFile);
+            if (!result)
+            {
+                throw new Error();
+            }
 
             if (result)
             {
@@ -294,7 +299,9 @@ const Inventory = () =>
         {
             console.error('Error al subir el archivo:', e);
             toast.error(`Error al procesar el archivo`, {
-                description: e instanceof Error ? e.message.split('Error code')[0] : 'Error desconocido',
+                description: e instanceof Error
+                    ? `El archivo no cuenta con la estructura correcta del inventario. ${e.message.split('Error code')[0]}`
+                    : 'Error desconocido',
                 duration: 3000,
                 richColors: true,
                 position: 'top-right'

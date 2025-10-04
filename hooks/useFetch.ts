@@ -70,9 +70,6 @@ export const useFetch = <T = any>(url: string, options: UseFetchOptions = {}): U
                     : fetchOptions.body = JSON.stringify(mergedOptions.body);
             }
 
-            console.log(fetchOptions, urlToUse);
-            console.log(`${API_BASE_URL}${urlToUse}`, fetchOptions)
-
             const response = await fetch(`${API_BASE_URL}${urlToUse}`, fetchOptions);
 
             if (response.status === 401)
