@@ -1,0 +1,85 @@
+.stores
+{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.storesTop
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topButtons
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.topButtons .create
+{
+    background: var(--orange);
+}
+
+.topButtons .upload
+{
+    background: var(--text-secondary);
+    color: var(--bg-tertiary);
+}
+
+.topButtons .download
+{
+    background: var(--button-hover-bg);
+    color: var(--text-secondary);
+}
+
+.topButtons .download svg > path
+{
+    fill: #000;
+}
+
+.topButtons button
+{
+    font-family: 'Satoshi', sans-serif;
+    color: white;
+    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    height: 40px;
+    border-radius: 6px;
+    gap: 10px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.topButtons button:hover
+{
+    transform: scale(1.05);
+}
+
+.topButtons button > svg
+{
+    width: 20px;
+    height: 20px;
+}
+
+.storesContainer
+{
+    height: 550px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    border-radius: 8px;
+    padding: 20px 5px;
+}

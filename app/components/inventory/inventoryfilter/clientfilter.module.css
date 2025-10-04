@@ -1,0 +1,86 @@
+.filter
+{
+    display: flex;
+    width: 80%;
+    border-radius: 10px;
+    background-color: #F9F9FB;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.filter > div
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #CCC;
+    padding: 15px 20px;
+    height: 100%;
+}
+
+.filtericon
+{
+    width: 15%;
+}
+
+.filterby
+{
+    width: 50%;
+}
+
+.filtercontent,
+.filterreset
+{
+    width: 100%;
+}
+
+.filtercontent
+{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.filtercontent svg
+{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.filtercontent input
+{
+    width: 70%;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    font-family: 'Satoshi', sans-serif;
+}
+
+.filtercontent input::placeholder
+{
+    color: var(--dark-gray);
+}
+
+.filter > div:last-child
+{
+    border-right: none;
+}
+
+.filtercontent svg > path
+{
+    fill: #000;
+}
+
+.filterreset
+{
+    display: flex;
+    align-items: center;
+    color: #DC143C;
+    cursor: pointer;
+    gap: 10px;
+}

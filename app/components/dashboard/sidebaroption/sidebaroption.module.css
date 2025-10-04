@@ -1,0 +1,229 @@
+.option
+{
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 20px;
+    cursor: pointer;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 48px;
+    margin-bottom: 5px;
+
+}
+
+.option::before
+{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+    padding: 0 20px;
+}
+
+.iconContainer
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.iconContainer svg
+{
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+}
+
+.option p
+{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Estados de hover */
+.option:not(.active):hover
+{
+    color: var(--orange);
+    border-color: var(--orange);
+    transform: translateX(4px);
+}
+
+.option:not(.active):hover::before
+{
+    opacity: 1;
+}
+
+.option:not(.active):hover .iconContainer svg
+{
+    color: var(--orange);
+    transform: scale(1.1);
+}
+
+.option:not(.active):hover p
+{
+    color: var(--orange);
+}
+
+/* Estado activo */
+.active
+{
+    outline: none;
+    background: var(--white);
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateX(4px);
+    box-shadow: 0 0 10px -1px #FF4200;
+}
+
+.active::before
+{
+    opacity: 1;
+}
+
+.active .iconContainer svg
+{
+    color: var(--orange);
+    transform: scale(1.1);
+}
+
+.active p
+{
+    color: var(--orange);
+    font-weight: 600;
+}
+
+/* Estado colapsado */
+.collapsed
+{
+    justify-content: center;
+    padding: 12px;
+    gap: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    margin: 4px auto;
+}
+
+.collapsed .iconContainer
+{
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.collapsed p
+{
+    opacity: 0;
+    transform: translateX(-20px);
+    pointer-events: none;
+    position: absolute;
+    width: 0;
+    overflow: hidden;
+}
+
+/* Tooltip para estado colapsado */
+.collapsed
+{
+    position: relative;
+}
+
+.collapsed::after
+{
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-primary);
+    z-index: 1000;
+}
+
+.collapsed:hover::after
+{
+    opacity: 1;
+}
+
+/* Estados de hover para colapsado */
+.collapsed:not(.active):hover
+{
+    background: var(--sidebar-hover);
+    border-color: var(--orange);
+    transform: scale(1.05);
+}
+
+.collapsed.active
+{
+    border-color: var(--orange);
+    transform: scale(1.05);
+}
+
+/* Animaciones de entrada */
+@keyframes slideInFromLeft
+{
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.option
+{
+    animation: slideInFromLeft 0.3s ease-out;
+}
+
+/* Mejoras para el tema oscuro */
+[data-theme="dark"] .option
+{
+    color: var(--sidebar-text);
+}
+
+[data-theme="dark"] .active
+{
+    box-shadow: 0 0 10px -1px #FF4200;
+    color: var(--sidebar-text);
+}
+
+[data-theme="dark"] .collapsed::after
+{
+    background: var(--surface-secondary);
+    border-color: var(--border-secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

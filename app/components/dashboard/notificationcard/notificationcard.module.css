@@ -1,0 +1,84 @@
+.notifcationcard
+{
+    width: 100%;
+    height: 100%;
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 20px;
+    background: rgba(149, 164, 252, 0.3);
+    box-shadow: var(--box-shadow);
+    gap: 20px;
+}
+
+.notifcationcardcontainer
+{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.notifcationcard h1
+{
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 300;
+}
+
+.notificationinfo
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notificationinfo:not(:last-child)
+{
+    border-bottom: 1px solid var(--border-secondary);
+    padding-bottom: 10px;
+}
+
+.infoleft
+{
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 15px;
+}
+
+.infoleft h3
+{
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.infoleft p
+{
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.inforight
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    align-content: flex-end;
+}
+
+.inforight p
+{
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.inforight svg
+{
+    color: var(--text-primary);
+}

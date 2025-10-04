@@ -1,0 +1,124 @@
+.notificationtop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    height: 70px;
+    background: var(--surface-primary);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-primary);
+    border-radius: 16px;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notificationtop:hover {
+    background: var(--surface-secondary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
+
+.bell {
+    height: 45px;
+    width: 45px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--primary-color);
+    background: var(--accent-purple-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.bell svg {
+    color: var(--primary-color);
+    width: 20px;
+    height: 20px;
+}
+
+.notificationtop:hover .bell {
+    transform: scale(1.1);
+    background: var(--accent-purple-medium);
+}
+
+.notificationtop h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    flex: 1;
+    transition: color 0.3s ease;
+}
+
+.count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    color: white;
+    min-width: 50px;
+    height: 35px;
+    border-radius: 18px;
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s ease;
+}
+
+.notificationtop:hover .count {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .notificationtop {
+        padding: 15px 20px;
+        height: 60px;
+        gap: 12px;
+    }
+
+    .bell {
+        height: 40px;
+        width: 40px;
+        padding: 8px;
+    }
+
+    .bell svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .notificationtop h1 {
+        font-size: 14px;
+    }
+
+    .count {
+        min-width: 45px;
+        height: 30px;
+        font-size: 12px;
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notificationtop {
+        padding: 12px 15px;
+        height: 55px;
+    }
+
+    .notificationtop h1 {
+        font-size: 13px;
+    }
+
+    .count {
+        min-width: 40px;
+        height: 28px;
+        font-size: 11px;
+        padding: 0 10px;
+    }
+}

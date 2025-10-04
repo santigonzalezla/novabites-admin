@@ -1,0 +1,101 @@
+.storeItemContainer
+{
+    display: flex;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 2px solid rgba(112, 112, 112, 0.2);
+    box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    gap: 20px;
+}
+
+.branchContainer
+{
+    flex-basis: 30%;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.branchName h3
+{
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.storeItemRight
+{
+    flex-basis: 70%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.detailsContainer
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 20px;
+    gap: 5px;
+}
+
+.detailsContainer h2
+{
+    margin-bottom: 10px;
+}
+
+.detailsContainer span
+{
+    font-weight: 800;
+}
+
+.storeName
+{
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #333;
+}
+
+.address, .cityPostal, .phone
+{
+    margin: 2px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.actionContainer
+{
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+}
+
+.actionContainer button
+{
+    font-family: 'Satoshi', sans-serif;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    height: 35px;
+    padding: 0 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.editButton:hover
+{
+    background-color: #555;
+    transform: scale(1.05);
+}

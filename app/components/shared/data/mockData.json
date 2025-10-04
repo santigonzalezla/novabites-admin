@@ -1,0 +1,567 @@
+{
+  "orders": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "client.name", "header": "CLIENTE", "width": "20%"},
+        {"key": "totalPrice", "header": "TOTAL", "width": "10%"},
+        {"key": "createdAt", "header": "FECHA", "width": "15%", "renderType": "date"},
+        {"key": "store.name", "header": "TIENDA", "width": "15%"},
+        {"key": "user.name", "header": "USUARIO", "width": "20%"},
+        {"key": "status", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "customOrders": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "client.name", "header": "CLIENTE", "width": "20%"},
+        {"key": "totalPrice", "header": "TOTAL", "width": "10%"},
+        {"key": "createdAt", "header": "FECHA", "width": "15%", "renderType": "date"},
+        {"key": "store.name", "header": "TIENDA", "width": "15%"},
+        {"key": "user.name", "header": "USUARIO", "width": "20%"},
+        {"key": "status", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "inventory": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "name", "header": "PRODUCTO", "width": "15%"},
+        {"key": "category.name", "header": "CATEGORÍA", "width": "12%"},
+        {"key": "centralStock", "header": "STOCK", "width": "8%"},
+        {"key": "basePrice","header": "PRECIO", "width": "8%"},
+        {"key": "expiryDate", "header": "VENCIMIENTO", "width": "12%", "renderType": "date"},
+        {"key": "available", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    },
+    "inputConfig": {
+      "fieldTypes": {
+        "name": "text",
+        "categoryId": "select",
+        "centralStock": "number",
+        "basePrice": "text",
+        "expiryDate": "date",
+        "available": "select"
+      },
+      "selectOptions": {
+        "available": [
+          "Activo",
+          "Inactivo"
+        ]
+      },
+      "labelTranslations": {
+        "name": "Nombre del Producto",
+        "categoryId": "Categoría",
+        "centralStock": "Cantidad en Stock",
+        "basePrice": "Precio Base",
+        "expiryDate": "Fecha de Expiración",
+        "available": "Estado"
+      },
+      "placeholderTranslations": {
+        "name": "Ingrese nombre del producto",
+        "categoryId": "Seleccione categoría",
+        "centralStock": "Ingrese stock central",
+        "basePrice": "Ingrese precio base",
+        "expiryDate": "Seleccione fecha de expiración",
+        "available": "Seleccione estado"
+      }
+    }
+  },
+  "storeRequest": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "requestingUser.name", "header": "USUARIO", "width": "15%"},
+        {"key": "requestingStore.name", "header": "TIENDA", "width": "15%"},
+        {"key": "requestedDate", "header": "FECHA", "width": "10%", "renderType": "date"},
+        {"key": "type", "header": "TIPO", "width": "15%"},
+        {"key": "status", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "storeProduct": {
+    "config": {
+      "columns": [
+        {"key": "store.name", "header": "Nombre", "width": "30%"},
+        {"key": "allocatedStock", "header": "Stock Destinado", "width": "12%"},
+        {"key": "currentStock", "header": "Stock Actual", "width": "12%"}
+      ],
+      "itemsPerPage": 3,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "clientOrders": {
+    "data": [
+      {
+        "id": "ORD-001",
+        "orderName": "Pan Integral",
+        "address": "Address 1",
+        "total": "€17.50"
+      },
+      {
+        "id": "ORD-002",
+        "orderName": "Croissant",
+        "address": "Address 1",
+        "total": "€22.00"
+      },
+      {
+        "id": "ORD-003",
+        "orderName": "Baguette",
+        "address": "Address 1",
+        "total": "€5.40"
+      },
+      {
+        "id": "ORD-004",
+        "orderName": "Pan de Centeno",
+        "address": "Address 1",
+        "total": "€10.00"
+      },
+      {
+        "id": "ORD-005",
+        "orderName": "Magdalenas",
+        "address": "Address 1",
+        "total": "€14.40"
+      }
+    ],
+    "config": {
+      "columns": [
+        {"key": "id", "header": "ID", "width": "15%"},
+        {"key": "orderName", "header": "NOMBRE", "width": "20%"},
+        {"key": "address", "header": "DIRECCIÓN", "width": "20%"},
+        {"key": "total", "header": "TOTAL", "width": "20%"}
+      ],
+      "itemsPerPage": 3,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "billDetails": {
+    "config": {
+      "columns": [
+        {"key": "productName", "header": "PRODUCTO", "width": "10%"},
+        {"key": "quantity", "header": "CANTIDAD", "width": "10%"},
+        {"key": "unitPrice", "header": "PRECIO C/U", "width": "10%"},
+        {"key": "subtotal", "header": "TOTAL", "width": "10%"}
+      ],
+      "itemsPerPage": 4,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "productsupply": {
+    "config": {
+      "columns": [
+        {"key": "supply.numId", "header": "ID", "width": "15%"},
+        {"key": "supply.name", "header": "NOMBRE", "width": "20%"},
+        {"key": "supply.unit", "header": "UNIDAD", "width": "20%"},
+        {"key": "supply.price", "header": "PRECIO", "width": "20%"},
+        {"key": "amountUsed", "header": "CANTIDAD", "width": "20%"}
+      ],
+      "itemsPerPage": 5,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "supplyproduct": {
+    "config": {
+      "columns": [
+        {"key": "product.numId", "header": "ID", "width": "8%"},
+        {"key": "product.name", "header": "NOMBRE", "width": "15%"},
+        {"key": "product.minStock", "header": "MIN STOCK", "width": "10%"},
+        {"key": "product.centralStock", "header": "STOCK", "width": "10%"},
+        {"key": "product.basePrice", "header": "PRECIO", "width": "10%"},
+        {"key": "amountUsed", "header": "CANTIDAD", "width": "10%"}
+      ],
+      "itemsPerPage": 5,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "productsupplier": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "name", "header": "PRODUCTO", "width": "15%"},
+        {"key": "category.name", "header": "CATEGORÍA", "width": "12%"},
+        {"key": "centralStock", "header": "STOCK", "width": "8%"},
+        {"key": "basePrice","header": "PRECIO", "width": "8%"},
+        {"key": "expiryDate", "header": "VENCIMIENTO", "width": "12%", "renderType": "date"},
+        {"key": "available", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 5,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "storeuser": {
+    "data": [
+      {
+        "id": "USR-001",
+        "name": "Ana María López",
+        "role": "Gerente",
+        "status": "Activo",
+        "email": "ana.lopez@panaderiacentral.com",
+        "phone": "612 345 678"
+      },
+      {
+        "id": "USR-002",
+        "name": "Carlos Rodríguez",
+        "role": "Panadero",
+        "status": "Activo",
+        "email": "carlos.rodriguez@panaderiacentral.com",
+        "phone": "612 456 789"
+      },
+      {
+        "id": "USR-003",
+        "name": "María García",
+        "role": "Cajero",
+        "status": "Activo",
+        "email": "maria.garcia@panaderiacentral.com",
+        "phone": "612 567 890"
+      },
+      {
+        "id": "USR-004",
+        "name": "Juan Martínez",
+        "role": "Panadero",
+        "status": "Inactivo",
+        "email": "juan.martinez@panaderiacentral.com",
+        "phone": "612 678 901"
+      },
+      {
+        "id": "USR-005",
+        "name": "Laura Sánchez",
+        "role": "Cajero",
+        "status": "Activo",
+        "email": "laura.sanchez@panaderiacentral.com",
+        "phone": "612 789 012"
+      },
+      {
+        "id": "USR-006",
+        "name": "Pedro Fernández",
+        "role": "Repartidor",
+        "status": "Activo",
+        "email": "pedro.fernandez@panaderiacentral.com",
+        "phone": "612 890 123"
+      },
+      {
+        "id": "USR-007",
+        "name": "Sofía Gómez",
+        "role": "Pastelero",
+        "status": "Activo",
+        "email": "sofia.gomez@panaderiacentral.com",
+        "phone": "612 901 234"
+      },
+      {
+        "id": "USR-008",
+        "name": "Miguel Álvarez",
+        "role": "Limpieza",
+        "status": "Activo",
+        "email": "miguel.alvarez@panaderiacentral.com",
+        "phone": "612 012 345"
+      }
+    ],
+    "config": {
+      "columns": [
+        {"key": "id", "header": "CÓDIGO", "width": "8%"},
+        {"key": "name", "header": "NOMBRE", "width": "25%"},
+        {"key": "role", "header": "ROL", "width": "20%"},
+        {"key": "status", "header": "ESTADO", "width": "15%"},
+        {"key": "phone", "header": "PHONE", "width": "25%"}
+      ],
+      "itemsPerPage": 5,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "clients": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "ID", "width": "10%"},
+        {"key": "name", "header": "NOMBRE", "width": "15%"},
+        {"key": "email", "header": "EMAIL", "width": "20%"},
+        {"key": "phone", "header": "TELÉFONO", "width": "20%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
+  "users": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "name", "header": "NOMBRE", "width": "15%"},
+        {"key": "email", "header": "EMAIL", "width": "20%"},
+        {"key": "phone", "header": "TELÉFONO", "width": "15%"},
+        {"key": "role", "header": "ROL", "width": "10%"},
+        {"key": "status", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    },
+    "inputConfig": {
+      "fieldTypes": {
+        "typeId": "select",
+        "docId": "text",
+        "name": "text",
+        "email": "email",
+        "phone": "text",
+        "role": "select",
+        "status": "select"
+      },
+      "selectOptions": {
+        "typeId": [
+          "CC",
+          "NIT",
+          "TI",
+          "CE",
+          "PP"
+        ],
+        "role": [
+          "Administrador",
+          "Gerente",
+          "Usuario"
+        ],
+        "status": [
+          "Activo",
+          "Inactivo"
+        ]
+      },
+      "labelTranslations": {
+        "typeId": "Tipo de Documento",
+        "docId": "ID Usuario",
+        "name": "Nombre Completo",
+        "email": "Email",
+        "phone": "Teléfono",
+        "role": "Rol",
+        "status": "Estado"
+      },
+      "placeholderTranslations": {
+        "typeId": "",
+        "docId": "",
+        "name": "",
+        "email": "",
+        "phone": "",
+        "role": "",
+        "status": ""
+      }
+    },
+    "userDetails": {
+      "personalDetails": {
+        "name": "Santiago Gonzalez",
+        "gender": "Male",
+        "dateOfBirth": "August 27th, 1998",
+        "nationality": "Nigerian",
+        "photo": "/placeholder.svg?height=240&width=200"
+      },
+      "address": {
+        "line": "35 Crescent Road",
+        "city": "Ajah",
+        "state": "Lagos",
+        "country": "Nigeria"
+      },
+      "contactDetails": {
+        "phone": "09034867656",
+        "email": "tomilola@me.com",
+        "avatar": "/placeholder.svg?height=70&width=70"
+      },
+      "institute": {
+        "name": "Universidad El Bosque",
+        "city": "Bogotá",
+        "email": "secretaria@unbosque.edu.co",
+        "logo": "/placeholder.svg?height=60&width=150"
+      },
+      "documents": [
+        {
+          "name": "National ID Card",
+          "image": "/placeholder.svg?height=180&width=300"
+        },
+        {
+          "name": "Passport",
+          "image": "/placeholder.svg?height=180&width=300"
+        }
+      ]
+    }
+  },
+  "stores": {
+    "inputConfig": {
+      "fieldTypes": {
+        "name": "text",
+        "phone": "text",
+        "address": "text",
+        "type": "select",
+        "managerId": "select",
+        "available": "select"
+      },
+      "selectOptions": {
+        "type": ["PRINCIPAL", "NORMAL", "DISTRIBUTION"],
+        "available": ["Activo", "Inactivo"]
+      },
+      "labelTranslations": {
+        "name": "Nombre de la Tienda",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "type": "Tipo de Tienda",
+        "managerId": "ID del Gerente",
+        "available": "Estado"
+      },
+      "placeholderTranslations": {
+        "id": "Generado automáticamente",
+        "name": "Ingrese nombre de la tienda",
+        "phone": "Ingrese teléfono",
+        "address": "Ingrese dirección",
+        "type": "Seleccione tipo de tienda",
+        "managerId": "Seleccione gerente",
+        "available": "Seleccione disponibilidad"
+      }
+    }
+  },
+  "suppliers": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "name", "header": "NOMBRE", "width": "15%"},
+        {"key": "email", "header": "EMAIL", "width": "17%"},
+        {"key": "phone", "header": "TELÉFONO", "width": "12%"},
+        {"key": "address", "header": "DIRECCIÓN", "width": "15%"},
+        {"key": "available", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    },
+    "inputConfig": {
+      "fieldTypes": {
+        "typeId": "select",
+        "docId": "text",
+        "name": "text",
+        "email": "email",
+        "contactName": "text",
+        "phone": "text",
+        "address": "text"
+      },
+      "selectOptions": {
+        "typeId": [
+          "CC",
+          "NIT"
+        ]
+      },
+      "labelTranslations": {
+        "typeId": "Tipo de Documento",
+        "docId": "Documento",
+        "name": "Proveedor",
+        "email": "Email",
+        "contactName": "Nombre de Contacto",
+        "phone": "Teléfono",
+        "address": "Dirección"
+      },
+      "placeholderTranslations": {
+        "typeId": "Tipo de documento",
+        "docId": "Ingrese documento",
+        "name": "Ingrese nombre del proveedor",
+        "email": "Ingrese email del proveedor",
+        "contactName": "Ingrese nombre de contacto",
+        "phone": "Ingrese teléfono",
+        "address": "Ingrese dirección"
+      }
+    }
+  },
+  "supplies": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "name", "header": "INSUMO", "width": "12%"},
+        {"key": "unit", "header": "UNIDAD", "width": "10%"},
+        {"key": "stock", "header": "STOCK", "width": "10%"},
+        {"key": "price", "header": "PRECIO", "width": "10%"},
+        {"key": "minStock", "header": "MIN STOCK", "width": "12%"},
+        {"key": "supplier.name", "header": "PROVEEDOR", "width": "20%"},
+        {"key": "available", "header": "ESTADO", "width": "15%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    },
+    "inputConfig": {
+      "fieldTypes": {
+        "name": "text",
+        "unit": "select",
+        "quantity": "number",
+        "price": "text",
+        "minStock": "number",
+        "supplierId": "select"
+      },
+      "selectOptions": {
+        "unit": [
+          "KG",
+          "L",
+          "UN",
+          "ML"
+        ]
+      },
+      "labelTranslations": {
+        "name": "Nombre del Insumo",
+        "unit": "Unidad de Medida",
+        "stock": "Stock Actual",
+        "price": "Precio",
+        "minStock": "Stock Mínimo",
+        "supplierId": "ID Proveedor"
+      },
+      "placeholderTranslations": {
+        "name": "Ingrese nombre del insumo",
+        "unit": "Seleccione unidad de medida",
+        "stock": "Ingrese stock actual",
+        "price": "Ingrese precio",
+        "minStock": "Ingrese stock mínimo",
+        "supplierId": "Seleccione proveedor"
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+.form
+{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 490px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(253, 67, 2, 0.2);
+    padding: 60px;
+}
+
+.top
+{
+    width: 100%;
+}
+
+.top h1
+{
+    font-size: 30px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.container
+{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.label
+{
+    margin-bottom: 5px;
+}
+
+.input input
+{
+    font-family: 'Satoshi', sans-serif;
+    width: 100%;
+    padding: 10px;
+    height: 45px;
+    resize: none;
+    background-color: var(--dark-white);
+    border: 1px solid #d1d5db;
+    color: #1f2937;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+.input input[type="password"]::placeholder
+{
+    font-size: 16px;
+}
+
+.input input[type="password"]
+{
+    font-size: 8px;
+}
+
+.formbutton
+{
+    font-family: 'Satoshi', sans-serif;
+    background: #202329;
+    font-weight: 300;
+    color: #FFF;
+    height: 50px;
+    font-size: 18px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.formbutton button:hover
+{
+    background: var(--orange);
+}
+
+.checkboxContainer
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.checkbox
+{
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    margin-right: 7px;
+}
+
+.rememberLabel
+{
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.forgotPassword
+{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--orange);
+    text-decoration: none;
+    text-align: right;
+}
+
+.signUpText
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #6b7280;
+}
+
+.signUpLink
+{
+    font-weight: 500;
+    color: var(--orange);
+    text-decoration: none;
+}
