@@ -243,6 +243,7 @@ export interface CategoryProduct extends BaseEntity {
 
     // Relations
     products?: Product[];
+    _count?: { products: number };
 }
 
 // =============================================================================
@@ -277,7 +278,7 @@ export interface Order extends BaseEntityWithNumId {
     store?: Store;
     user?: User;
     details?: DetailOrder[];
-    
+
     bill?: Bill;
 }
 
@@ -382,4 +383,34 @@ export interface Delivery extends BaseEntityWithNumId {
     // Relations
     client?: Client;
     order?: Order;
+}
+
+export interface Log extends BaseEntityWithNumId
+{
+    level: LogLevel;
+    context: LogContext;
+    action: ActionType;
+    message: string;
+    description?: string | null;
+    userId?: string | null;
+    sessionId?: string | null;
+    ipAddress?: string | null;
+    userAgent?: string | null;
+    requestId?: string | null;
+    method?: string | null;
+    url?: string | null;
+    statusCode?: number | null;
+    responseTimeMs?: number | null;
+    storeId?: string | null;
+    orderId?: string | null;
+    customOrderId?: string | null;
+    productId?: string | null;
+    supplierId?: string | null;
+    supplyId?: string | null;
+    requestStoreId?: string | null;
+    userAffectedId?: string | null;
+    categoryId?: string | null;
+    clientId?: string | null;
+    billId?: string | null;
+    additionalData?: Record<string, any> | null;
 }

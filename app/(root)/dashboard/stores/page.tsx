@@ -158,6 +158,7 @@ const Stores = () =>
     {
         return (
             <GenericForm
+                hasImage={true}
                 type={"Tienda"}
                 columns={columns}
                 onSubmit={handleSubmit}

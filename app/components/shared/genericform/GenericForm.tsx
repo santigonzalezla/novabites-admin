@@ -6,20 +6,21 @@ type Column = {
 };
 
 interface GenericFormProps {
+    hasImage: boolean;
     type: string
     columns: Column[];
     onSubmit: (data: Record<string, any>, file?: File | null) => void;
     onClose: () => void;
     inputConfig: {
         fieldTypes: Record<string, string>;
-        selectOptions: Record<string, string[] | { value: string; label: string; }[]>;
+        selectOptions?: Record<string, string[] | { value: string; label: string; }[]>;
         labelTranslations: Record<string, string>;
         placeholderTranslations: Record<string, string>;
     }
     initialData?: Record<string, any>;
 }
 
-const GenericForm = ({  type, columns, onSubmit, onClose, inputConfig, initialData = {} }: GenericFormProps) =>
+const GenericForm = ({  hasImage, type, columns, onSubmit, onClose, inputConfig, initialData = {} }: GenericFormProps) =>
 {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -145,7 +146,6 @@ const GenericForm = ({  type, columns, onSubmit, onClose, inputConfig, initialDa
         onSubmit(transformedData, selectedFile);
     }
 
-    // Renderizar un campo según su tipo
     const renderField = (column: Column) =>
     {
         const { key } = column;
@@ -154,7 +154,6 @@ const GenericForm = ({  type, columns, onSubmit, onClose, inputConfig, initialDa
         const placeholder = inputConfig.placeholderTranslations[key] || `Ingrese ${key}`;
         const value = formData[key] || '';
 
-        // Caso especial para typeId y docId - campos de documento en una sola línea
         if (key === 'typeId')
         {
             return (
@@ -168,7 +167,7 @@ const GenericForm = ({  type, columns, onSubmit, onClose, inputConfig, initialDa
                             className={`${styles.formControl} ${styles.documentSelect}`}
                         >
                             <option value="">{inputConfig.placeholderTranslations['typeId']}</option>
-                            {inputConfig.selectOptions['typeId']?.map((option) => {
+                            {inputConfig.selectOptions && inputConfig.selectOptions['typeId']?.map((option) => {
                                 if (typeof option === 'object' && 'value' in option && 'label' in option) {
                                     return (
                                         <option key={option.value} value={option.value}>
@@ -214,7 +213,7 @@ const GenericForm = ({  type, columns, onSubmit, onClose, inputConfig, initialDa
                             className={styles.formControl}
                         >
                             <option value="">{placeholder}</option>
-                            {inputConfig.selectOptions[key]?.map((option) =>{
+                            {inputConfig.selectOptions && inputConfig.selectOptions[key]?.map((option) =>{
                                 if (typeof option === 'object' && 'value' in option && 'label' in option)
                                 {
                                     return (
@@ -303,33 +302,35 @@ const GenericForm = ({  type, columns, onSubmit, onClose, inputConfig, initialDa
 
             <form onSubmit={handleSubmit}>
                 <div className={styles.formContainer}>
-                    <div className={styles.imageUploadContainer}>
-                        {imagePreview ? (
-                            <img
-                                src={imagePreview}
-                                alt="Vista previa"
-                                className={styles.imagePreview}
+                    {hasImage && (
+                        <div className={styles.imageUploadContainer}>
+                            {imagePreview ? (
+                                <img
+                                    src={imagePreview}
+                                    alt="Vista previa"
+                                    className={styles.imagePreview}
+                                />
+                            ) : (
+                                <div className={styles.imagePlaceholder}>
+                                    <p>Drag image here<br />or</p>
+                                    <button
+                                        type="button"
+                                        className={styles.browseButton}
+                                        onClick={() => document.getElementById('productImage')?.click()}
+                                    >
+                                        Browse image
+                                    </button>
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                id="productImage"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                className={styles.hiddenInput}
                             />
-                        ) : (
-                            <div className={styles.imagePlaceholder}>
-                                <p>Drag image here<br />or</p>
-                                <button
-                                    type="button"
-                                    className={styles.browseButton}
-                                    onClick={() => document.getElementById('productImage')?.click()}
-                                >
-                                    Browse image
-                                </button>
-                            </div>
-                        )}
-                        <input
-                            type="file"
-                            id="productImage"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className={styles.hiddenInput}
-                        />
-                    </div>
+                        </div>
+                    )}
 
                     <div className={styles.formFields}>
                         {columns.map(column => renderField(column))}

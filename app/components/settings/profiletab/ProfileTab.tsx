@@ -34,11 +34,11 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ isEditable, setIsEditable, hand
                 ) : (
                     <div className={styles.editActions}>
                         <button className={styles.saveButton} onClick={handleSaveChanges}>
-                            Save Changes
+                            Guardar Cambios
                         </button>
                         <button className={styles.cancelButton} onClick={handleCancel}>
                             <Cancel />
-                            Cancel
+                            Cancelar
                         </button>
                     </div>
                 )}
@@ -167,9 +167,11 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ isEditable, setIsEditable, hand
                     />
                 </div>
                 <div className={styles.formGroup}>
-                    <label>Fecha de Nacimiento</label>
+                    <label htmlFor="userDetails.birthDate">Fecha de Nacimiento</label>
                     <input
                         disabled={!isEditable}
+                        id="userDetails.birthDate"
+                        name="userDetails.birthDate"
                         type="date"
                         value={formData.userDetails?.birthDate ? new Date(formData.userDetails.birthDate).toISOString().split('T')[0] : ''}
                         onChange={handleChange}

@@ -8,10 +8,6 @@ import ClientSection from '@/app/components/clients/clientsection/ClientSection'
 
 const Client = () =>
 {
-    // Aquí puedes usar el ID del producto para cargar los datos específicos del producto
-
-    const { id } = useParams();
-
     return (
         <div className={styles.store}>
             <ClientSection />

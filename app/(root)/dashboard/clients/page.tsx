@@ -89,11 +89,10 @@ const Clients = () =>
         setFilteredData(filtered);
     };
 
-    // Función para resetear filtros
     const handleResetFilters = () =>
     {
         setCurrentFilters({});
-        setFilteredData(clientsData); // Mostrar todos los datos sin filtrar
+        setFilteredData(clientsData);
     };
 
     return (

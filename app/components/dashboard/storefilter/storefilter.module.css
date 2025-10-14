@@ -1,0 +1,54 @@
+.filterContainer
+{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+
+.label
+{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.select
+{
+    font-family: var(--font-family), sans-serif;
+    padding: 5px 15px;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 5px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 200px;
+    transition: all 0.3s ease;
+}
+
+.select:hover
+{
+    border-color: var(--text-secondary);
+}
+
+.select:focus
+{
+    outline: none;
+    border-color: #2B3138;
+}
+
+.loading,
+.error
+{
+    padding: 5px 15px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.error
+{
+    color: #ff4444;
+}

@@ -1,0 +1,205 @@
+.container {
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    padding: 16px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    height: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.logsWrapper {
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.logsWrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.logsWrapper::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 4px;
+}
+
+.logsWrapper::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.logsWrapper::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+.logEntry {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s;
+    min-height: 25px;
+}
+
+.logEntry:hover {
+    background-color: #f9fafb;
+}
+
+.logEntry.expanded {
+    min-height: auto;
+}
+
+.logEntry:last-child {
+    border-bottom: none;
+}
+
+.timestamp {
+    color: #6b7280;
+    flex-shrink: 0;
+    font-size: 11px;
+    min-width: 140px;
+}
+
+.level {
+    flex-shrink: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    min-width: 55px;
+}
+
+.context {
+    color: #8b5cf6;
+    font-weight: 600;
+    flex-shrink: 0;
+    min-width: 90px;
+}
+
+.action {
+    font-weight: 600;
+    flex-shrink: 0;
+    min-width: 70px;
+}
+
+/* Action Type Colors */
+.actionCreate {
+    color: #10b981; /* Verde - CREATE */
+}
+
+.actionRead {
+    color: #06b6d4; /* Cyan - READ */
+}
+
+.actionUpdate {
+    color: #f59e0b; /* Naranja - UPDATE */
+}
+
+.actionDelete {
+    color: #ef4444; /* Rojo - DELETE */
+}
+
+.actionLogin {
+    color: #8b5cf6; /* Púrpura - LOGIN */
+}
+
+.actionLogout {
+    color: #64748b; /* Gris azulado - LOGOUT */
+}
+
+.actionExport {
+    color: #3b82f6; /* Azul - EXPORT */
+}
+
+.actionImport {
+    color: #6366f1; /* Índigo - IMPORT */
+}
+
+.actionBackup {
+    color: #14b8a6; /* Teal - BACKUP */
+}
+
+.actionRestore {
+    color: #ec4899; /* Rosa - RESTORE */
+}
+
+/* Level Colors */
+.info {
+    color: #3b82f6;
+}
+
+.warning {
+    color: #f59e0b;
+}
+
+.error {
+    color: #ef4444;
+}
+
+.success {
+    color: #10b981;
+}
+
+.debug {
+    color: #8b5cf6;
+}
+
+.critical {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.logText {
+    color: #111827;
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.logEntry:not(.expanded) .logText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.expandButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.expandButton:hover {
+    color: #111827;
+    background-color: #f3f4f6;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+    width: 16px;
+    height: 16px;
+}
+
+.arrowUp {
+    transform: rotate(180deg);
+}
+
+.emptyMessage {
+    color: #6b7280;
+    text-align: center;
+    padding: 32px;
+    font-style: italic;
+}

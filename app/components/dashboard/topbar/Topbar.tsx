@@ -50,6 +50,9 @@ const Topbar = () =>
         case 'users':
             text = 'Usuarios';
             break;
+        case 'settings':
+            text = 'Configuración';
+            break;
         default:
             text = 'Dashboard'; // Valor por defecto si no coincide ninguna ruta
             break;

@@ -281,15 +281,6 @@ const SupplierContent = ({ setData }: SupplierContentProps) =>
                             </div>
                         )}
                     </div>
-                    <div className={styles.productImage}>
-                        <Image
-                            src="/placeholder.svg?height=200&width=150"
-                            alt="Maggi product"
-                            width={150}
-                            height={200}
-                            className={styles.image}
-                        />
-                    </div>
                     <div className={styles.stockSummary}>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Status</div>

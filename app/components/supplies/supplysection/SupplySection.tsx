@@ -4,6 +4,10 @@ import styles from './supplysection.module.css';
 import { useState } from 'react';
 import SupplyContent from '@/app/components/supplies/supplycontent/SupplyContent';
 import SupplyProduct from '@/app/components/supplies/supplyproduct/SupplyProduct';
+import SupplyLog from '@/app/components/supplies/supplylog/SupplyLog';
+import { usePathname } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
@@ -13,8 +17,14 @@ const tabs = [
 
 const SupplySection = () =>
 {
+    const pathname = usePathname();
+    const supplyId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [data, setData] = useState({ id: "", name: ""});
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/supply/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) =>
     {
@@ -28,7 +38,14 @@ const SupplySection = () =>
             <div className={styles.header}>
                 <h1>{data.name} - ID: {data.id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Download</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="supply"
+                        domainId={supplyId || ''}
+                    />
+                    <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
 
@@ -49,7 +66,7 @@ const SupplySection = () =>
             ) : active === "Productos" ? (
                 <SupplyProduct />
             ) : (
-                <h1>Historial</h1>
+                <SupplyLog />
             )}
         </div>
     );

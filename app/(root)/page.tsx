@@ -27,7 +27,7 @@ const Home: React.FC = () =>
                     <h1>Bienvenido a San Nicolas, empieza a gestionar la Panadería.</h1>
                     {isAuthenticated ? (
                         <Link href={'/dashboard'}>
-                            <span>Crea tus proyectos!</span>
+                            <span>¡Gestiona ya!</span>
                         </Link>
                     ) : (
                         <Link href={'/signin'}>

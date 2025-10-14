@@ -191,6 +191,7 @@ const Users = () =>
     {
         return (
             <GenericForm
+                hasImage={true}
                 type={"Usuario"}
                 columns={columns}
                 onSubmit={handleSubmit}

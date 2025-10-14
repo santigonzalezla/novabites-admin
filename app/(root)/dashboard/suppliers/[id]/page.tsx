@@ -7,10 +7,6 @@ import SupplierSection from '@/app/components/supplier/suppliersection/SupplierS
 
 const Supplier = () =>
 {
-    // Aquí puedes usar el ID del producto para cargar los datos específicos del producto
-
-    const { id } = useParams();
-
     return (
         <div className={styles.provider}>
             <SupplierSection />

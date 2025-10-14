@@ -417,7 +417,7 @@ const StoreContent = ({ setData }: StoreContentProps) =>
                         ) : (
                             <div className={styles.actionButtons}>
                                 <button className={styles.cancelButton} onClick={() => handleDisable()}>Cancelar</button>
-                                <button className={styles.saveButton} onClick={() => handleSaveChanges()}>Guardar Cambios</button>
+                                <button className={styles.saveButton} onClick={() => handleSaveChanges()}>Guardar</button>
                             </div>
                         )}
                     </div>

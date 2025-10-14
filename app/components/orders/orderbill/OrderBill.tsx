@@ -57,7 +57,6 @@ const OrderBill = () =>
 
                 if (bill)
                 {
-                    console.log('bill', bill);
                     setBillData(bill);
                     setBillDetailsData(bill.details || []);
                 }
@@ -96,18 +95,39 @@ const OrderBill = () =>
 
         try
         {
+            if (!billData)
+            {
+                toast.error('No se encontró la factura para esta orden', {
+                    description: "Por favor, inténtalo de nuevo más tarde.",
+                    duration: 3000,
+                    richColors: true,
+                    position: 'top-right'
+                });
+                setIsGenerating(false);
+                return;
+            }
+
             const pdfBlob = await executePdf({
                 body: { billId: billData?.id }
             });
 
             if (pdfBlob)
             {
-                const filename = `factura_${billData?.billNumber || billData?.id}_${new Date().toISOString().split('T')[0]}.pdf`;
+                const filename = `factura_${billData.billNumber || billData.id}_${new Date().toISOString().split('T')[0]}.pdf`;
 
-                downloadFile(pdfBlob, filename);
+                downloadFile(pdfBlob as Blob, filename);
 
                 toast.success('PDF generado exitosamente', {
                     description: "El archivo se ha descargado.",
+                    duration: 3000,
+                    richColors: true,
+                    position: 'top-right'
+                });
+            }
+            else
+            {
+                toast.error('Error al generar PDF', {
+                    description: "No se pudo generar el archivo PDF.",
                     duration: 3000,
                     richColors: true,
                     position: 'top-right'
@@ -155,12 +175,11 @@ const OrderBill = () =>
 
     };
 
-    // Calcular subtotal
-    const subtotal = billData?.details?.reduce((acc, item) => {
+    const subtotal = billData?.details?.reduce((acc, item) =>
+    {
         return acc + Number.parseFloat(String(item.unitPrice)) * item.quantity
     }, 0);
 
-    // Total
     const total = subtotal && (subtotal + (subtotal * 0.21));
 
     return (
@@ -218,14 +237,6 @@ const OrderBill = () =>
                     </div>
                 </div>
             </div>
-
-            {/*
-               <div className={styles.billFooter}>
-                    <p>Gracias por su compra</p>
-                    <p>Panadería del Centro - CIF: B12345678</p>
-                    <p>Calle Principal 123, 28001 Madrid</p>
-                </div>
-            */}
         </div>
     )
 }

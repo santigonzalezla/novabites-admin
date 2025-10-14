@@ -13,7 +13,7 @@ import {
     Settings,
     Store,
     Supplier,
-    Supplies,
+    Supplies, Tag,
     User, Users,
 } from '@/app/components/svg';
 import {useState} from "react";
@@ -30,7 +30,7 @@ const Sidebar = () =>
     }
 
     const options = [
-        { item: 'Dashboard', icon: <Dashboard />, link: '/dashboard' },
+        { item: 'Resumen', icon: <Dashboard />, link: '/dashboard' },
         { item: 'Inventario', icon: <Inventory />, link: '/dashboard/inventory' },
         { item: 'Insumos', icon: <Supplies />, link: '/dashboard/supplies' },
         { item: 'Ordenes', icon: <Order />, link: '/dashboard/orders' },
@@ -39,6 +39,7 @@ const Sidebar = () =>
         { item: 'Clientes', icon: <Users />, link: '/dashboard/clients' },
         { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests' },
         { item: 'Reportes', icon: <BarChart />, link: '/dashboard/reports' },
+        { item: 'Categorías', icon: <Tag />, link: '/dashboard/categories' },
         { item: 'Sucursales', icon: <Store />, link: '/dashboard/stores' },
         { item: 'Mensajes', icon: <Message />, link: '/dashboard/messages' },
         { item: 'Usuarios', icon: <User />, link: '/dashboard/users' },
@@ -75,7 +76,7 @@ const Sidebar = () =>
 
                     <div className={styles.optionGroup}>
                         {!isCollapsed && <div className={styles.groupTitle}>Gestión</div>}
-                        {options.slice(5, 9).map((option, index) => (
+                        {options.slice(5, 10).map((option, index) => (
                             <SidebarOption
                                 key={index + 4}
                                 icon={option.icon}
@@ -88,7 +89,7 @@ const Sidebar = () =>
 
                     <div className={styles.optionGroup}>
                         {!isCollapsed && <div className={styles.groupTitle}>Sistema</div>}
-                        {options.slice(9).map((option, index) => (
+                        {options.slice(10).map((option, index) => (
                             <SidebarOption
                                 key={index + 8}
                                 icon={option.icon}

@@ -4,6 +4,10 @@ import styles from './productsection.module.css';
 import { useState } from 'react';
 import ProductContent from '@/app/components/inventory/productcontent/ProductContent';
 import ProductSupply from '@/app/components/inventory/productsupply/ProductSupply';
+import ProductLog from '../productlog/ProductLog';
+import { usePathname } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
@@ -13,8 +17,14 @@ const tabs = [
 
 const ProductSection = () =>
 {
+    const pathname = usePathname();
+    const productId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [data, setData] = useState({ id: "", name: ""});
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/product/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) =>
     {
@@ -28,7 +38,13 @@ const ProductSection = () =>
             <div className={styles.header}>
                 <h1>{data.name} - ID: {data.id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Descargar</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="product"
+                        domainId={productId || ''}
+                    />
                     <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
@@ -50,7 +66,7 @@ const ProductSection = () =>
             ) : active === "Insumos" ? (
                 <ProductSupply />
             ) : (
-                <h1>Historial</h1>
+                <ProductLog />
             )}
         </div>
     );

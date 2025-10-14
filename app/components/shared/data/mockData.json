@@ -85,6 +85,45 @@
       }
     }
   },
+  "categories": {
+    "config": {
+      "columns": [
+        {"key": "name", "header": "NOMBRE", "width": "10%"},
+        {"key": "_count.products", "header": "PRODUCTOS RELACIONADOS", "width": "30%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    },
+    "inputConfig": {
+      "fieldTypes": {
+        "name": "text"
+      },
+      "labelTranslations": {
+        "name": "Nombre de la categoría"
+      },
+      "placeholderTranslations": {
+        "name": "Ingrese nombre del producto"
+      }
+    }
+  },
+  "categoryProduct": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "Código", "width": "8%"},
+        {"key": "name", "header": "Nombre", "width": "15%"},
+        {"key": "basePrice", "header": "Precio Base", "width": "12%"},
+        {"key": "centralStock", "header": "Stock Actual", "width": "12%"}
+      ],
+      "itemsPerPage": 3,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
   "storeRequest": {
     "config": {
       "columns": [

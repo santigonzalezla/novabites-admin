@@ -180,6 +180,7 @@ const Suppliers = () =>
     {
         return (
             <GenericForm
+                hasImage={true}
                 type={"Proveedor"}
                 columns={columns}
                 onSubmit={handleSubmit}

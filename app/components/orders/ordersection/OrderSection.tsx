@@ -8,6 +8,10 @@ import ProductContent from '@/app/components/inventory/productcontent/ProductCon
 import ProductSupply from '@/app/components/inventory/productsupply/ProductSupply';
 import OrderContent from '@/app/components/orders/ordercontent/OrderContent';
 import OrderBill from '@/app/components/orders/orderbill/OrderBill';
+import OrderLog from '@/app/components/orders/orderlog/OrderLog';
+import { usePathname } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
@@ -17,8 +21,14 @@ const tabs = [
 
 const OrderSection = () =>
 {
+    const pathname = usePathname();
+    const orderId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [id, setId] = useState("");
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/order/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) => setActive(index);
 
@@ -27,7 +37,14 @@ const OrderSection = () =>
             <div className={styles.header}>
                 <h1>Orden #: {id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Download</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="order"
+                        domainId={orderId || ''}
+                    />
+                    <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
 
@@ -48,7 +65,7 @@ const OrderSection = () =>
             ) : active === "Factura" ? (
                 <OrderBill />
             ) : (
-                <h1>Historial</h1>
+                <OrderLog />
             )}
         </div>
     );

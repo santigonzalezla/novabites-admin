@@ -4,6 +4,10 @@ import styles from './customordersection.module.css';
 import { useState } from 'react';
 import OrderBill from '@/app/components/orders/orderbill/OrderBill';
 import CustomOrderContent from '@/app/components/customorders/customordercontent/CustomOrderContent';
+import CustomOrderLog from '@/app/components/customorders/customorderlog/CustomOrderLog';
+import { usePathname } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
@@ -13,8 +17,14 @@ const tabs = [
 
 const CustomOrderSection = () =>
 {
+    const pathname = usePathname();
+    const customOrderId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [id, setId] = useState("");
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/client/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) =>
     {
@@ -26,7 +36,14 @@ const CustomOrderSection = () =>
             <div className={styles.header}>
                 <h1>Orden Personalizada #: {id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Download</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="custom-order"
+                        domainId={customOrderId || ''}
+                    />
+                    <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
 
@@ -47,7 +64,7 @@ const CustomOrderSection = () =>
             ) : active === "Factura" ? (
                 <OrderBill />
             ) : (
-                <h1>Historial</h1>
+                <CustomOrderLog />
             )}
         </div>
     );

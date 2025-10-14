@@ -327,6 +327,7 @@ const Inventory = () =>
     {
         return (
             <GenericForm
+                hasImage={true}
                 type={"Producto"}
                 columns={columns}
                 onSubmit={handleSubmit}

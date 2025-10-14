@@ -337,6 +337,7 @@ const Supplies = () =>
     {
         return (
             <GenericForm
+                hasImage={false}
                 type={"Insumo"}
                 columns={columns}
                 onSubmit={handleSubmit}

@@ -57,7 +57,7 @@
 
 .deleteButton
 {
-    background-color: var(--white);
+    background-color: var(--bg-primary);
     color: var(--orange);
     border: 1px solid var(--orange);
 }

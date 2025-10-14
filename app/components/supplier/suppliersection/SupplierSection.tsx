@@ -4,6 +4,10 @@ import styles from './suppliersection.module.css';
 import { useState } from 'react';
 import SupplierContent from '@/app/components/supplier/suppliercontent/SupplierContent';
 import ProductSupplier from '@/app/components/supplier/productsupplier/ProductSupplier';
+import SupplierLog from '@/app/components/supplier/supplierlog/SupplierLog';
+import { usePathname } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
@@ -13,8 +17,14 @@ const tabs = [
 
 const SupplierSection = () =>
 {
+    const pathname = usePathname();
+    const supplierId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [data, setData] = useState({ id: "", name: ""});
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/supplier/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) =>
     {
@@ -28,7 +38,14 @@ const SupplierSection = () =>
             <div className={styles.header}>
                 <h1>{data.name} - ID#: {data.id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Download</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="supplier"
+                        domainId={supplierId || ''}
+                    />
+                    <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
 
@@ -49,7 +66,7 @@ const SupplierSection = () =>
             ) : active === "Insumos" ? (
                 <ProductSupplier />
             ) : (
-                <h1>Historial</h1>
+                <SupplierLog />
             )}
         </div>
     );

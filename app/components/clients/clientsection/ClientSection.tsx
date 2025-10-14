@@ -4,15 +4,26 @@ import styles from './clientsection.module.css';
 import { useState } from 'react';
 import StoreUser from '@/app/components/stores/storeuser/StoreUser';
 import ClientContent from '@/app/components/clients/clientcontent/ClientContent';
+import ClientLog from '@/app/components/clients/clientlog/ClientLog';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
+import { useFetch } from '@/hooks/useFetch';
+import { usePathname } from 'next/navigation';
 
 const tabs = [
     "Resumen",
+    "Historial"
 ]
 
 const ClientSection = () =>
 {
+    const pathname = usePathname();
+    const clientId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [data, setData] = useState({ id: "", name: ""});
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/client/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) =>
     {
@@ -26,7 +37,14 @@ const ClientSection = () =>
             <div className={styles.header}>
                 <h1>{data.name} - ID#: {data.id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Download</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="client"
+                        domainId={clientId || ''}
+                    />
+                    <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
 
@@ -42,7 +60,11 @@ const ClientSection = () =>
                 ))}
             </div>
 
-            <ClientContent setData={handleSetData} />
+            {active === "Resumen" ? (
+                <ClientContent setData={handleSetData} />
+            ) : (
+                <ClientLog />
+            )}
         </div>
     );
 }

@@ -451,36 +451,37 @@ const UserDetails = () =>
                                 </div>
                             )}
                         </div>
-                        <label
-                            className={`${styles.imageUpload} ${isEditing ? styles.imageUploadEnabled : ''}`}
-                            style={{ pointerEvents: isEditing ? 'auto' : 'none', opacity: isEditing ? 1 : 0.8 }}
-                        >
-                            <Upload />
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handleImageChange}
-                                accept="image/*"
-                                disabled={!isEditing}
-                                style={{ display: 'none' }}
-                            />
-                        </label>
+                        {isEditing && (
+                            <label
+                                className={`${styles.imageUpload} ${isEditing ? styles.imageUploadEnabled : ''}`}
+                            >
+                                <Upload />
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImageChange}
+                                    accept="image/*"
+                                    disabled={!isEditing}
+                                    style={{ display: 'none' }}
+                                />
+                            </label>
+                        )}
                     </div>
 
                     <div className={styles.optionsContainer}>
                         {!isEditing ? (
                             <button className={styles.editButton} onClick={() => setIsEditing(true)}>
                                 <EditUser />
-                                Edit Profile
+                                Editar Perfil
                             </button>
                         ) : (
                             <div className={styles.editActions}>
                                 <button className={styles.saveButton} onClick={handleSaveChanges}>
-                                    Save Changes
+                                    Guardar
                                 </button>
                                 <button className={styles.cancelButton} onClick={handleCancel}>
                                     <Cancel />
-                                    Cancel
+                                    Cancelar
                                 </button>
                             </div>
                         )}

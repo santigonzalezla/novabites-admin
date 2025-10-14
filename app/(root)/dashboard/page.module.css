@@ -6,13 +6,12 @@
     height: 100%;
     min-height: calc(100vh - 140px);
     gap: 30px;
-    background: var(--page-bg);
     transition: background-color 0.3s ease;
 }
 
 .cards {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     justify-content: space-between;
     flex-wrap: wrap;
 }

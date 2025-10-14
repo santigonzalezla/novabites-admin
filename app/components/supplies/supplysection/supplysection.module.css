@@ -37,9 +37,10 @@
 {
     width: 100px;
     font-family: 'Satoshi', sans-serif;
-    padding: 10px 20px;
+    padding: 0 20px;
     border-radius: 6px;
-    font-size: 16px;
+    height: 40px;
+    font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -52,6 +53,13 @@
     border: 1px solid var(--orange);
     background-color: white;
     color: var(--orange);
+}
+
+.deleteButton
+{
+    background-color: var(--bg-primary);
+    color: var(--orange);
+    border: 1px solid var(--orange);
 }
 
 .editButton svg > path

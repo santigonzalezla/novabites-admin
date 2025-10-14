@@ -6,6 +6,9 @@ import { Edit } from '@/app/components/svg';
 import { useState } from 'react';
 import StoreContent from '@/app/components/stores/storecontent/StoreContent';
 import StoreUser from '@/app/components/stores/storeuser/StoreUser';
+import { usePathname } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
@@ -15,8 +18,14 @@ const tabs = [
 
 const StoreSection = () =>
 {
+    const pathname = usePathname();
+    const storeId = pathname.split('/').pop();
+    const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [data, setData] = useState({ id: "", name: ""});
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/store/export', {
+        immediate: false
+    });
 
     const handleTabClick = (index: string) =>
     {
@@ -30,7 +39,14 @@ const StoreSection = () =>
             <div className={styles.header}>
                 <h1>{data.name} - ID#: {data.id}</h1>
                 <div className={styles.actions}>
-                    <button className={styles.downloadButton}>Download</button>
+                    <DownloadUnitButton
+                        isGenerating={isGenerating}
+                        setIsGenerating={setIsGenerating}
+                        executeFile={executeFile}
+                        domain="store"
+                        domainId={storeId || ''}
+                    />
+                    <button className={styles.deleteButton}>Eliminar</button>
                 </div>
             </div>
 
