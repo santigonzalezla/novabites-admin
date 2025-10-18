@@ -141,6 +141,23 @@
       }
     }
   },
+  "requestProduct": {
+    "config": {
+      "columns": [
+        {"key": "product.numId", "header": "CÓDIGO", "width": "10%"},
+        {"key": "product.name", "header": "PRODUCTO", "width": "25%"},
+        {"key": "requestedQuantity", "header": "CANTIDAD", "width": "12%"},
+        {"key": "unitPrice", "header": "PRECIO UNIT.", "width": "15%", "renderType": "currency"},
+        {"key": "totalPrice", "header": "TOTAL", "width": "15%", "renderType": "currency"},
+        {"key": "returnReason", "header": "MOTIVO", "width": "23%"}
+      ],
+      "itemsPerPage": 10,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
   "storeProduct": {
     "config": {
       "columns": [

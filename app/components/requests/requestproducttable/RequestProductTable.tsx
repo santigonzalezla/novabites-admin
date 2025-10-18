@@ -2,6 +2,7 @@
 
 import styles from './datatable.module.css';
 import { ReactNode, useState } from 'react';
+import { Edit, Trash } from '@/app/components/svg';
 import { usePathname, useRouter } from 'next/navigation';
 
 export type Column = {
@@ -27,14 +28,19 @@ type DataTableProps = {
     className?: string;
 }
 
-const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
+const RequestProductTable = ({ data, config, className = "" }: DataTableProps) =>
 {
-    const pathname = usePathname();
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = config.itemsPerPage || 10;
+    const itemsPerPage = config.itemsPerPage || 5;
+
+    // Calcular índices para paginación
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+
     const statusArr =  [
-        "approved",
         "available",
         "unavailable",
         "completed",
@@ -51,17 +57,6 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         "in stock",
         "low stock"
     ];
-    const roleArr = [
-        "admin",
-        "manager",
-        "user"
-    ];
-
-    // Calcular índices para paginación
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(data.length / itemsPerPage);
 
     // Cambiar página
     const goToNextPage = () =>
@@ -80,69 +75,12 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         }
     }
 
-    const getUrl = (id: string) =>
-    {
-        return `${pathname}/${id}`;
-    }
-
-    const renderRole = (role: string) =>
-    {
-        let roleClass: string;
-
-        switch (role.toLowerCase())
-        {
-            case "admin":
-                roleClass = styles.roleAdmin;
-                break;
-            case "manager":
-                roleClass = styles.roleManager;
-                break;
-            case "user":
-                roleClass = styles.roleUser;
-                break;
-            default:
-                roleClass = styles.roleDefault;
-        }
-
-        return <span className={roleClass}>{role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}</span>;
-    }
-    const renderType = (type: string) =>
-    {
-        let typeClass: string;
-        let value: string;
-
-        switch (type.toLowerCase())
-        {
-            case "supply_request":
-                typeClass = styles.typeSupplyRequest;
-                value = "Abastecimiento";
-                break;
-            case "return_request":
-                typeClass = styles.typeReturn;
-                value = "Devolución";
-                break;
-            case "relocation_request":
-                typeClass = styles.typeRelocation;
-                value = "Reubicación";
-                break;
-            default:
-                typeClass = styles.typeDefault;
-                value = 'Tipo Desconocido';
-        }
-
-        return <span className={typeClass}>{value}</span>;
-    }
-
-    // Renderizar badge de estado con color correspondiente
     const renderStatusBadge = (status: string) =>
     {
         let badgeClass: string;
 
         switch (status.toLowerCase())
         {
-            case "approved":
-                badgeClass = styles.statusCompleted;
-                break;
             case "available":
                 badgeClass = styles.statusCompleted;
                 break;
@@ -227,16 +165,6 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
             return renderStatusBadge(value);
         }
 
-        if (typeof value === 'string' && roleArr.includes(value.toLowerCase()))
-        {
-            return renderRole(value);
-        }
-
-        if (typeof value === 'string' && column.key.toLowerCase().includes('type'))
-        {
-            return renderType(value);
-        }
-
         if (typeof value === 'boolean')
         {
             return (value ? renderStatusBadge("Available") : renderStatusBadge("Unavailable"));
@@ -267,6 +195,11 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         }
     };
 
+    const getUrl = (id: string) =>
+    {
+        return `/dashboard/inventory/${id}`;
+    }
+
     const { pageLabels = { showing: "Mostrando", of: "de" } } = config;
 
     return (
@@ -287,7 +220,7 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
                 <tbody>
                     {currentItems.length > 0 ? (
                         currentItems.map((item, rowIndex) => (
-                            <tr key={rowIndex} onClick={() => router.push(getUrl(item.id))}>
+                            <tr key={rowIndex} onClick={() => router.push(getUrl(item.productId))}>
                                 {config.columns.map((column) => (
                                     <td key={`${rowIndex}-${column.key}`} style={column.width ? { width: column.width } : {}}>
                                         {renderCellValue(column, getNestedValue(item, column.key), item)}
@@ -297,7 +230,7 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={config.columns.length} className={styles.emptyTableMessage}>
+                            <td colSpan={config.columns.length + 1} className={styles.emptyTableMessage}>
                                 No hay datos disponibles
                             </td>
                         </tr>
@@ -322,4 +255,4 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
     )
 }
 
-export default GenericDataTable;
+export default RequestProductTable;

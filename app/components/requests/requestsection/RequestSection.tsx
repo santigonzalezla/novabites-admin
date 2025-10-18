@@ -7,6 +7,7 @@ import RequestLog from '@/app/components/requests/requestlog/RequestLog';
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 import { usePathname } from 'next/navigation';
 import { useFetch } from '@/hooks/useFetch';
+import RequestProduct from '@/app/components/requests/requestproduct/RequestProduct';
 
 const tabs = [
     "Resumen",
@@ -60,8 +61,8 @@ const RequestSection = () =>
 
             {active === "Resumen" ? (
                 <RequestContent setId={setId} />
-            ) : active === "¨Productos" ? (
-                <h1></h1>
+            ) : active === "Productos" ? (
+                <RequestProduct />
             ) : (
                 <RequestLog />
             )}

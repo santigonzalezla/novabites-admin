@@ -1,14 +1,15 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from "./requestsupply.module.css"
 import { Download, Upload } from '@/app/components/svg';
 import mockData from '@/app/components/shared/data/mockData.json';
-import { ProductSupply as storeRequestData, StoreRequest } from '@/interfaces/interfaces';
-import SupplyProductTable from '@/app/components/supplies/supplyproducttable/SupplyProductTable';
+import { Product, StoreRequest, StoreRequestDetail } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
+import RequestProductTable from '@/app/components/requests/requestproducttable/RequestProductTable';
+import RequestStepper from '@/app/components/requests/requeststepper/RequestStepper';
 
 interface StoreRequestConfig {
     columns: any[];
@@ -18,15 +19,42 @@ interface StoreRequestConfig {
         of?: string;
     }
 }
+
+interface EnrichedStoreRequestDetail extends StoreRequestDetail {
+    product?: Product;
+}
+
 const RequestProduct = () =>
 {
     const pathname = usePathname();
     const requestId = pathname.split('/').pop();
-    const [storeRequestData, setStoreRequestData] = useState<StoreRequest[]>([]);
+    const [storeRequestData, setStoreRequestData] = useState<StoreRequest | null>(null);
+    const [requestDetails, setRequestDetails] = useState<StoreRequestDetail[]>([]);
     const [config, setConfig] = useState<StoreRequestConfig>({columns: []});
-    const { error, execute } = useFetch<StoreRequest[]>(`/api/store-request/${requestId}`, {
+    const { error, execute } = useFetch<StoreRequest>(`/api/store-request/${requestId}`, {
         immediate: false,
     });
+    const { data: productData, error: productError } = useFetch(`/api/product`);
+
+    const enrichedDetails = useMemo(() =>
+    {
+        if (!requestDetails.length || !productData) return [];
+
+        return requestDetails.map(detail =>
+        {
+            const product = productData.find((p: { id: string; }) => p.id === detail.productId);
+
+            return {
+                ...detail,
+                product: product || {
+                    id: detail.productId,
+                    numId: 0,
+                    name: 'Producto no encontrado',
+                    basePrice: '0'
+                }
+            } as EnrichedStoreRequestDetail;
+        });
+    }, [requestDetails, productData]);
 
     useEffect(() =>
     {
@@ -44,17 +72,30 @@ const RequestProduct = () =>
         {
             const fetchStoreRequest = async () =>
             {
-                const storeRequests = await execute();
+                const storeRequest = await execute();
 
-                if (storeRequests)
+                if (storeRequest)
                 {
-                    console.log(storeRequests);
-                    setStoreRequestData(storeRequests);
+                    setStoreRequestData(storeRequest);
+
+                    if (storeRequest.details && storeRequest.details.length > 0)
+                    {
+                        setRequestDetails(storeRequest.details as StoreRequestDetail[]);
+                    }
+                    else
+                    {
+                        toast.info("No hay productos en esta solicitud", {
+                            description: "Esta solicitud no contiene productos.",
+                            duration: 3000,
+                            richColors: true,
+                            position: 'top-right'
+                        });
+                    }
                 }
             }
 
             fetchStoreRequest();
-            setConfig(mockData.supplyproduct.config);
+            setConfig(mockData.requestProduct.config);
         }
         catch (error)
         {
@@ -71,14 +112,18 @@ const RequestProduct = () =>
     return (
         <div className={styles.productsupply}>
             <div className={styles.header}>
-                <div className={styles.productsupplyactions}>
-                    <button className={styles.upload}><Upload /></button>
-                    <button className={styles.download}><Download /></button>
-                </div>
+                {storeRequestData && (
+                    <RequestStepper
+                        currentStatus={storeRequestData.status}
+                        requestedDate={storeRequestData.requestedDate}
+                        approvedDate={storeRequestData.approvedDate}
+                        completedDate={storeRequestData.completedDate}
+                    />
+                )}
             </div>
 
             <div className={styles.tableContainer}>
-                <SupplyProductTable data={storeRequestData} config={config} />
+                <RequestProductTable data={enrichedDetails} config={config} />
             </div>
         </div>
     )
