@@ -1,5 +1,5 @@
 import styles from './page.module.css';
-import React from "react";
+import React, { Suspense } from 'react';
 import Image from 'next/image';
 import ResetPasswordForm from '@/app/components/login/ResetPasswordForm';
 
@@ -18,7 +18,18 @@ const SignInPage = () =>
                 />
             </div>
             <div className={styles.container}>
-                <ResetPasswordForm />
+                <Suspense fallback={
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100vh'
+                    }}>
+                        Cargando...
+                    </div>
+                }>
+                    <ResetPasswordForm />
+                </Suspense>
             </div>
         </div>
     );
