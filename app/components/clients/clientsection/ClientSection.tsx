@@ -2,7 +2,7 @@
 
 import styles from './clientsection.module.css';
 import { useState } from 'react';
-import StoreUser from '@/app/components/stores/storeuser/StoreUser';
+import StoreUser from '@/app/components/stores/storeproduct/StoreProduct';
 import ClientContent from '@/app/components/clients/clientcontent/ClientContent';
 import ClientLog from '@/app/components/clients/clientlog/ClientLog';
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';

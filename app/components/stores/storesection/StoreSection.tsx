@@ -1,18 +1,16 @@
 'use client';
 
 import styles from './storesection.module.css';
-import Image from 'next/image';
-import { Edit } from '@/app/components/svg';
 import { useState } from 'react';
 import StoreContent from '@/app/components/stores/storecontent/StoreContent';
-import StoreUser from '@/app/components/stores/storeuser/StoreUser';
+import StoreProduct from '@/app/components/stores/storeproduct/StoreProduct';
 import { usePathname } from 'next/navigation';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 
 const tabs = [
     "Resumen",
-    "Usuarios",
+    "Inventario",
     "Historial"
 ]
 
@@ -64,8 +62,8 @@ const StoreSection = () =>
 
             {active === "Resumen" ? (
                 <StoreContent setData={handleSetData}/>
-            ) : active === "Usuarios" ? (
-                <StoreUser />
+            ) : active === "Inventario" ? (
+                <StoreProduct />
             ) : (
                 <h1>Historial</h1>
             )}

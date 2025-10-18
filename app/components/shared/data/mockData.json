@@ -172,6 +172,24 @@
       }
     }
   },
+  "storeProductTable": {
+    "config": {
+      "columns": [
+        {"key": "product.numId", "header": "Código", "width": "10%"},
+        {"key": "product.name", "header": "Producto", "width": "20%"},
+        {"key": "allocatedStock", "header": "Stock Asignado", "width": "16%"},
+        {"key": "currentStock", "header": "Stock Actual", "width": "15%"},
+        {"key": "minStock", "header": "Min Stock", "width": "12%"},
+        {"key": "price", "header": "Precio", "width": "12%", "renderType": "currency"},
+        {"key": "available", "header": "Estado", "width": "15%", "renderType": "boolean"}
+      ],
+      "itemsPerPage": 6,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
   "clientOrders": {
     "data": [
       {
