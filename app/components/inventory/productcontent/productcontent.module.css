@@ -75,6 +75,18 @@
     background: #E0E0E0;
 }
 
+.stockNumber input
+{
+    width: 50px;
+    font-family: 'Satoshi', sans-serif;
+    height: 30px;
+    font-size: 14px;
+    padding-left: 10px;
+    outline: none;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
 .detailLabel input,
 .detailLabel select
 {

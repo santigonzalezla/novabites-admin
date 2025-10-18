@@ -452,7 +452,7 @@ const ProductContent = ({ setData }: ProductContentProps) =>
                         style={{ cursor: !isDisabled ? 'pointer' : 'default' }}
                     >
                         <Image
-                            src={previewImage || formData?.imageUrl || '/placehoder.svg'}
+                            src={previewImage || formData?.imageUrl || '/placeholder.jpg'}
                             alt="Product Image"
                             width={150}
                             height={200}
@@ -467,11 +467,35 @@ const ProductContent = ({ setData }: ProductContentProps) =>
                     <div className={styles.stockSummary}>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Stock Actual</div>
-                            <div className={styles.stockNumber}>{formData?.centralStock}</div>
+                            <div className={styles.stockNumber}>
+                                <input
+                                    type="number"
+                                    name="centralStock"
+                                    id="centralStock"
+                                    placeholder="Stock Actual"
+                                    value={`${formData?.centralStock}`|| ''}
+                                    onChange={handleChange}
+                                    disabled={isDisabled}
+                                    className={isDisabled ? styles.disabled : styles.detailValue}
+                                />
+                            </div>
                         </div>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Stock Mínimo</div>
-                            <div className={styles.stockNumber}>{formData?.minStock}</div>
+                            <div className={styles.stockNumber}>
+                                <div className={styles.stockNumber}>
+                                    <input
+                                        type="number"
+                                        name="minStock"
+                                        id="minStock"
+                                        placeholder="Stock Min"
+                                        value={`${formData?.minStock}`|| ''}
+                                        onChange={handleChange}
+                                        disabled={isDisabled}
+                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                    />
+                                </div>
+                            </div>
                         </div>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Estado</div>

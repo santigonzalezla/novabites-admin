@@ -195,6 +195,11 @@
     color: #ff9a57;
 }
 
+.typeRelocation
+{
+    color: #00a389;
+}
+
 .pagination
 {
     display: flex;

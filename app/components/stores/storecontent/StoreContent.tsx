@@ -434,7 +434,7 @@ const StoreContent = ({ setData }: StoreContentProps) =>
                         style={{ cursor: !isDisabled ? 'pointer' : 'default' }}
                     >
                         <Image
-                            src={previewImage || formData?.imageUrl || '/placehoder.svg'}
+                            src={previewImage || formData?.imageUrl || '/placeholder.jpg'}
                             alt="Store Image"
                             width={150}
                             height={200}

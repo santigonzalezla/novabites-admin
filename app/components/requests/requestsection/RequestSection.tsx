@@ -1,13 +1,7 @@
 'use client';
 
 import styles from './requestsection.module.css';
-import Image from 'next/image';
-import { Edit } from '@/app/components/svg';
 import { useState } from 'react';
-import ProductContent from '@/app/components/inventory/productcontent/ProductContent';
-import ProductSupply from '@/app/components/inventory/productsupply/ProductSupply';
-import OrderContent from '@/app/components/orders/ordercontent/OrderContent';
-import OrderBill from '@/app/components/orders/orderbill/OrderBill';
 import RequestContent from '@/app/components/requests/requestcontent/RequestContent';
 import RequestLog from '@/app/components/requests/requestlog/RequestLog';
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
@@ -16,7 +10,7 @@ import { useFetch } from '@/hooks/useFetch';
 
 const tabs = [
     "Resumen",
-    "Factura",
+    "Productos",
     "Historial"
 ]
 
@@ -66,8 +60,8 @@ const RequestSection = () =>
 
             {active === "Resumen" ? (
                 <RequestContent setId={setId} />
-            ) : active === "Factura" ? (
-                <OrderBill />
+            ) : active === "¨Productos" ? (
+                <h1></h1>
             ) : (
                 <RequestLog />
             )}

@@ -111,6 +111,8 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         let typeClass: string;
         let value: string;
 
+        console.log(type);
+
         switch (type.toLowerCase())
         {
             case "supply_request":
@@ -120,6 +122,10 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
             case "return_request":
                 typeClass = styles.typeReturn;
                 value = "Devolución";
+                break;
+            case "relocation_request":
+                typeClass = styles.typeRelocation;
+                value = "Reubicación";
                 break;
             default:
                 typeClass = styles.typeDefault;
