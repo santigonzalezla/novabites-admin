@@ -133,3 +133,21 @@
     color: var(--orange);
     text-decoration: none;
 }
+
+
+.backToLogin {
+    display: flex;
+    justify-content: center;
+}
+
+.backLink {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--orange);
+    text-decoration: none;
+    transition: 0.2s ease-in-out;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}

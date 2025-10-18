@@ -81,14 +81,11 @@ const SignInForm = () =>
                         />
                         <label htmlFor="remember" className={styles.rememberLabel}>Recuerdame</label>
                     </div>
-                    <a href="#" className={styles.forgotPassword}>¿Olvidaste tu contraseña?</a>
+                    <Link href="/forgotpassword" className={styles.forgotPassword}>¿Olvidaste tu contraseña?</Link>
                 </div>
                 <button type="submit" className={`${satoshi.variable} antialiased ${styles.formbutton}`} disabled={isLoading}>
                     {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                 </button>
-                <p className={styles.signUpText}>
-                    ¿Aún no tienes cuenta? <Link href={"/signup"} className={styles.signUpLink}>Regístrate</Link>
-                </p>
             </div>
         </form>
     );

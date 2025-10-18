@@ -14,33 +14,58 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, allowedRoles = [] }) =>
     const pathname = usePathname();
     const router = useRouter();
     const { isAuthenticated, user, isLoading } = useAuth();
+    const publicRoutes = ['/', '/signin', '/signup', '/forgotpassword', '/resetpassword'];
 
     useEffect(() =>
     {
-        if (isLoading)
-        {
-            if (pathname == '/')
-            {
-                if (!isAuthenticated)
-                {
-                    router.push('/signin');
-                    return;
-                }
+        if (isLoading) return;
 
-                if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role))
-                {
-                    router.push('/unauthorized');
-                    return;
-                }
-            }
+        if (!isAuthenticated && !publicRoutes.includes(pathname))
+        {
+            router.push('/signin');
+            return;
         }
-    }, [isAuthenticated, user, isLoading, router, allowedRoles]);
+
+        if (isAuthenticated && allowedRoles.length > 0 && user && !allowedRoles.includes(user.role))
+        {
+            router.push('/unauthorized');
+            return;
+        }
+
+        if (isAuthenticated && publicRoutes.includes(pathname))
+        {
+            router.push('/dashboard');
+            return;
+        }
+
+    }, [isAuthenticated, user, isLoading, pathname, router, allowedRoles]);
 
     if (isLoading)
     {
         return (
-            <div>
-                <p>Verificando Autenticación...</p>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                flexDirection: 'column',
+                gap: '1rem'
+            }}>
+                <div style={{
+                    width: '50px',
+                    height: '50px',
+                    border: '5px solid #f3f3f3',
+                    borderTop: '5px solid #14667C',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                }}></div>
+                <p>Verificando autenticación...</p>
+                <style>{`
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `}</style>
             </div>
         );
     }
