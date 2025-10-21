@@ -9,20 +9,21 @@ import CategoriesLog from '@/app/components/categories/categorieslog/CategoriesL
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 import { usePathname } from 'next/navigation';
 import { useFetch } from '@/hooks/useFetch';
+import SubcategoryContent from '@/app/components/subcategories/subcategorycontent/SubcategoryContent';
 
 const tabs = [
     "Resumen",
     "Historial"
 ]
 
-const CategorySection = () =>
+const SubcategorySection = () =>
 {
     const pathname = usePathname();
     const categoryId = pathname.split('/').pop();
     const [isGenerating, setIsGenerating] = useState(false);
     const [active, setActive] = useState("Resumen");
     const [data, setData] = useState({ name: "" });
-    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/category-product/export', {
+    const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/subcategory-product/export', {
         immediate: false
     });
 
@@ -62,7 +63,7 @@ const CategorySection = () =>
             </div>
 
             {active === "Resumen" ? (
-                <CategoryContent setData={handleSetData} />
+                <SubcategoryContent setData={handleSetData} />
             ) : (
                 <CategoriesLog />
             )}
@@ -70,4 +71,4 @@ const CategorySection = () =>
     );
 }
 
-export default CategorySection;
+export default SubcategorySection;

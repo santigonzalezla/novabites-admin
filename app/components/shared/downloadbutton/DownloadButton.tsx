@@ -45,6 +45,8 @@ const DownloadButton = ({ isGenerating, setIsGenerating, executeFile, domain }: 
                 return `solicitudes_tienda_${new Date().toISOString().split('T')[0]}`;
             case 'category-product':
                 return `categorias_productos_${new Date().toISOString().split('T')[0]}`;
+            case 'subcategory-product':
+                return `subcategorias_productos_${new Date().toISOString().split('T')[0]}`;
             default:
                 return `archivo_${new Date().toISOString().split('T')[0]}`;
         }

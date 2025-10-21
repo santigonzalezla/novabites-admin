@@ -109,6 +109,35 @@
       }
     }
   },
+  "subcategories": {
+    "config": {
+      "columns": [
+        {"key": "name", "header": "NOMBRE", "width": "10%"},
+        {"key": "category.name", "header": "CATEGORÍA ASIGNADA", "width": "15%"},
+        {"key": "_count.products", "header": "PRODUCTOS RELACIONADOS", "width": "30%"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    },
+    "inputConfig": {
+      "fieldTypes": {
+        "name": "text",
+        "categoryId": "select"
+      },
+      "selectOptions": {},
+      "labelTranslations": {
+        "name": "Nombre de la subcategoría",
+        "categoryId": "Categoría Asignada"
+      },
+      "placeholderTranslations": {
+        "name": "Ingrese nombre de la subcategoría",
+        "categoryId": "Seleccione categoría"
+      }
+    }
+  },
   "categoryProduct": {
     "config": {
       "columns": [

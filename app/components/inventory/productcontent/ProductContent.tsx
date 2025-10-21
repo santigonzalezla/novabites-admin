@@ -3,8 +3,8 @@
 import styles from './productcontent.module.css';
 import Image from 'next/image';
 import { Edit } from '@/app/components/svg';
-import React, { useEffect, useRef, useState } from 'react';
-import { CategoryProduct, Product, Store, StoreProduct, Supplier } from '@/interfaces/interfaces';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { CategoryProduct, Product, Store, StoreProduct, SubcategoryProduct, Supplier } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
@@ -29,6 +29,7 @@ const ProductContent = ({ setData }: ProductContentProps) =>
     const { error, execute } = useFetch<Product>(`/api/product/${productId}`);
     const { data: supplierData, error: supplierError } = useFetch<Supplier>(`/api/supplier`);
     const { data: categoryData, error: categoryError } = useFetch<CategoryProduct>(`/api/category-product`);
+    const { data: subcategoryData, error: subcategoryError } = useFetch<SubcategoryProduct>(`/api/subcategory-product`);
     const { data: storeProductData, error: storeProductError } = useFetch<StoreProduct[]>(`/api/store-product/product/${productId}`);
 
     useEffect(() =>
@@ -66,6 +67,18 @@ const ProductContent = ({ setData }: ProductContentProps) =>
             console.error('Error al establecer los datos del producto:', err);
         }
     }, []);
+
+    const filteredSubcategories = useMemo(() =>
+    {
+        if (!subcategoryData) return [];
+
+        const subcategoriesArray = Object.values(subcategoryData);
+
+        if (!formData?.category?.id) return subcategoriesArray;
+
+        return subcategoriesArray.filter((subcategory: SubcategoryProduct) => subcategory.categoryId === formData.category?.id);
+
+    }, [subcategoryData, formData?.category?.id]);
 
     const handleDisable = async () =>
     {
@@ -208,7 +221,9 @@ const ProductContent = ({ setData }: ProductContentProps) =>
             const updatedFormData = {
                 ...formData,
                 category: selectedCategory,
-                categoryId: categoryId
+                categoryId: categoryId,
+                subcategory: undefined,
+                subcategoryId: undefined
             };
             setFormData(updatedFormData);
         }
@@ -223,6 +238,37 @@ const ProductContent = ({ setData }: ProductContentProps) =>
             {
                 setModifiedFields(prev => {
                     const { categoryId: removed, ...newModified } = prev as any;
+                    return newModified;
+                });
+            }
+        }
+    }
+
+    const handleSubcategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    {
+        const subcategoryId = e.target.value;
+        const selectedSubcategory = subcategoryData && Object.values(subcategoryData).find((subcategory: any) => subcategory.id === subcategoryId);
+
+        if (formData && selectedSubcategory)
+        {
+            const updatedFormData = {
+                ...formData,
+                subcategory: selectedSubcategory,
+                subcategoryId: subcategoryId
+            };
+            setFormData(updatedFormData);
+        }
+
+        if (defaultData)
+        {
+            if (defaultData.subcategory?.id !== subcategoryId)
+            {
+                setModifiedFields((prev) => ({ ...prev, subcategoryId: subcategoryId }));
+            }
+            else
+            {
+                setModifiedFields(prev => {
+                    const { subcategoryId: removed, ...newModified } = prev as any;
                     return newModified;
                 });
             }
@@ -360,9 +406,27 @@ const ProductContent = ({ setData }: ProductContentProps) =>
                                         value={formData?.category?.id || ''}
                                         onChange={handleCategoryChange}
                                     >
-                                        {categoryData && Object.values(categoryData).map((category: Supplier) => (
+                                        {categoryData && Object.values(categoryData).map((category: CategoryProduct) => (
                                             <option key={category.id} value={category.id}>
                                                 {category.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.detailLabel}>
+                                    <span>Subcategoría:</span>
+                                    <select
+                                        id="subcategoryId"
+                                        name="subcategoryId"
+                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        disabled={isDisabled}
+                                        value={formData?.subcategory?.id || ''}
+                                        onChange={handleSubcategoryChange}
+                                    >
+                                        <option value="" disabled>Selecciona una categoría</option>
+                                        {filteredSubcategories.map((subcategory: SubcategoryProduct) => (
+                                            <option key={subcategory.id} value={subcategory.id}>
+                                                {subcategory.name}
                                             </option>
                                         ))}
                                     </select>

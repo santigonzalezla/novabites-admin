@@ -13,7 +13,7 @@ import {
     Settings,
     Store,
     Supplier,
-    Supplies, Tag,
+    Supplies, Tag, Tags,
     User, Users,
 } from '@/app/components/svg';
 import {useState} from "react";
@@ -40,6 +40,7 @@ const Sidebar = () =>
         { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests' },
         { item: 'Reportes', icon: <BarChart />, link: '/dashboard/reports' },
         { item: 'Categorías', icon: <Tag />, link: '/dashboard/categories' },
+        { item: 'Subcategorías', icon: <Tags />, link: '/dashboard/subcategories' },
         { item: 'Sucursales', icon: <Store />, link: '/dashboard/stores' },
         { item: 'Mensajes', icon: <Message />, link: '/dashboard/messages' },
         { item: 'Usuarios', icon: <User />, link: '/dashboard/users' },
@@ -76,7 +77,7 @@ const Sidebar = () =>
 
                     <div className={styles.optionGroup}>
                         {!isCollapsed && <div className={styles.groupTitle}>Gestión</div>}
-                        {options.slice(5, 10).map((option, index) => (
+                        {options.slice(5, 11).map((option, index) => (
                             <SidebarOption
                                 key={index + 4}
                                 icon={option.icon}
@@ -89,7 +90,7 @@ const Sidebar = () =>
 
                     <div className={styles.optionGroup}>
                         {!isCollapsed && <div className={styles.groupTitle}>Sistema</div>}
-                        {options.slice(10).map((option, index) => (
+                        {options.slice(11).map((option, index) => (
                             <SidebarOption
                                 key={index + 8}
                                 icon={option.icon}

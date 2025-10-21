@@ -35,6 +35,12 @@ const Topbar = () =>
         case 'reports':
             text = 'Reportes';
             break;
+        case 'categories':
+            text = 'Categorías';
+            break;
+        case 'subcategories':
+            text = 'Subcategorías';
+            break;
         case 'stores':
             text = 'Sucursales';
             break;
