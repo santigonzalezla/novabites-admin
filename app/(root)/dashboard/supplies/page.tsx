@@ -149,7 +149,7 @@ const Supplies = () =>
     {
         const supplyData = {
             ...formData,
-            supplierId: formData.supplierId,
+            supplierId: formData.supplierId || null,
             minStock: Number(formData.minStock),
             stock: Number(formData.stock),
             available: true

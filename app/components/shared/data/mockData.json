@@ -4,7 +4,7 @@
       "columns": [
         {"key": "numId", "header": "CÓDIGO", "width": "8%"},
         {"key": "client.name", "header": "CLIENTE", "width": "20%"},
-        {"key": "totalPrice", "header": "TOTAL", "width": "10%"},
+        {"key": "totalPrice", "header": "TOTAL", "width": "10%", "renderType": "currency"},
         {"key": "createdAt", "header": "FECHA", "width": "15%", "renderType": "date"},
         {"key": "store.name", "header": "TIENDA", "width": "15%"},
         {"key": "user.name", "header": "USUARIO", "width": "20%"},
@@ -22,7 +22,7 @@
       "columns": [
         {"key": "numId", "header": "CÓDIGO", "width": "8%"},
         {"key": "client.name", "header": "CLIENTE", "width": "20%"},
-        {"key": "totalPrice", "header": "TOTAL", "width": "10%"},
+        {"key": "totalPrice", "header": "TOTAL", "width": "10%", "renderType": "currency"},
         {"key": "createdAt", "header": "FECHA", "width": "15%", "renderType": "date"},
         {"key": "store.name", "header": "TIENDA", "width": "15%"},
         {"key": "user.name", "header": "USUARIO", "width": "20%"},
@@ -41,8 +41,8 @@
         {"key": "numId", "header": "CÓDIGO", "width": "8%"},
         {"key": "name", "header": "PRODUCTO", "width": "15%"},
         {"key": "category.name", "header": "CATEGORÍA", "width": "12%"},
-        {"key": "centralStock", "header": "STOCK", "width": "8%"},
-        {"key": "basePrice","header": "PRECIO", "width": "8%"},
+        {"key": "centralStock", "header": "STOCK", "width": "8%","renderType": "currency"},
+        {"key": "basePrice","header": "PRECIO", "width": "8%", "renderType": "currency"},
         {"key": "expiryDate", "header": "VENCIMIENTO", "width": "12%", "renderType": "date"},
         {"key": "available", "header": "ESTADO", "width": "15%"}
       ],
@@ -206,9 +206,9 @@
       "columns": [
         {"key": "product.numId", "header": "Código", "width": "10%"},
         {"key": "product.name", "header": "Producto", "width": "20%"},
-        {"key": "allocatedStock", "header": "Stock Asignado", "width": "16%"},
-        {"key": "currentStock", "header": "Stock Actual", "width": "15%"},
-        {"key": "minStock", "header": "Min Stock", "width": "12%"},
+        {"key": "allocatedStock", "header": "Stock Asignado", "width": "16%", "renderType": "currency"},
+        {"key": "currentStock", "header": "Stock Actual", "width": "15%", "renderType": "currency"},
+        {"key": "minStock", "header": "Min Stock", "width": "12%", "renderType": "currency"},
         {"key": "price", "header": "Precio", "width": "12%", "renderType": "currency"},
         {"key": "available", "header": "Estado", "width": "15%", "renderType": "boolean"}
       ],
@@ -636,9 +636,10 @@
       "fieldTypes": {
         "name": "text",
         "unit": "select",
-        "quantity": "number",
+        "stock": "text",
+        "quantity": "text",
         "price": "text",
-        "minStock": "number",
+        "minStock": "text",
         "supplierId": "select"
       },
       "selectOptions": {

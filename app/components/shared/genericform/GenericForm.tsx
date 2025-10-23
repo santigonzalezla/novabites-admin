@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import styles from './genericform.module.css';
+import { toast } from 'sonner';
 
 type Column = {
     key: string;
@@ -67,16 +68,37 @@ const GenericForm = ({  hasImage, type, columns, onSubmit, onClose, inputConfig,
             case 'phone':
                 return value.replace(/[^0-9\s()\-+]/g, '');
             case 'centralStock':
+                let centralStockValue = value.replace(/[^0-9]/g, '');
+                if (centralStockValue === '') return '';
+                const centralStockNum = parseInt(centralStockValue);
+                return centralStockNum < 0 ? '0' : centralStockValue;
+            case 'minStock':
+                let minstockValue = value.replace(/[^0-9]/g, '');
+                if (minstockValue === '') return '';
+                const minstockNum = parseInt(minstockValue);
+                return minstockNum < 0 ? '0' : minstockValue;
+            case 'stock':
                 let stockValue = value.replace(/[^0-9]/g, '');
                 if (stockValue === '') return '';
                 const stockNum = parseInt(stockValue);
                 return stockNum < 0 ? '0' : stockValue;
-            case 'basePrice':
+            case 'quantity':
+                let quantityValue = value.replace(/[^0-9]/g, '');
+                if (quantityValue === '') return '';
+                const quanityNum = parseInt(quantityValue);
+                return quanityNum < 0 ? '0' : quantityValue;
+            case 'price':
                 let priceValue = value.replace(/[^\d.]/g, '');
                 priceValue = priceValue.replace(/(\..*)\./g, '$1');
                 if (priceValue === '' || priceValue === '.') return priceValue;
                 const priceNum = parseFloat(priceValue);
                 return priceNum < 0 ? '0' : priceValue;
+            case 'basePrice':
+                let basepriceValue = value.replace(/[^\d.]/g, '');
+                basepriceValue = basepriceValue.replace(/(\..*)\./g, '$1');
+                if (basepriceValue === '' || basepriceValue === '.') return basepriceValue;
+                const basepriceNum = parseFloat(basepriceValue);
+                return basepriceNum < 0 ? '0' : basepriceValue;
             case 'name':
                 return value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
             case 'docId':
@@ -87,6 +109,27 @@ const GenericForm = ({  hasImage, type, columns, onSubmit, onClose, inputConfig,
                 return value;
         }
     }
+
+    const validateEmail = (email: string): boolean => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    };
+
+    const validateFormBeforeSubmit = (): boolean => {
+        if (formData.email && formData.email.trim() !== '') {
+            if (!validateEmail(formData.email)) {
+                toast.error('Email inválido', {
+                    description: "Por favor, ingrese un email válido (ejemplo: usuario@dominio.com)",
+                    duration: 3000,
+                    richColors: true,
+                    position: 'top-right'
+                });
+                return false;
+            }
+        }
+
+        return true;
+    };
 
     const handleChange = (key: string, value: any) =>
     {
@@ -136,6 +179,8 @@ const GenericForm = ({  hasImage, type, columns, onSubmit, onClose, inputConfig,
     const handleSubmit = (e: FormEvent) =>
     {
         e.preventDefault();
+
+        if (!validateFormBeforeSubmit()) return;
 
         const transformedData = Object.entries(formData).reduce((acc, [key, value]) =>
         {
