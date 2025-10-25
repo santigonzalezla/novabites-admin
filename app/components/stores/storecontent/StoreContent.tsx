@@ -315,7 +315,7 @@ const StoreContent = ({ setData }: StoreContentProps) =>
                             <h2 className={styles.sectionTitle}>Store Details</h2>
                             <div className={styles.detailsGrid}>
                                 <div className={styles.detailLabel}>
-                                    <span>Address</span>
+                                    <span>Dirección:</span>
                                     <input
                                         type="text"
                                         name="address"
@@ -371,7 +371,7 @@ const StoreContent = ({ setData }: StoreContentProps) =>
 
 
                             <div className={styles.detailLabel}>
-                                <span>Manager name</span>
+                                <span>Nombre:</span>
                                 <input
                                     type="text"
                                     name="manager.name"
@@ -388,7 +388,7 @@ const StoreContent = ({ setData }: StoreContentProps) =>
                             </div>
 
                             <div className={styles.detailLabel}>
-                                <span>Manager Email</span>
+                                <span>Email:</span>
                                 <input
                                     type="text"
                                     name="manager.email"

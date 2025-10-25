@@ -8,6 +8,7 @@ import CustomOrderLog from '@/app/components/customorders/customorderlog/CustomO
 import { usePathname } from 'next/navigation';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
+import CustomOrderBill from '@/app/components/customorders/customorderbill/CustomOrderBill';
 
 const tabs = [
     "Resumen",
@@ -62,7 +63,7 @@ const CustomOrderSection = () =>
             {active === "Resumen" ? (
                 <CustomOrderContent setId={setId} />
             ) : active === "Factura" ? (
-                <OrderBill />
+                <CustomOrderBill />
             ) : (
                 <CustomOrderLog />
             )}

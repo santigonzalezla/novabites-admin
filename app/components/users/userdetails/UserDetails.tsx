@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './userdetails.module.css';
 import Image from 'next/image';
-import { Company, User as UserData } from '@/interfaces/interfaces';
+import { Company, Store, User as UserData } from '@/interfaces/interfaces';
 import { Camera, Cancel, DeleteUser, EditUser, Key, Options, Upload } from '@/app/components/svg';
 import { useFetch } from '@/hooks/useFetch';
 import { usePathname } from 'next/navigation';
@@ -21,6 +21,8 @@ const UserDetails = () =>
     const pathname = usePathname();
     const userId = pathname.split('/').pop();
     const { data, error, execute } = useFetch<UserData>(`/api/user/${userId}`);
+    const [stores, setStores] = useState<Store[]>([]);
+    const { data: storeData, error: storeError, execute: fetchStore } = useFetch<Store[]>(`/api/store`);
     const [isEditing, setIsEditing] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -55,6 +57,12 @@ const UserDetails = () =>
                     setFormData(user);
                     setDefaultData(user);
                     setModifiedFields({});
+                }
+
+                const storesData = await fetchStore();
+                if (storesData)
+                {
+                    setStores(storesData);
                 }
             }
 
@@ -634,9 +642,10 @@ const UserDetails = () =>
                                             disabled={!isEditing}
                                             className={styles.select}
                                         >
-                                            {selectOptions.storeId.map((option) => (
-                                                <option key={option} value={option}>
-                                                    {option}
+                                            <option value="">Sin tienda asignada</option>
+                                            {stores.map((store) => (
+                                                <option key={store.id} value={store.id}>
+                                                    {store.name} ({store.type})
                                                 </option>
                                             ))}
                                         </select>
