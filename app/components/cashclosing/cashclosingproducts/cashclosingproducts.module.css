@@ -1,0 +1,115 @@
+.products {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.header p {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+}
+
+.ordersList {
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-primary);
+    height: 320px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    overflow-y: auto;
+}
+
+.orderCard {
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-height: 150px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.orderCard:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.orderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.orderNumber {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--purple);
+}
+
+.orderStatus {
+    padding: 0.375rem 0.75rem;
+    background: var(--accent-purple-light);
+    color: var(--purple);
+    border-radius: 16px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.orderBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.orderDetail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.value {
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.empty,
+.error,
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    background: var(--surface-primary);
+    border: 1px dashed var(--border-primary);
+    border-radius: 12px;
+}
+
+.error {
+    color: #dc3545;
+}
+
+@media (max-width: 768px) {
+    .ordersList {
+        grid-template-columns: 1fr;
+    }
+}

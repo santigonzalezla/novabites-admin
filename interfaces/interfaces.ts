@@ -1,5 +1,6 @@
 import {
     ActionType,
+    ExpenseCategory,
     LogContext,
     LogLevel, RequestStatus, RequestType,
     ReturnReason,
@@ -59,6 +60,8 @@ export interface User extends BaseEntityWithNumId {
     userDetails?: UserDetails;
     store?: Store;
     bills?: Bill[];
+    dailyExpenses?: DailyExpense[];
+    cashClosings?: CashClosing[];
 }
 
 export interface Credentials extends BaseEntity {
@@ -103,6 +106,59 @@ export interface Store extends BaseEntityWithNumId {
     orders?: Order[];
     customOrders?: CustomOrder[];
     bills?: Bill[];
+    dailyExpenses?: DailyExpense[];
+    cashClosings?: CashClosing[];
+}
+
+export interface CashClosing extends BaseEntityWithNumId {
+    storeId: string;
+    userId: string;
+    closingDate: Date | string;
+    description: string;
+    totalOrders: number;
+    totalRevenue: number | string; // Decimal
+    totalExpenses: number | string; // Decimal
+    netProfit: number | string; // Decimal
+    storeRequestId?: string;
+
+    // Relations
+    store?: Store;
+    user?: User;
+    storeRequest?: StoreRequest;
+    orders?: CashClosingOrder[];
+    expenses?: CashClosingExpense[];
+}
+
+export interface CashClosingOrder extends BaseEntity {
+    cashClosingId: string;
+    orderId: string;
+
+    // Relations
+    cashClosing?: CashClosing;
+    order?: Order;
+}
+
+export interface CashClosingExpense extends BaseEntity {
+    cashClosingId: string;
+    expenseId: string;
+
+    // Relations
+    cashClosing?: CashClosing;
+    expense?: DailyExpense;
+}
+
+export interface DailyExpense extends BaseEntityWithNumId {
+    storeId: string;
+    userId: string;
+    category: ExpenseCategory;
+    description: string;
+    amount: number | string; // Decimal
+    expenseDate: Date | string;
+
+    // Relations
+    store?: Store;
+    user?: User;
+    cashClosingExpenses?: CashClosingExpense[]; // ✅ AGREGAR ESTA LÍNEA
 }
 
 export interface Product extends BaseEntityWithNumId {
@@ -162,6 +218,7 @@ export interface StoreRequest extends BaseEntityWithNumId {
     targetStore?: Store;
     requestingUser?: User;
     approvedByUser?: User;
+    cashClosings?: CashClosing[];
 }
 
 export interface StoreRequestDetail extends BaseEntity {
@@ -289,9 +346,9 @@ export interface Order extends BaseEntityWithNumId {
     client?: Client;
     store?: Store;
     user?: User;
-    details?: DetailOrder[];
-
     bill?: Bill;
+    details?: DetailOrder[];
+    cashClosingOrders?: CashClosingOrder[];
 }
 
 export interface DetailOrder extends BaseEntity {

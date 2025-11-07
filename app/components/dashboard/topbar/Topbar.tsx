@@ -47,6 +47,9 @@ const Topbar = () =>
         case 'clients':
             text = 'Clientes';
             break;
+        case 'cashclosing':
+            text = 'Cierres de Caja';
+            break;
         case 'requests':
             text = 'Solicitudes';
             break;

@@ -153,6 +153,25 @@
       }
     }
   },
+  "cashClosing": {
+    "config": {
+      "columns": [
+        {"key": "numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "user.name", "header": "USUARIO", "width": "15%"},
+        {"key": "store.name", "header": "TIENDA", "width": "15%"},
+        {"key": "closingDate", "header": "FECHA", "width": "10%", "renderType": "date"},
+        {"key": "totalOrders", "header": "ÓRDENES", "width": "10%"},
+        {"key": "totalRevenue", "header": "INGRESOS", "width": "10%", "renderType": "currency"},
+        {"key": "totalExpenses", "header": "GASTOS", "width": "10%", "renderType": "currency"},
+        {"key": "netProfit", "header": "GANANCIA", "width": "12%", "renderType": "currency"}
+      ],
+      "itemsPerPage": 8,
+      "pageLabels": {
+        "showing": "Mostrando",
+        "of": "de"
+      }
+    }
+  },
   "storeRequest": {
     "config": {
       "columns": [

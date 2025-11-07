@@ -120,3 +120,4 @@ export { default as Palette } from './palette.svg';
 export { default as CustomOrder } from './customorder.svg';
 export { default as Request } from './request.svg';
 export { default as Tags } from './tags.svg';
+export { default as CashClosing } from './cashclosing.svg';

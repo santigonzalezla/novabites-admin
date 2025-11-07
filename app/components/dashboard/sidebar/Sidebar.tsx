@@ -4,7 +4,7 @@ import styles from './sidebar.module.css';
 import Image from 'next/image';
 import SidebarOption from "@/app/components/dashboard/sidebaroption/SidebarOption";
 import {
-    ArrowLeft, BarChart,
+    ArrowLeft, BarChart, CashClosing,
     CustomOrder,
     Dashboard,
     Inventory,
@@ -37,6 +37,7 @@ const Sidebar = () =>
         { item: 'Ordenes Personalizadas', icon: <CustomOrder />, link: '/dashboard/customorders' },
         { item: 'Proveedores', icon: <Supplier />, link: '/dashboard/suppliers' },
         { item: 'Clientes', icon: <Users />, link: '/dashboard/clients' },
+        { item: 'Cierres de Caja', icon: <CashClosing />, link: '/dashboard/cashclosing' },
         { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests' },
         { item: 'Reportes', icon: <BarChart />, link: '/dashboard/reports' },
         { item: 'Categorías', icon: <Tag />, link: '/dashboard/categories' },
@@ -77,7 +78,7 @@ const Sidebar = () =>
 
                     <div className={styles.optionGroup}>
                         {!isCollapsed && <div className={styles.groupTitle}>Gestión</div>}
-                        {options.slice(5, 11).map((option, index) => (
+                        {options.slice(5, 12).map((option, index) => (
                             <SidebarOption
                                 key={index + 4}
                                 icon={option.icon}
@@ -90,7 +91,7 @@ const Sidebar = () =>
 
                     <div className={styles.optionGroup}>
                         {!isCollapsed && <div className={styles.groupTitle}>Sistema</div>}
-                        {options.slice(11).map((option, index) => (
+                        {options.slice(12).map((option, index) => (
                             <SidebarOption
                                 key={index + 8}
                                 icon={option.icon}

@@ -1,0 +1,338 @@
+.productcontent
+{
+    display: flex;
+    flex-direction: column;
+    padding: 25px 5px 0 5px;
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+}
+
+.detailsContainer
+{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+.detailsContainerLeft
+{
+    flex-basis: 70%;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: space-between;
+}
+
+.containerLeftSection
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+.tableSection
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sectionTitle
+{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.detailsSection
+{
+    width: 100%;
+}
+
+.detailsGrid
+{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detailLabel,
+.descriptionBox
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.detailLabel span
+{
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.disabled
+{
+    background: #E0E0E0;
+}
+
+.detailLabel input,
+.detailLabel select
+{
+    width: 180px;
+    font-family: 'Satoshi', sans-serif;
+    height: 35px;
+    font-size: 14px;
+    padding: 1px 12px;
+    outline: none;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
+.descriptionBox textarea
+{
+    width: 100%;
+    font-family: 'Satoshi', sans-serif;
+    height: 100px;
+    font-size: 14px;
+    padding: 15px;
+    outline: none;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    resize: none;
+}
+
+.stockTable
+{
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tableHeader
+{
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    background-color: #f3f4f6;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tableRow
+{
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    padding: 12px 16px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+.stockValue
+{
+    color: #6366f1;
+    font-weight: 500;
+}
+
+.sideContent
+{
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.financialSummary
+{
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.financialTop
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summaryTitle {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.watchLink
+{
+    border: 2px solid var(--orange);
+    border-radius: 6px;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: var(--orange);
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.financialItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.financialLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.financialValue {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.divider {
+    height: 2px;
+    background: rgba(0, 0, 0, 0.51);
+}
+
+.netProfit {
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.netProfit .financialLabel {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.netProfit .financialValue {
+    font-size: 18px;
+}
+
+.positive {
+    color: #4caf50;
+}
+
+.negative {
+    color: #ff5252;
+}
+
+.additionalInfo {
+    padding: 20px;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stockSummary
+{
+    display: grid;
+    gap: 12px;
+}
+
+.stockItem
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stockLabel
+{
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.stockNumber
+{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.infoLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.infoValue {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.loading,
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.error {
+    color: #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .detailsContainer {
+        flex-direction: column;
+    }
+
+    .sideContent {
+        width: 100%;
+    }
+
+    .detailsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .cashclosingcontent {
+        padding: 1rem 0;
+    }
+
+    .detailsSection {
+        padding: 1rem;
+    }
+
+    .sectionTitle {
+        font-size: 1rem;
+    }
+
+    .financialSummary {
+        padding: 1rem;
+    }
+
+    .financialValue {
+        font-size: 1rem;
+    }
+
+    .netProfit .financialValue {
+        font-size: 1.5rem;
+    }
+}
