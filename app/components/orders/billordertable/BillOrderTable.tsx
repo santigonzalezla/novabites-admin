@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 export type Column = {
     key: string;
     header: string;
-    renderType?: 'date' | 'decimal';
+    renderType?: 'date' | 'decimal' | 'currency';
     render?: (value: any, row: any) => ReactNode;
     width?: string;
 }
@@ -151,12 +151,23 @@ const BillOrderTable = ({ data, config, className = "" }: DataTableProps) =>
         }
     };
 
+    const renderCurrencyValue = (value: any) =>
+    {
+        const numValue = typeof value === 'string' ? parseFloat(value) : value;
+        return `$${numValue.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    };
+
     // Renderizar valor de celda basado en la configuración de columna
     const renderCellValue = (column: Column, value: any, row: any) =>
     {
         if (column.renderType === 'date' && typeof value === 'string')
         {
             return renderDateValue(value);
+        }
+
+        if (column.renderType === 'currency')
+        {
+            return renderCurrencyValue(value);
         }
 
         if (typeof value === 'string' && statusArr.includes(value.toLowerCase()))

@@ -7,6 +7,9 @@ import { usePathname } from 'next/navigation';
 import { StoreRequest } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { RequestStatus } from '@/interfaces/enums';
+import { formatEnumLabel } from '@/lib/enumUtils';
+import { toast } from 'sonner';
+import RequestStatusActions from '@/app/components/requests/requeststatusactions/RequestStatusActions';
 
 interface RequestContentProps {
     setId: (id: string) => void;
@@ -15,157 +18,49 @@ interface RequestContentProps {
 const RequestContent = ({ setId }: RequestContentProps) =>
 {
     const pathname = usePathname();
-    const [isDisabled, setIsDisabled] = useState(true);
     const [formData, setFormData] = useState<StoreRequest>();
-    const [defaultData, setDefaultData] = useState<StoreRequest>()
     const requestId = pathname.split('/').pop();
-    const [modifiedFields, setModifiedFields] = useState<Partial<StoreRequest>>();
     const { data, error, execute } = useFetch<StoreRequest>(`/api/store-request/${requestId}`);
-    const { error: patchError, execute: patchExecute } = useFetch<StoreRequest>(`/api/store-request/${requestId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        immediate: false
-    });
 
     useEffect(() =>
     {
-        if (data)
+        if (error)
         {
-            console.log(data);
-            setId(String(data.numId));
-            setFormData(data);
-            setDefaultData(data);
-            setModifiedFields({});
+            console.error('Error al cargar los datos:', error);
+            toast.error(`Error al cargar los datos: ${error}`, {
+                description: "Por favor, inténtalo de nuevo más tarde.",
+                duration: 3000,
+                richColors: true,
+                position: 'top-right'
+            });
+            return;
         }
-    }, [data]);
-
-    const handleDisable = async () =>
-    {
-        setIsDisabled(!isDisabled);
-
-        if (!isDisabled)
+        try
         {
-            // Si estamos cancelando la edición, restaurar datos originales
-            if (defaultData) setFormData(defaultData);
-
-            setModifiedFields({});
-        }
-        else
-        {
-            // Si estamos empezando a editar, obtener datos frescos
-            if (data)
+            const fetchData = async () =>
             {
-                const newFetch = await execute();
+                const product = await execute();
 
-                if (newFetch)
+                if (product)
                 {
-                    setFormData(newFetch);
-                    setDefaultData(newFetch); // Actualizar también defaultData
+                    setId(String(product.numId));
+                    setFormData(product);
                 }
             }
+
+            fetchData();
         }
-    }
-
-    const handleChange = (e: { target: { name: any; value: any; }; }) =>
-    {
-        const { name, value } = e.target;
-
-        if (formData) setFormData({
-            ...formData, [name]: value
-        });
-
-        if (defaultData)
+        catch (err)
         {
-            if (isValueChanged(defaultData[name as keyof StoreRequest], value, name))
-            {
-                setModifiedFields((prev) => ({
-                    ...prev,
-                    [name]: value
-                }));
-            }
-            else
-            {
-                setModifiedFields(prev =>
-                {
-                    const { [name]: removed, ...newModified } = prev as any;
-                    return newModified;
-                });
-            }
+            console.error('Error al establecer los datos del producto:', err);
         }
-    }
+    }, []);
 
-    const transformText = (status: RequestStatus):string =>
+    const handleStatusUpdate = async () =>
     {
-        switch (status)
-        {
-            case RequestStatus.PENDING:
-                return "Pendiente";
-            case RequestStatus.APPROVED:
-                return "Aprobado";
-            case RequestStatus.REJECTED:
-                return "Rechazado";
-            case RequestStatus.IN_PROGRESS:
-                return "En Progreso";
-            case RequestStatus.COMPLETED:
-                return "Completado";
-            case RequestStatus.CANCELED:
-                return "Cancelado";
-            default:
-                return status;
-        }
-    }
-
-    const handleStatusChange = (e: { target: { name: any; value: any; }; }) =>
-    {
-        const { name, value } = e.target;
-
-        if (formData) setFormData({ ...formData, [name]: value });
-
-        if (defaultData)
-        {
-            if (isValueChanged(defaultData[name as keyof StoreRequest], value, name))
-            {
-                setModifiedFields((prev) => ({ ...prev, [name]: value }));
-            }
-            else
-            {
-                setModifiedFields(prev =>
-                {
-                    const { [name]: removed, ...newModified } = prev as any;
-                    return newModified;
-                });
-            }
-        }
-    }
-
-    const isValueChanged = (originalValue: any, newValue: any, fieldPath: string) =>
-    {
-        if (!defaultData) return false;
-
-        return defaultData[fieldPath as keyof StoreRequest] !== newValue;
-    }
-
-    const handleSaveChanges = async () =>
-    {
-        if (modifiedFields)
-        {
-            await patchExecute({ body: modifiedFields });
-
-            setIsDisabled(!isDisabled);
-
-            if (!patchError)
-            {
-                setDefaultData(formData);
-                setModifiedFields({});
-            }
-        }
-        else
-        {
-            console.log('No hay cambios para guardar');
-        }
-    }
+        const updatedData = await execute();
+        if (updatedData) setFormData(updatedData);
+    };
 
     return (
         <div className={styles.productcontent}>
@@ -176,38 +71,56 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                             <h2 className={styles.sectionTitle}>Detalles de la Orden</h2>
                             <div className={styles.detailsGrid}>
                                 <div className={styles.detailLabel}>
-                                    <span>Estado:</span>
-                                    <select
-                                        id="status"
-                                        name="status"
-                                        disabled={isDisabled}
-                                        value={formData?.status || ''}
-                                        onChange={handleStatusChange}
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
-                                    >
-                                        {Object.values(RequestStatus).map((status) => (
-                                            <option key={status} value={status}>
-                                                {transformText(status)}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className={styles.detailLabel}>
                                     <span>
-                                        Usuario:
+                                        Tipo de Solicitud:
                                     </span>
                                     <input
-                                        id="user.name"
+                                        id="type"
                                         type="text"
-                                        name="user.name"
-                                        placeholder="Nombre de Usuario"
-                                        value={formData?.requestingUser?.name || ''}
-                                        onChange={handleChange}
+                                        name="type"
+                                        placeholder="Tipo de Solicitud"
+                                        value={formData?.type && formatEnumLabel(formData.type) || ''}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
+                                <div className={styles.detailLabel}>
+                                    <span>Fecha de Creación:</span>
+                                    <input
+                                        id="createdAt"
+                                        type="text"
+                                        name="createdAt"
+                                        value={formData?.createdAt ? new Date(formData.createdAt).toISOString().split('T')[0] : ''}
+                                        disabled
+                                        className={styles.disabled}
+                                    />
+                                </div>
+                                {formData?.approvedDate && (
+                                    <div className={styles.detailLabel}>
+                                        <span>Fecha de Aprobación:</span>
+                                        <input
+                                            id="approvedDate"
+                                            type="text"
+                                            name="approvedDate"
+                                            value={formData?.approvedDate ? new Date(formData.approvedDate).toISOString().split('T')[0] : 'Sin Aprobar'}
+                                            disabled
+                                            className={styles.disabled}
+                                        />
+                                    </div>
+                                )}
+                                {formData?.completedDate && (
+                                    <div className={styles.detailLabel}>
+                                        <span>Fecha de Finalización:</span>
+                                        <input
+                                            id="completedDate"
+                                            type="text"
+                                            name="completedDate"
+                                            value={formData?.completedDate ? new Date(formData.completedDate).toISOString().split('T')[0] : 'Sin Completar'}
+                                            disabled
+                                            className={styles.disabled}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className={styles.detailsSection}>
@@ -221,9 +134,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="requestingUserId.numId"
                                         placeholder="ID del Usuario"
                                         value={formData?.requestingUser?.numId || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
 
@@ -236,9 +148,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="requestingUserId.name"
                                         placeholder="Nombre"
                                         value={formData?.requestingUser?.name || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
 
@@ -250,9 +161,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="requestingUserId.name"
                                         placeholder="Teléfono"
                                         value={formData?.requestingUser?.phone || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
                             </div>
@@ -271,9 +181,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="requestingStore.id"
                                         placeholder="ID Tienda"
                                         value={formData?.requestingStore?.numId || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
                                 <div className={styles.detailLabel}>
@@ -284,9 +193,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="store.name"
                                         placeholder="Nombre de la Tienda"
                                         value={formData?.requestingStore?.name || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
                             </div>
@@ -302,9 +210,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="store.id"
                                         placeholder="ID del Usuario"
                                         value={formData?.approvedByUser?.numId || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
                                 <div className={styles.detailLabel}>
@@ -315,9 +222,8 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         name="store.name"
                                         placeholder="Nombre"
                                         value={formData?.approvedByUser?.name || ''}
-                                        onChange={handleChange}
                                         disabled
-                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                        className={styles.disabled}
                                     />
                                 </div>
                             </div>
@@ -326,41 +232,13 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                 </div>
 
                 <div className={styles.sideContent}>
-                    <div>
-                        {isDisabled ? (
-                            <button className={styles.editButton} onClick={() => handleDisable()}>
-                                <Edit />
-                                Editar Campos
-                            </button>
-                        ) : (
-                            <div className={styles.actionButtons}>
-                                <button className={styles.cancelButton} onClick={() => handleDisable()}>Cancelar</button>
-                                <button className={styles.saveButton} onClick={() => handleSaveChanges()}>Guardar</button>
-                            </div>
-                        )}
-                    </div>
                     <div className={styles.stockSummary}>
-                        <div className={styles.stockItem}>
-                            <div className={styles.stockLabel}>ID User</div>
-                            <div className={styles.stockNumber}>40</div>
-                        </div>
-                        <div className={styles.stockItem}>
-                            <div className={styles.stockLabel}>Creation Date</div>
-                            <div className={styles.stockNumber}>
-                                {formData?.createdAt ? new Date(formData.createdAt).toLocaleDateString() : 'N/A'}
-                            </div>
-                        </div>
-                        <div className={styles.stockItem}>
-                            <div className={styles.stockLabel}>Update Date</div>
-                            <div className={styles.stockNumber}>
-                                {formData?.updatedAt ? new Date(formData.updatedAt).toLocaleDateString() : 'N/A'}
-                            </div>
-                        </div>
-                        <div className={styles.stockItem}>
-                            <div className={styles.stockLabel}>Fecha de Creación</div>
-                            <div className={styles.stockNumber}>
-                                {formData?.createdAt ? new Date(formData.createdAt).toLocaleDateString() : 'N/A'}
-                            </div>
+                        <div className={styles.statusSection}>
+                            <RequestStatusActions
+                                currentStatus={formData?.status || RequestStatus.PENDING}
+                                requestId={requestId || ''}
+                                onStatusUpdate={handleStatusUpdate}
+                            />
                         </div>
                     </div>
                 </div>

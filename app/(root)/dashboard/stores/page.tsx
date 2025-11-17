@@ -11,6 +11,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { Store, User } from '@/interfaces/interfaces';
 import { Role } from '@/interfaces/enums';
 import { toast } from 'sonner';
+import withAuth from '@/hoc/withAuth';
 
 interface InputConfig {
     fieldTypes: Record<string, string>;
@@ -192,4 +193,4 @@ const Stores = () =>
     );
 }
 
-export default Stores;
+export default withAuth(Stores, { allowedRoles: [Role.ADMIN, Role.MANAGER] });

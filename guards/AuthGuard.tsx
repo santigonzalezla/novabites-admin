@@ -14,7 +14,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, allowedRoles = [] }) =>
     const pathname = usePathname();
     const router = useRouter();
     const { isAuthenticated, user, isLoading } = useAuth();
-    const publicRoutes = ['/', '/signin', '/signup', '/forgotpassword', '/resetpassword'];
+    const publicRoutes = ['/', '/signin', '/signup', '/forgotpassword', '/resetpassword', 'unauthorized'];
 
     useEffect(() =>
     {
@@ -44,6 +44,8 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, allowedRoles = [] }) =>
     {
         return (
             <div style={{
+                width: '100%',
+                margin: '0 auto',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

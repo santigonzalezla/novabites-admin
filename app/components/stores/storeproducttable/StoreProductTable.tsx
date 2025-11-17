@@ -103,11 +103,8 @@ const StoreProductTable = ({ data, config, className, handleDeleteStoreProduct, 
         try
         {
             const date = new Date(dateString);
-            const formattedDate = date.toLocaleString('es-ES', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
+            const formattedDate = date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
             return <span className={styles.dateValue}>{formattedDate}</span>;
         }
         catch (error)

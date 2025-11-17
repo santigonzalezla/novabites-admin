@@ -207,14 +207,16 @@ const OrderBill = () =>
                         </div>
                     </div>
                 </div>
-                <button className={styles.printButton} onClick={handleDownloadPdf} disabled={isPrinting}>
-                    <Printer />
-                    {isGenerating ? "Generando..." : "Descargar PDF"}
-                </button>
-                <button className={styles.printButton} onClick={handlePrint} disabled={isPrinting}>
-                    <Printer />
-                    {isPrinting ? "Imprimiendo..." : "Imprimir Factura"}
-                </button>
+                <div className={styles.billButtons}>
+                    <button className={styles.printButton} onClick={handleDownloadPdf} disabled={isPrinting}>
+                        <Printer />
+                        {isGenerating ? "Generando..." : "Descargar PDF"}
+                    </button>
+                    <button className={styles.printButton} onClick={handlePrint} disabled={isPrinting}>
+                        <Printer />
+                        {isPrinting ? "Imprimiendo..." : "Imprimir Factura"}
+                    </button>
+                </div>
             </div>
 
             <div className={styles.billBottom}>

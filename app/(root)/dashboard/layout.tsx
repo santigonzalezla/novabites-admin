@@ -24,7 +24,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         <div className={`${satoshi.variable} antialiased fulldashboard`}>
             <ThemeProvider>
                 <Suspense fallback={null}>
-                    <AuthGuard allowedRoles={[Role.ADMIN, Role.MANAGER]}>
+                    <AuthGuard allowedRoles={[Role.ADMIN, Role.MANAGER, Role.COURIER, Role.MANUFACTURER]}>
                         <Sidebar/>
                         <div className="dashcontainer">
                             <Topbar/>

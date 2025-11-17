@@ -9,6 +9,8 @@ import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDa
 import { StoreRequest } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface RequestConfig {
     columns: any[];
@@ -97,4 +99,4 @@ const Requests = () =>
     );
 }
 
-export default Requests;
+export default withAuth(Requests, { allowedRoles: [Role.ADMIN, Role.COURIER, Role.MANAGER, Role.MANUFACTURER] });

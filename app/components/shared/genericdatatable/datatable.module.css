@@ -132,6 +132,16 @@
     color: #ff9a57;
 }
 
+.roleManufacturer
+{
+    color: #00a389;
+}
+
+.roleCourier
+{
+    color: #7b5dfa;
+}
+
 .statusBadge
 {
     display: inline-block;

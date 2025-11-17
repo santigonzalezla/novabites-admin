@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 export type Column = {
     key: string;
     header: string;
-    renderType?: 'date' | 'decimal';
+    renderType?: 'date' | 'decimal' | 'currency' | 'boolean';
     render?: (value: any, row: any) => ReactNode;
     width?: string;
 }
@@ -51,10 +51,13 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         "in stock",
         "low stock"
     ];
+
     const roleArr = [
         "admin",
         "manager",
-        "user"
+        "user",
+        "manufacturer",
+        "courier"
     ];
 
     // Calcular índices para paginación
@@ -99,6 +102,12 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
                 break;
             case "user":
                 roleClass = styles.roleUser;
+                break;
+            case "manufacturer":
+                roleClass = styles.roleManufacturer;
+                break;
+            case "courier":
+                roleClass = styles.roleCourier;
                 break;
             default:
                 roleClass = styles.roleDefault;
@@ -202,8 +211,6 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         try
         {
             const date = new Date(dateString);
-
-            // Formato: DD/MM/YYYY HH:mm
             const formattedDate = date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric'});
 
             return <span className={styles.dateValue}>{formattedDate}</span>;
@@ -214,12 +221,23 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         }
     };
 
+    const renderCurrencyValue = (value: any) =>
+    {
+        const numValue = typeof value === 'string' ? parseFloat(value) : value;
+        return `$${numValue.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    };
+
     // Renderizar valor de celda basado en la configuración de columna
     const renderCellValue = (column: Column, value: any, row: any) =>
     {
         if (column.renderType === 'date' && typeof value === 'string')
         {
             return renderDateValue(value);
+        }
+
+        if (column.renderType === 'currency')
+        {
+            return renderCurrencyValue(value);
         }
 
         if (typeof value === 'string' && statusArr.includes(value.toLowerCase()))

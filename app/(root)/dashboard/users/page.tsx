@@ -14,6 +14,7 @@ import { User } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import { getSelectOptionsForField } from '@/lib/enumUtils';
 
 interface UserConfig {
     columns: any[];
@@ -26,7 +27,7 @@ interface UserConfig {
 
 interface InputConfig {
     fieldTypes: Record<string, string>;
-    selectOptions: Record<string, string[]>;
+    selectOptions: Record<string, any[]>;
     labelTranslations: Record<string, string>;
     placeholderTranslations: Record<string, string>;
 }
@@ -88,7 +89,22 @@ const Users = () =>
 
             fetchUsers();
             setConfig(mockData.users.config);
-            setInputConfig(mockData.users.inputConfig);
+
+            const baseInputConfig = mockData.users.inputConfig;
+            const dynamicInputConfig: InputConfig = {
+                ...baseInputConfig,
+                selectOptions: {
+                    ...baseInputConfig.selectOptions,
+                    typeId: getSelectOptionsForField('typeId'),
+                    role: getSelectOptionsForField('role'),
+                    status: [
+                        { value: 'ACTIVE', label: 'Activo' },
+                        { value: 'INACTIVE', label: 'Inactivo' }
+                    ]
+                }
+            };
+
+            setInputConfig(dynamicInputConfig);
         }
         catch (error)
         {
@@ -127,7 +143,7 @@ const Users = () =>
 
         formDataToSend.append('typeId', formData.typeId);
         formDataToSend.append('docId', formData.docId);
-        formDataToSend.append('status', formData.available === 'Activo' ? 'ACTIVE' : 'INACTIVE');
+        formDataToSend.append('status', formData.status);
         formDataToSend.append('name', formData.name);
         formDataToSend.append('email', formData.email);
         formDataToSend.append('phone', formData.phone);

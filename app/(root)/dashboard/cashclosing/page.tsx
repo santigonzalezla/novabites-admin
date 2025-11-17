@@ -8,6 +8,8 @@ import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDa
 import { useFetch } from '@/hooks/useFetch';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
 import { CashClosing } from '@/interfaces/interfaces';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface CashClosingConfig {
     columns: any[];
@@ -94,4 +96,4 @@ const CashClosings = () =>
     );
 }
 
-export default CashClosings;
+export default withAuth(CashClosings, { allowedRoles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER] });

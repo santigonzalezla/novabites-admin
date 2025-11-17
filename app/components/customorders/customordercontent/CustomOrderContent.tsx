@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation';
 import { CustomOrder } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { StatusOrder } from '@/interfaces/enums';
+import { formatEnumLabel } from '@/lib/enumUtils';
+import { toast } from 'sonner';
 
 interface CustomOrderContentProps {
     setId: (id: string) => void;
@@ -31,15 +33,39 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
 
     useEffect(() =>
     {
-        console.log(data);
-        if (data)
+        if (error || patchError)
         {
-            setId(String(data.numId));
-            setFormData(data);
-            setDefaultData(data);
-            setModifiedFields({});
+            console.error('Error al cargar los datos:', error || patchError);
+            toast.error(`Error al cargar los datos: ${error || patchError}`, {
+                description: "Por favor, inténtalo de nuevo más tarde.",
+                duration: 3000,
+                richColors: true,
+                position: 'top-right'
+            });
+            return;
         }
-    }, [data]);
+        try
+        {
+            const fetchData = async () =>
+            {
+                const order = await execute();
+
+                if (order)
+                {
+                    setId(String(order.numId));
+                    setFormData(order);
+                    setDefaultData(order);
+                    setModifiedFields({});
+                }
+            }
+
+            fetchData();
+        }
+        catch (err)
+        {
+            console.error('Error al establecer los datos del producto:', err);
+        }
+    }, []);
 
     const handleDisable = async () =>
     {
@@ -128,21 +154,58 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
 
     const handleSaveChanges = async () =>
     {
-        if (modifiedFields)
+        try
         {
-            await patchExecute({ body: modifiedFields });
-
-            setIsDisabled(!isDisabled);
-
-            if (!patchError)
+            if (modifiedFields && Object.keys(modifiedFields).length > 0)
             {
-                setDefaultData(formData);
-                setModifiedFields({});
+                const updatedOrder = await patchExecute({ body: modifiedFields });
+
+                if (!patchError)
+                {
+                    setDefaultData(formData);
+                    setModifiedFields({});
+                }
+
+                if (updatedOrder)
+                {
+                    toast.success('Cambios guardados con éxito', {
+                        description: 'Los cambios en la orden personalizada se han guardado correctamente.',
+                        duration: 3000,
+                        richColors: true,
+                        position: 'top-right'
+                    });
+                    setIsDisabled(true);
+                }
+                else
+                {
+                    toast.error('Error al guardar los cambios', {
+                        description: 'Hubo un problema al guardar los cambios. Por favor, inténtalo de nuevo.',
+                        duration: 3000,
+                        richColors: true,
+                        position: 'top-right'
+                    });
+                }
+            }
+            else
+            {
+                console.log('No hay cambios para guardar');
+                toast.warning('No hay cambios para guardar', {
+                    description: 'No se han detectado cambios en la orden personalizada.',
+                    duration: 3000,
+                    richColors: true,
+                    position: 'top-right'
+                });
             }
         }
-        else
+        catch (e)
         {
-            console.log('No hay cambios para guardar');
+            console.error('Error al guardar los cambios:', e);
+            toast.error('Error al guardar los cambios', {
+                description: 'Hubo un problema al guardar los cambios. Por favor, inténtalo de nuevo.',
+                duration: 3000,
+                richColors: true,
+                position: 'top-right'
+            });
         }
     }
 
@@ -181,7 +244,7 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
                                     >
                                         {Object.values(StatusOrder).map((status) => (
                                             <option key={status} value={status}>
-                                                {status}
+                                                {formatEnumLabel(status)}
                                             </option>
                                         ))}
                                     </select>

@@ -13,6 +13,8 @@ import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import { LoadErrorModal } from '@/app/components/shared/loaderrormodal/LoadErrorModal';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface InventoryConfig {
     columns: any[];
@@ -389,4 +391,4 @@ const Inventory = () =>
     );
 }
 
-export default Inventory;
+export default withAuth(Inventory, { allowedRoles: [Role.ADMIN, Role.MANAGER] });

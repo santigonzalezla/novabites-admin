@@ -13,6 +13,8 @@ import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import { LoadErrorModal } from '@/app/components/shared/loaderrormodal/LoadErrorModal';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface SupplyConfig {
     columns: any[];
@@ -399,4 +401,4 @@ const Supplies = () =>
     );
 }
 
-export default Supplies;
+export default withAuth(Supplies, { allowedRoles: [Role.ADMIN, Role.MANAGER] });

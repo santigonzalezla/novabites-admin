@@ -12,6 +12,8 @@ import { CategoryProduct, SubcategoryProduct } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface SubcategoryConfig {
     columns: any[];
@@ -243,4 +245,4 @@ const Subcategories = () =>
     );
 }
 
-export default Subcategories;
+export default withAuth(Subcategories, { allowedRoles: [Role.ADMIN, Role.MANAGER] });

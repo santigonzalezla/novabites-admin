@@ -157,39 +157,14 @@ const GenericForm = ({  hasImage, type, columns, onSubmit, onClose, inputConfig,
         }
     }
 
-    const transformData = (value: string) =>
-    {
-        switch (value)
-        {
-            case 'Administrador':
-                return 'ADMIN';
-            case 'Gerente':
-                return 'MANAGER';
-            case 'Usuario':
-                return 'USER';
-            case 'Activo':
-                return 'ACTIVE';
-            case 'Inactivo':
-                return 'INACTIVE';
-            default:
-                return value;
-        }
-    }
-
     const handleSubmit = (e: FormEvent) =>
     {
         e.preventDefault();
 
         if (!validateFormBeforeSubmit()) return;
 
-        const transformedData = Object.entries(formData).reduce((acc, [key, value]) =>
-        {
-            acc[key] = typeof  value === 'string' ? transformData(value) : value;
-            return acc;
-        }, {} as Record<string, any>);
-
-        onSubmit(transformedData, selectedFile);
-    }
+        onSubmit(formData, selectedFile);
+    };
 
     const renderField = (column: Column) =>
     {

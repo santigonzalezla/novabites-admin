@@ -1,7 +1,9 @@
 export enum Role {
     ADMIN = 'ADMIN',
     MANAGER = 'MANAGER',
-    USER = 'USER'
+    USER = 'USER',
+    MANUFACTURER = 'MANUFACTURER',
+    COURIER = 'COURIER',
 }
 
 export enum TypeStore {

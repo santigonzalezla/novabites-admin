@@ -10,6 +10,8 @@ import { Client, Order } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface ClientConfig {
     columns: any[];
@@ -120,4 +122,4 @@ const Clients = () =>
     );
 }
 
-export default Clients;
+export default withAuth(Clients, { allowedRoles: [Role.ADMIN, Role.MANAGER] });

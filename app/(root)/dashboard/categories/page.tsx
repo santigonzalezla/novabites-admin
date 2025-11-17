@@ -12,6 +12,8 @@ import { CategoryProduct } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
+import withAuth from '@/hoc/withAuth';
+import { Role } from '@/interfaces/enums';
 
 interface CategoryConfig {
     columns: any[];
@@ -220,4 +222,4 @@ const Categories = () =>
     );
 }
 
-export default Categories;
+export default withAuth(Categories, { allowedRoles: [Role.ADMIN, Role.MANAGER] });

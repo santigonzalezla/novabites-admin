@@ -2,7 +2,7 @@
 {
     background-color: #fff;
     border-radius: 8px;
-    padding: 25px 5px;
+    padding: 25px 5px 0 5px;
 }
 
 .billHeader
@@ -67,6 +67,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.billButtons
+{
+    display: flex;
+    gap: 12px;
 }
 
 .detailItem:nth-last-child(1)

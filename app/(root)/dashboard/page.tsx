@@ -1,58 +1,46 @@
 'use client';
 
 import styles from './page.module.css';
-import { Bell, EarningsIcon, Order, Supplies } from '@/app/components/svg';
+import { Bell, Check, Clock, CustomOrder, EarningsIcon, Order, Supplier, Supplies } from '@/app/components/svg';
 import StatsCard from '@/app/components/dashboard/statscard/StatsCard';
 import NotificationCard from '@/app/components/dashboard/notificationcard/NotificationCard';
 import ChartData from '@/app/components/dashboard/chart/ChartData';
 import { useDashboardStats } from '@/hooks/useDashboardStats';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import StoreFilter from '@/app/components/dashboard/storefilter/StoreFilter';
+import { useAuth } from '@/context/AuthContext';
+import { Role } from '@/interfaces/enums';
 
 const Dashboard = () =>
 {
+    const { user } = useAuth();
     const [selectedStoreId, setSelectedStoreId] = useState<string>('');
-    const { stats, isLoading, error } = useDashboardStats(selectedStoreId);
+    const { stats, isLoading, error, cardsConfig } = useDashboardStats(selectedStoreId);
+    const handleStoreChange = (storeId: string) => setSelectedStoreId(storeId);
 
-    const handleStoreChange = (storeId: string) =>
-    {
-        setSelectedStoreId(storeId);
+    const iconMap: Record<string, JSX.Element> = {
+        supplies: <Supplies />,
+        order: <Order />,
+        earnings: <EarningsIcon />,
+        bell: <Bell />,
+        customOrder: <CustomOrder />,
+        pending: <Clock />,
+        delivery: <Supplier />,
+        completed: <Check />
     };
 
-    const cards = [
-        {
-            link: 'inventory',
-            title: 'Products',
-            value: isLoading ? '...' : stats.totalProducts.toString(),
-            relation: 11,
-            icon: <Supplies />,
-            color: 'FF4200'
-        },
-        {
-            link: 'orders',
-            title: 'Órdenes',
-            value: isLoading ? '...' : stats.ordersRelation.toString(),
-            relation: 2,
-            icon: <Order />,
-            color: '2B3138'
-        },
-        {
-            link: 'reports',
-            title: 'Ganancias',
-            value: isLoading ? '...' : `$${stats.totalEarnings.toLocaleString('es-CO')}`,
-            relation: 54,
-            icon: <EarningsIcon />,
-            color: '62FF6B'
-        },
-        {
-            link: 'requests',
-            title: 'Solicitudes',
-            value: isLoading ? '...' : stats.totalStoreRequests.toString(),
-            relation: -5,
-            icon: <Bell />,
-            color: '95A4FC'
-        }
-    ];
+    const getFormattedValue = (valueKey: keyof typeof stats): string =>
+    {
+        if (isLoading) return '...';
+
+        const value = stats[valueKey];
+
+        if (valueKey === 'totalEarnings') return `$${value.toLocaleString('es-CO')}`;
+
+        return value.toString();
+    };
+
+    const shouldShowStoreFilter = user?.role === Role.ADMIN || user?.role === Role.MANAGER;
 
     if (error)
     {
@@ -67,19 +55,21 @@ const Dashboard = () =>
 
     return (
         <div className={styles.dashboard}>
-            <StoreFilter
-                selectedStoreId={selectedStoreId}
-                onStoreChange={handleStoreChange}
-            />
+            {shouldShowStoreFilter && (
+                <StoreFilter
+                    selectedStoreId={selectedStoreId}
+                    onStoreChange={handleStoreChange}
+                />
+            )}
             <div className={styles.cards}>
-                {cards.map((card, index) => (
+                {cardsConfig.map((card, index) => (
                     <StatsCard
                         key={index}
                         link={card.link}
                         title={card.title}
-                        value={card.value}
+                        value={getFormattedValue(card.valueKey)}
                         relation={card.relation}
-                        icon={card.icon}
+                        icon={iconMap[card.icon]}
                         color={card.color}
                     />
                 ))}

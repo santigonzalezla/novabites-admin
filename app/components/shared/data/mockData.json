@@ -3,7 +3,7 @@
     "config": {
       "columns": [
         {"key": "numId", "header": "CÓDIGO", "width": "8%"},
-        {"key": "client.name", "header": "CLIENTE", "width": "20%"},
+        {"key": "client.name", "header": "CLIENTE", "width": "15%"},
         {"key": "totalPrice", "header": "TOTAL", "width": "10%", "renderType": "currency"},
         {"key": "createdAt", "header": "FECHA", "width": "15%", "renderType": "date"},
         {"key": "store.name", "header": "TIENDA", "width": "15%"},
@@ -41,7 +41,7 @@
         {"key": "numId", "header": "CÓDIGO", "width": "8%"},
         {"key": "name", "header": "PRODUCTO", "width": "15%"},
         {"key": "category.name", "header": "CATEGORÍA", "width": "12%"},
-        {"key": "centralStock", "header": "STOCK", "width": "8%","renderType": "currency"},
+        {"key": "centralStock", "header": "STOCK", "width": "8%"},
         {"key": "basePrice","header": "PRECIO", "width": "8%", "renderType": "currency"},
         {"key": "expiryDate", "header": "VENCIMIENTO", "width": "12%", "renderType": "date"},
         {"key": "available", "header": "ESTADO", "width": "15%"}
@@ -199,7 +199,7 @@
         {"key": "totalPrice", "header": "TOTAL", "width": "15%", "renderType": "currency"},
         {"key": "returnReason", "header": "MOTIVO", "width": "23%"}
       ],
-      "itemsPerPage": 10,
+      "itemsPerPage": 5,
       "pageLabels": {
         "showing": "Mostrando",
         "of": "de"
@@ -225,9 +225,9 @@
       "columns": [
         {"key": "product.numId", "header": "Código", "width": "10%"},
         {"key": "product.name", "header": "Producto", "width": "20%"},
-        {"key": "allocatedStock", "header": "Stock Asignado", "width": "16%", "renderType": "currency"},
-        {"key": "currentStock", "header": "Stock Actual", "width": "15%", "renderType": "currency"},
-        {"key": "minStock", "header": "Min Stock", "width": "12%", "renderType": "currency"},
+        {"key": "allocatedStock", "header": "Stock Asignado", "width": "16%"},
+        {"key": "currentStock", "header": "Stock Actual", "width": "15%"},
+        {"key": "minStock", "header": "Min Stock", "width": "12%"},
         {"key": "price", "header": "Precio", "width": "12%", "renderType": "currency"},
         {"key": "available", "header": "Estado", "width": "15%", "renderType": "boolean"}
       ],
@@ -288,10 +288,10 @@
   "billDetails": {
     "config": {
       "columns": [
-        {"key": "productName", "header": "PRODUCTO", "width": "10%"},
-        {"key": "quantity", "header": "CANTIDAD", "width": "10%"},
-        {"key": "unitPrice", "header": "PRECIO C/U", "width": "10%"},
-        {"key": "subtotal", "header": "TOTAL", "width": "10%"}
+        {"key": "productName", "header": "PRODUCTO", "width": "15%"},
+        {"key": "quantity", "header": "CANTIDAD", "width": "8%"},
+        {"key": "unitPrice", "header": "PRECIO C/U", "width": "10%", "renderType": "currency"},
+        {"key": "subtotal", "header": "TOTAL", "width": "10%", "renderType": "currency"}
       ],
       "itemsPerPage": 4,
       "pageLabels": {
@@ -306,7 +306,7 @@
         {"key": "supply.numId", "header": "ID", "width": "15%"},
         {"key": "supply.name", "header": "NOMBRE", "width": "20%"},
         {"key": "supply.unit", "header": "UNIDAD", "width": "20%"},
-        {"key": "supply.price", "header": "PRECIO", "width": "20%"},
+        {"key": "supply.price", "header": "PRECIO", "width": "20%", "renderType": "currency"},
         {"key": "amountUsed", "header": "CANTIDAD", "width": "20%"}
       ],
       "itemsPerPage": 5,
@@ -474,24 +474,7 @@
         "role": "select",
         "status": "select"
       },
-      "selectOptions": {
-        "typeId": [
-          "CC",
-          "NIT",
-          "TI",
-          "CE",
-          "PP"
-        ],
-        "role": [
-          "Administrador",
-          "Gerente",
-          "Usuario"
-        ],
-        "status": [
-          "Activo",
-          "Inactivo"
-        ]
-      },
+      "selectOptions": {},
       "labelTranslations": {
         "typeId": "Tipo de Documento",
         "docId": "ID Usuario",
@@ -640,7 +623,7 @@
         {"key": "name", "header": "INSUMO", "width": "12%"},
         {"key": "unit", "header": "UNIDAD", "width": "10%"},
         {"key": "stock", "header": "STOCK", "width": "10%"},
-        {"key": "price", "header": "PRECIO", "width": "10%"},
+        {"key": "price", "header": "PRECIO", "width": "10%", "renderType": "currency"},
         {"key": "minStock", "header": "MIN STOCK", "width": "12%"},
         {"key": "supplier.name", "header": "PROVEEDOR", "width": "20%"},
         {"key": "available", "header": "ESTADO", "width": "15%"}

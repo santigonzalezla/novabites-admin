@@ -16,12 +16,15 @@ import {
     Supplies, Tag, Tags,
     User, Users,
 } from '@/app/components/svg';
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import { useTheme } from '@/context/ThemeContext';
+import { Role } from '@/interfaces/enums';
+import { useAuth } from '@/context/AuthContext';
 
 const Sidebar = () =>
 {
     const { theme } = useTheme();
+    const { user } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const toggleCollapse = () =>
@@ -30,23 +33,52 @@ const Sidebar = () =>
     }
 
     const options = [
-        { item: 'Resumen', icon: <Dashboard />, link: '/dashboard' },
-        { item: 'Inventario', icon: <Inventory />, link: '/dashboard/inventory' },
-        { item: 'Insumos', icon: <Supplies />, link: '/dashboard/supplies' },
-        { item: 'Ordenes', icon: <Order />, link: '/dashboard/orders' },
-        { item: 'Ordenes Personalizadas', icon: <CustomOrder />, link: '/dashboard/customorders' },
-        { item: 'Proveedores', icon: <Supplier />, link: '/dashboard/suppliers' },
-        { item: 'Clientes', icon: <Users />, link: '/dashboard/clients' },
-        { item: 'Cierres de Caja', icon: <CashClosing />, link: '/dashboard/cashclosing' },
-        { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests' },
-        { item: 'Reportes', icon: <BarChart />, link: '/dashboard/reports' },
-        { item: 'Categorías', icon: <Tag />, link: '/dashboard/categories' },
-        { item: 'Subcategorías', icon: <Tags />, link: '/dashboard/subcategories' },
-        { item: 'Sucursales', icon: <Store />, link: '/dashboard/stores' },
-        { item: 'Mensajes', icon: <Message />, link: '/dashboard/messages' },
-        { item: 'Usuarios', icon: <User />, link: '/dashboard/users' },
-        { item: 'Configuración', icon: <Settings />, link: '/dashboard/settings' },
+        // Principal
+        { item: 'Resumen', icon: <Dashboard />, link: '/dashboard', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Inventario', icon: <Inventory />, link: '/dashboard/inventory', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Insumos', icon: <Supplies />, link: '/dashboard/supplies', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Ordenes', icon: <Order />, link: '/dashboard/orders', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Ordenes Personalizadas', icon: <CustomOrder />, link: '/dashboard/customorders', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER] },
+
+        // Gestión
+        { item: 'Proveedores', icon: <Supplier />, link: '/dashboard/suppliers', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Clientes', icon: <Users />, link: '/dashboard/clients', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Cierres de Caja', icon: <CashClosing />, link: '/dashboard/cashclosing', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER] },
+        { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER] },
+        { item: 'Reportes', icon: <BarChart />, link: '/dashboard/reports', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Categorías', icon: <Tag />, link: '/dashboard/categories', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Subcategorías', icon: <Tags />, link: '/dashboard/subcategories', roles: [Role.ADMIN, Role.MANAGER] },
+
+        // Sistema
+        { item: 'Sucursales', icon: <Store />, link: '/dashboard/stores', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Mensajes', icon: <Message />, link: '/dashboard/messages', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Usuarios', icon: <User />, link: '/dashboard/users', roles: [Role.ADMIN] },
+        { item: 'Configuración', icon: <Settings />, link: '/dashboard/settings', roles: [Role.ADMIN] },
     ];
+
+    const userOptions = useMemo(() =>
+    {
+        if (!user || !user.role) return [];
+
+        return options.filter(option => option.roles.includes(user.role as Role));
+    }, [user]);
+
+    const groupedOptions = useMemo(() =>
+    {
+        const principal = userOptions.filter(opt =>
+            ['Resumen', 'Inventario', 'Insumos', 'Ordenes', 'Ordenes Personalizadas'].includes(opt.item)
+        );
+
+        const management = userOptions.filter(opt =>
+            ['Proveedores', 'Clientes', 'Cierres de Caja', 'Solicitudes', 'Reportes', 'Categorías', 'Subcategorías'].includes(opt.item)
+        );
+
+        const system = userOptions.filter(opt =>
+            ['Sucursales', 'Mensajes', 'Usuarios', 'Configuración'].includes(opt.item)
+        );
+
+        return { principal, management, system };
+    }, [userOptions]);
 
     return (
         <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""}`}>
@@ -63,44 +95,51 @@ const Sidebar = () =>
 
             <div className={styles.scrollContainer}>
                 <div className={styles.options}>
-                    <div className={styles.optionGroup}>
-                        {!isCollapsed && <div className={styles.groupTitle}>Principal</div>}
-                        {options.slice(0, 5).map((option, index) => (
-                            <SidebarOption
-                                key={index}
-                                icon={option.icon}
-                                item={option.item}
-                                link={option.link}
-                                isCollapsed={isCollapsed}
-                            />
-                        ))}
-                    </div>
+                    {groupedOptions.principal.length > 0 && (
+                        <div className={styles.optionGroup}>
+                            {!isCollapsed && <div className={styles.groupTitle}>Principal</div>}
+                            {groupedOptions.principal.map((option, index) => (
+                                <SidebarOption
+                                    key={`principal-${index}`}
+                                    icon={option.icon}
+                                    item={option.item}
+                                    link={option.link}
+                                    isCollapsed={isCollapsed}
+                                />
+                            ))}
+                        </div>
+                    )}
 
-                    <div className={styles.optionGroup}>
-                        {!isCollapsed && <div className={styles.groupTitle}>Gestión</div>}
-                        {options.slice(5, 12).map((option, index) => (
-                            <SidebarOption
-                                key={index + 4}
-                                icon={option.icon}
-                                item={option.item}
-                                link={option.link}
-                                isCollapsed={isCollapsed}
-                            />
-                        ))}
-                    </div>
+                    {/* Grupo Gestión */}
+                    {groupedOptions.management.length > 0 && (
+                        <div className={styles.optionGroup}>
+                            {!isCollapsed && <div className={styles.groupTitle}>Gestión</div>}
+                            {groupedOptions.management.map((option, index) => (
+                                <SidebarOption
+                                    key={`gestion-${index}`}
+                                    icon={option.icon}
+                                    item={option.item}
+                                    link={option.link}
+                                    isCollapsed={isCollapsed}
+                                />
+                            ))}
+                        </div>
+                    )}
 
-                    <div className={styles.optionGroup}>
-                        {!isCollapsed && <div className={styles.groupTitle}>Sistema</div>}
-                        {options.slice(12).map((option, index) => (
-                            <SidebarOption
-                                key={index + 8}
-                                icon={option.icon}
-                                item={option.item}
-                                link={option.link}
-                                isCollapsed={isCollapsed}
-                            />
-                        ))}
-                    </div>
+                    {groupedOptions.system.length > 0 && (
+                        <div className={styles.optionGroup}>
+                            {!isCollapsed && <div className={styles.groupTitle}>Sistema</div>}
+                            {groupedOptions.system.map((option, index) => (
+                                <SidebarOption
+                                    key={`sistema-${index}`}
+                                    icon={option.icon}
+                                    item={option.item}
+                                    link={option.link}
+                                    isCollapsed={isCollapsed}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 

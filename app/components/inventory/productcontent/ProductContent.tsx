@@ -307,8 +307,6 @@ const ProductContent = ({ setData }: ProductContentProps) =>
 
                 if (selectedImage) formDataToSend.append('image', selectedImage);
 
-                console.log(formDataToSend);
-
                 const updatedProduct = await execute({
                     method: 'PATCH',
                     body: formDataToSend,

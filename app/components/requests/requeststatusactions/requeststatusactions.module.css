@@ -1,0 +1,350 @@
+.statusActions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.currentStatus {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.statusBadge {
+    padding: 5px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+}
+
+.actionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.actionsLabel {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.actionButtons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.actionButton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Satoshi', sans-serif;
+    color: white;
+}
+
+.actionButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.actionIcon {
+    font-size: 1.25rem;
+}
+
+.actionLabel {
+    white-space: nowrap;
+}
+
+/* Variantes de botones */
+.actionButton.approve {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.actionButton.approve:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.actionButton.reject {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.actionButton.reject:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+}
+
+.actionButton.cancel {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.actionButton.cancel:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+.actionButton.progress {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.actionButton.progress:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+}
+
+.actionButton.complete {
+    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.actionButton.complete:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);
+}
+
+/* Estados finales */
+.finalStatus,
+.noPermissions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    align-items: center;
+    text-align: center;
+}
+
+.finalMessage,
+.noPermissionsMessage {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modalContent {
+    background: var(--surface-primary);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.modalIcon {
+    font-size: 2rem;
+}
+
+.modalHeader h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modalBody {
+    padding: 2rem;
+}
+
+.modalQuestion {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.modalQuestion strong {
+    color: var(--purple);
+}
+
+.modalDescription {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem 2rem;
+    border-top: 1px solid var(--border-primary);
+}
+
+.cancelButton,
+.confirmButton {
+    flex: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: 'Satoshi', sans-serif;
+}
+
+.cancelButton {
+    background: var(--surface-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-primary);
+}
+
+.cancelButton:hover:not(:disabled) {
+    background: var(--surface-primary);
+    border-color: var(--purple);
+}
+
+.confirmButton {
+    color: white;
+}
+
+.confirmButton.approve {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+}
+
+.confirmButton.reject {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+.confirmButton.cancel {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.confirmButton.progress {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+}
+
+.confirmButton.complete {
+    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+}
+
+.confirmButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .statusActions {
+        padding: 1rem;
+    }
+
+    .actionButtons {
+        flex-direction: column;
+    }
+
+    .actionButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modalContent {
+        width: 95%;
+    }
+
+    .modalActions {
+        flex-direction: column;
+    }
+}
+
+/* Warning y Info Boxes en el modal */
+.warningBox,
+.infoBox {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.warningBox {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    color: #856404;
+}
+
+.infoBox {
+    background: #d1ecf1;
+    border: 1px solid #0c5460;
+    color: #0c5460;
+}
+
+.warningIcon,
+.infoIcon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.warningBox p,
+.infoBox p {
+    margin: 0;
+    flex: 1;
+}

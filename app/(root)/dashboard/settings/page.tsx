@@ -13,6 +13,7 @@ import SecurityTab from '@/app/components/settings/securitytab/SecurityTab';
 import AppTab from '@/app/components/settings/apptab/AppTab';
 import AdminTab from '@/app/components/settings/admintab/AdminTab';
 import ProfileTab from '@/app/components/settings/profiletab/ProfileTab';
+import withAuth from '@/hoc/withAuth';
 
 type ModifiedUserData = {
     [K in keyof UserData]?: K extends 'userDetails'
@@ -642,4 +643,4 @@ const Settings = () =>
     )
 }
 
-export default Settings;
+export default withAuth(Settings, { allowedRoles: [Role.ADMIN] });

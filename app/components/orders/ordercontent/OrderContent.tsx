@@ -4,9 +4,10 @@ import styles from './ordercontent.module.css';
 import { Edit } from '@/app/components/svg';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Order, Supplier, Supply } from '@/interfaces/interfaces';
+import { Order } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
-import { StatusOrder, UnitType } from '@/interfaces/enums';
+import { StatusOrder } from '@/interfaces/enums';
+import { formatEnumLabel } from '@/lib/enumUtils';
 
 interface OrderContentProps {
     setId: (id: string) => void;
@@ -95,29 +96,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
         }
     }
 
-    const handleStatusChange = (e: { target: { name: any; value: any; }; }) =>
-    {
-        const { name, value } = e.target;
-
-        if (formData) setFormData({ ...formData, [name]: value });
-
-        if (defaultData)
-        {
-            if (isValueChanged(defaultData[name as keyof Order], value, name))
-            {
-                setModifiedFields((prev) => ({ ...prev, [name]: value }));
-            }
-            else
-            {
-                setModifiedFields(prev =>
-                {
-                    const { [name]: removed, ...newModified } = prev as any;
-                    return newModified;
-                });
-            }
-        }
-    }
-
     const isValueChanged = (originalValue: any, newValue: any, fieldPath: string) =>
     {
         if (!defaultData) return false;
@@ -166,30 +144,20 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                                         className={isDisabled ? styles.disabled : styles.detailValue}
                                     />
                                 </div>
-
-
                                 <div className={styles.detailLabel}>
                                     <span>Estado:</span>
-                                    <select
+                                    <input
                                         id="status"
+                                        type="text"
                                         name="status"
-                                        disabled={isDisabled}
-                                        value={formData?.status || ''}
-                                        onChange={handleStatusChange}
+                                        placeholder="Estado"
+                                        value={formData?.status && formatEnumLabel(formData.status) || ''}
+                                        disabled
                                         className={isDisabled ? styles.disabled : styles.detailValue}
-                                    >
-                                        {Object.values(StatusOrder).map((status) => (
-                                            <option key={status} value={status}>
-                                                {status}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
-
                                 <div className={styles.detailLabel}>
-                                    <span>
-                                        Usuario:
-                                    </span>
+                                    <span>Usuario:</span>
                                     <input
                                         id="user.name"
                                         type="text"
@@ -203,7 +171,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                                 </div>
                             </div>
                         </div>
-
                         <div className={styles.detailsSection}>
                             <h2 className={styles.sectionTitle}>Detalles de la Sucursal</h2>
                             <div className={styles.detailsGrid}>
@@ -215,7 +182,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                                         name="store.id"
                                         placeholder="ID Tienda"
                                         value={formData?.store?.numId || ''}
-                                        onChange={handleChange}
                                         disabled
                                         className={isDisabled ? styles.disabled : styles.detailValue}
                                     />
@@ -228,7 +194,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                                         name="store.name"
                                         placeholder="Nombre de la Tienda"
                                         value={formData?.store?.name || ''}
-                                        onChange={handleChange}
                                         disabled
                                         className={isDisabled ? styles.disabled : styles.detailValue}
                                     />
@@ -236,7 +201,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                             </div>
                         </div>
                     </div>
-
                     <div className={styles.tableSection}>
                         <h2 className={styles.sectionTitle}>Detalles del Cliente</h2>
                         <div className={styles.detailsGrid}>
@@ -253,8 +217,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                                     className={isDisabled ? styles.disabled : styles.detailValue}
                                 />
                             </div>
-
-
                             <div className={styles.detailLabel}>
                                 <span>Nombre:</span>
                                 <input
@@ -268,7 +230,6 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                                     className={isDisabled ? styles.disabled : styles.detailValue}
                                 />
                             </div>
-
                             <div className={styles.detailLabel}>
                                 <span>Teléfono:</span>
                                 <input
