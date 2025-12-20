@@ -291,15 +291,76 @@
     color: #16a34a;
 }
 
-@media (max-width: 768px)
-{
-    .content
-    {
-        grid-template-columns: 1fr;
+/* Responsive para teléfonos */
+@media (max-width: 768px) {
+    .productcontent {
+        padding: 16px 0;
     }
 
-    .detailsGrid
-    {
-        grid-template-columns: 120px 1fr;
+    .detailsContainer {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .detailsContainerLeft,
+    .sideContent {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    .containerLeftSection {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .detailLabel {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .detailLabel input,
+    .detailLabel select {
+        width: 100%;
+    }
+
+    .tableHeader,
+    .tableRow {
+        grid-template-columns: 1fr 100px;
+        padding: 10px 12px;
+    }
+
+    .actionButtons {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .saveButton {
+        flex-basis: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .productcontent {
+        padding: 12px 0;
+    }
+
+    .detailsContainer {
+        gap: 16px;
+    }
+
+    .sectionTitle {
+        font-size: 14px;
+    }
+
+    .tableHeader,
+    .tableRow {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .image {
+        height: 150px;
     }
 }

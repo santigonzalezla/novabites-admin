@@ -26,6 +26,8 @@
     color: var(--text-primary);
     font-size: 28px;
     font-weight: 300;
+    border-bottom: 1px solid var(--border-secondary);
+    padding-bottom: 10px;
 }
 
 .notificationinfo
@@ -33,6 +35,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.notificationempty
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+
+.notificationempty p
+{
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 300;
 }
 
 .notificationinfo:not(:last-child)
@@ -81,4 +100,56 @@
 .inforight svg
 {
     color: var(--text-primary);
+}
+
+/* Responsive para teléfonos */
+@media (max-width: 768px) {
+    .notifcationcard {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .notifcationcard h1 {
+        font-size: 22px;
+    }
+
+    .infoleft {
+        gap: 12px;
+    }
+
+    .infoleft h3 {
+        font-size: 15px;
+    }
+
+    .infoleft p {
+        font-size: 13px;
+    }
+
+    .inforight p {
+        font-size: 12px;
+    }
+
+    .notificationempty {
+        padding: 50px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notifcationcard {
+        padding: 14px;
+    }
+
+    .notifcationcard h1 {
+        font-size: 20px;
+    }
+
+    .notificationinfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .inforight {
+        align-items: flex-start;
+    }
 }

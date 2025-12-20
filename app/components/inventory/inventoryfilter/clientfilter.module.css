@@ -84,3 +84,37 @@
     cursor: pointer;
     gap: 10px;
 }
+
+/* Responsive para teléfonos */
+@media (max-width: 768px) {
+    .filter {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .filter > div {
+        border-right: none;
+        border-bottom: 1px solid #CCC;
+        padding: 12px 16px;
+        width: 100%;
+    }
+
+    .filter > div:last-child {
+        border-bottom: none;
+    }
+
+    .filtericon,
+    .filterby {
+        width: 100%;
+    }
+
+    .filtercontent input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter > div {
+        padding: 10px 14px;
+    }
+}

@@ -127,3 +127,42 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* Responsive para teléfonos */
+@media (max-width: 768px) {
+    .tableContainer {
+        overflow-x: auto;
+    }
+
+    .dataTable {
+        font-size: 12px;
+    }
+
+    .dataTable th,
+    .dataTable tbody td {
+        padding: 10px 16px;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .paginationControls {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .dataTable th,
+    .dataTable tbody td {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    .statusBadge {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+}

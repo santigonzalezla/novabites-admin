@@ -15,17 +15,48 @@ import {
     Supplier,
     Supplies, Tag, Tags,
     User, Users,
+    X,
 } from '@/app/components/svg';
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import { useTheme } from '@/context/ThemeContext';
 import { Role } from '@/interfaces/enums';
 import { useAuth } from '@/context/AuthContext';
 
-const Sidebar = () =>
+interface SidebarProps {
+    isMobileOpen?: boolean;
+    onMobileClose?: () => void;
+}
+
+const Sidebar = ({ isMobileOpen = false, onMobileClose }: SidebarProps) =>
 {
     const { theme } = useTheme();
     const { user } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Bloquear scroll cuando el sidebar móvil está abierto
+    useEffect(() => {
+        if (isMobile && isMobileOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isMobile, isMobileOpen]);
 
     const toggleCollapse = () =>
     {
@@ -81,17 +112,32 @@ const Sidebar = () =>
     }, [userOptions]);
 
     return (
-        <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""}`}>
-            <div className={styles.logo}>
-                <Image
-                    src={`${theme === 'dark' ? '/logodark.png' : '/logo.png'}`}
-                    alt="NovaBites"
-                    width={isCollapsed ? 40 : 150}
-                    height={isCollapsed ? 40 : 50}
-                    style={{ objectFit: "cover" }}
-                    priority
-                />
-            </div>
+        <>
+            {/* Overlay para móvil */}
+            {isMobile && isMobileOpen && (
+                <div className={styles.mobileOverlay} onClick={onMobileClose} />
+            )}
+
+            <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""} ${isMobile && isMobileOpen ? styles.mobileOpen : ""} ${isMobile && !isMobileOpen ? styles.mobileClosed : ""}`}>
+                <div className={styles.logo}>
+                    {isMobile && (
+                        <button
+                            className={styles.mobileCloseButton}
+                            onClick={onMobileClose}
+                            aria-label="Cerrar menú"
+                        >
+                            <X />
+                        </button>
+                    )}
+                    <Image
+                        src={`${theme === 'dark' ? '/logodark.png' : '/logo.png'}`}
+                        alt="NovaBites"
+                        width={isCollapsed ? 40 : 150}
+                        height={isCollapsed ? 40 : 50}
+                        style={{ objectFit: "cover" }}
+                        priority
+                    />
+                </div>
 
             <div className={styles.scrollContainer}>
                 <div className={styles.options}>
@@ -143,15 +189,18 @@ const Sidebar = () =>
                 </div>
             </div>
 
-            <button
-                className={styles.collapseButton}
-                onClick={toggleCollapse}
-                title={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
-                aria-label={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
-            >
-                <ArrowLeft />
-            </button>
+            {!isMobile && (
+                <button
+                    className={styles.collapseButton}
+                    onClick={toggleCollapse}
+                    title={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+                    aria-label={isCollapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+                >
+                    <ArrowLeft />
+                </button>
+            )}
         </div>
+        </>
     );
 }
 

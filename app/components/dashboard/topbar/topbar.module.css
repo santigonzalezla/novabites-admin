@@ -12,6 +12,18 @@
     gap: 20px;
 }
 
+.topleft
+{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menuButton
+{
+    display: none;
+}
+
 .top h1
 {
     color: var(--text-primary);
@@ -94,4 +106,92 @@
 {
     width: 20px;
     height: 20px;
+}
+
+/* Responsive para teléfonos */
+@media (max-width: 768px) {
+    .top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .topleft {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .menuButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: var(--button-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        cursor: pointer;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        padding: 0;
+    }
+
+    .menuButton:hover {
+        background: var(--button-hover-bg);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .menuButton:active {
+        transform: scale(0.95);
+    }
+
+    .menuButton svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .top h1 {
+        font-size: 24px;
+    }
+
+    .topright {
+        width: 100%;
+        flex-basis: auto;
+        justify-content: space-between;
+    }
+
+    .topbell,
+    .themeToggle {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menuButton {
+        width: 40px;
+        height: 40px;
+    }
+
+    .menuButton svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .top h1 {
+        font-size: 20px;
+    }
+
+    .topbell,
+    .themeToggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .topright {
+        gap: 8px;
+    }
 }

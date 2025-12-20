@@ -3,14 +3,23 @@
 import styles from "./topbar.module.css";
 import { usePathname } from "next/navigation";
 import { useTheme } from '@/context/ThemeContext';
-import { Bell, Moon, Sun } from '@/app/components/svg';
+import { Bell, Moon, Sun, PanelOpen } from '@/app/components/svg';
 import UserDropdown from '@/app/components/dashboard/userdropdown/UserDropdown';
+import { useState } from 'react';
+import NotificationPanel from '@/app/components/shared/notificationpanel/NotificationPanel';
+import { useNotifications } from '@/context/NotificationContext';
 
-const Topbar = () =>
+interface TopbarProps {
+    onMenuClick?: () => void;
+}
+
+const Topbar = ({ onMenuClick }: TopbarProps) =>
 {
     const { theme, toggleTheme } = useTheme();
+    const { unreadCount } = useNotifications();
     const pathname = usePathname();
     let text: string;
+    const [isPanelOpen, setIsPanelOpen] =  useState(false);
 
     switch (pathname.split('/')[2])
     {
@@ -63,17 +72,38 @@ const Topbar = () =>
             text = 'Configuración';
             break;
         default:
-            text = 'Dashboard'; // Valor por defecto si no coincide ninguna ruta
+            text = 'Dashboard';
             break;
     }
 
+    const togglePanel = () => setIsPanelOpen(!isPanelOpen);
+
+    const closePanel = () => setIsPanelOpen(false);
+
     return (
         <div className={styles.top}>
-            <h1>{text}</h1>
+            <div className={styles.topleft}>
+                <button
+                    className={styles.menuButton}
+                    onClick={onMenuClick}
+                    aria-label="Abrir menú"
+                >
+                    <PanelOpen />
+                </button>
+                <h1>{text}</h1>
+            </div>
             <div className={styles.topright}>
-                <div className={styles.topbell}>
+                <div
+                    className={styles.topbell}
+                    onClick={togglePanel}
+                    style={{ cursor: 'pointer' }}
+                >
                     <Bell />
-                    <span className={styles.notificationCount}>3</span>
+                    {unreadCount > 0 && (
+                        <span className={styles.notificationCount}>
+                              {unreadCount > 99 ? '99+' : unreadCount}
+                          </span>
+                    )}
                 </div>
                 <button
                     onClick={toggleTheme}
@@ -84,6 +114,8 @@ const Topbar = () =>
                 </button>
 
                 <UserDropdown />
+
+                <NotificationPanel isOpen={isPanelOpen} onClose={closePanel} />
             </div>
         </div>
     );

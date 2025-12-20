@@ -2,7 +2,7 @@ import {
     ActionType,
     ExpenseCategory,
     LogContext,
-    LogLevel, RequestStatus, RequestType,
+    LogLevel, NotificationType, RequestStatus, RequestType,
     ReturnReason,
     Role,
     StatusOrder,
@@ -158,7 +158,7 @@ export interface DailyExpense extends BaseEntityWithNumId {
     // Relations
     store?: Store;
     user?: User;
-    cashClosingExpenses?: CashClosingExpense[]; // ✅ AGREGAR ESTA LÍNEA
+    cashClosingExpenses?: CashClosingExpense[];
 }
 
 export interface Product extends BaseEntityWithNumId {
@@ -452,6 +452,22 @@ export interface Delivery extends BaseEntityWithNumId {
     // Relations
     client?: Client;
     order?: Order;
+}
+
+export interface Notification {
+    id: string;
+    numId: number;
+    type: NotificationType;
+    title: string;
+    message: string;
+    relatedId?: string;
+    relatedType?: string;
+    recipientUserId?: string;
+    targetRoles: Role[];
+    targetStoreId?: string;
+    isRead: boolean;
+    readAt?: Date;
+    createdAt: Date;
 }
 
 export interface Log extends BaseEntityWithNumId

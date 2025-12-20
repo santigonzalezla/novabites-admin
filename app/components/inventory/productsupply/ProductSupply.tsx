@@ -274,7 +274,7 @@ const ProductSupply = () =>
                                     placeholder={selectedSupply ? "" : "Buscar insumos..."}
                                     value={selectedSupply ? "" : searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    onFocus={() => !selectedSupply && setIsDropdownOpen(true)} // ✅ Solo abrir si no hay selección
+                                    onFocus={() => !selectedSupply && setIsDropdownOpen(true)} 
                                     onBlur={() => {
                                         setTimeout(() => setIsDropdownOpen(false), 150);
                                     }}
@@ -282,7 +282,7 @@ const ProductSupply = () =>
                                     readOnly={!!selectedSupply}
                                 />
 
-                                {/* ✅ Pill que aparece cuando hay selección */}
+                                {/*  Pill que aparece cuando hay selección */}
                                 {selectedSupply && selectedSupplyData && (
                                     <div className={styles.supplyPill}>
                                         <span className={styles.supplyPillText}>{selectedSupplyData.numId} - {selectedSupplyData.name}</span>
@@ -291,7 +291,7 @@ const ProductSupply = () =>
                                             className={styles.pillClearButton}
                                             onMouseDown={(e) => {e.preventDefault()}}
                                             onClick={(e) => {
-                                                e.stopPropagation(); // ✅ Evitar propagación
+                                                e.stopPropagation(); //  Evitar propagación
                                                 clearSelection();
                                             }}
                                             title="Eliminar selección"
@@ -304,7 +304,7 @@ const ProductSupply = () =>
                                 <Search />
                             </div>
 
-                            {/* ✅ Solo mostrar dropdown si no hay selección */}
+                            {/*  Solo mostrar dropdown si no hay selección */}
                             {isDropdownOpen && !selectedSupply && (
                                 <ul className={styles.dropdownList}>
                                     {filteredSupplies ? (

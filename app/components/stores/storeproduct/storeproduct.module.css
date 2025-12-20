@@ -162,17 +162,16 @@
     font-size: 14px;
     position: relative;
     height: 40px;
-    transition: all 0.3s ease; /* ✅ Transición suave */
+    transition: all 0.3s ease;
 }
 
-/* ✅ Input cuando tiene contenido seleccionado - mantener estilo normal */
 .selectInput input.hasSelection
 {
     padding-left: 10px; /* Reducir padding para dar espacio al pill */
     color: transparent; /* Ocultar el texto del input */
 }
 
-/* ✅ Contenedor del pill dentro del input */
+/*  Contenedor del pill dentro del input */
 .supplyPill
 {
     position: absolute;
@@ -193,7 +192,7 @@
     z-index: 2;
 }
 
-/* ✅ Texto del pill que puede truncarse */
+/*  Texto del pill que puede truncarse */
 .supplyPillText
 {
     white-space: nowrap;
@@ -203,7 +202,7 @@
     font-size: 12px;
 }
 
-/* ✅ Botón de eliminar dentro del pill */
+/*  Botón de eliminar dentro del pill */
 .pillClearButton
 {
     background: rgba(255, 255, 255, 0.2);
@@ -228,7 +227,7 @@
     transform: scale(1.1);
 }
 
-/* ✅ Variante pill más sutil */
+/*  Variante pill más sutil */
 .supplyPillAlt
 {
     position: absolute;

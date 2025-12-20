@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { AuthProvider } from '@/context/AuthContext';
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
 import { satoshi } from '@/app/fonts/satoshi';
+import { NotificationProvider } from '@/context/NotificationContext';
 
 export const metadata: Metadata = {
     title: {
@@ -15,14 +16,15 @@ export const metadata: Metadata = {
     metadataBase: new URL(SERVER_URL),
 };
 
-export default function RootLayout({children}: Readonly<{ children: ReactNode;}>)
-{
+export default function RootLayout({ children }: Readonly<{ children: ReactNode; }>) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${satoshi.variable} antialiased`}>
+                <Toaster />
                 <AuthProvider>
-                    <Toaster />
-                    {children}
+                    <NotificationProvider>
+                        {children}
+                    </NotificationProvider>
                 </AuthProvider>
             </body>
         </html>

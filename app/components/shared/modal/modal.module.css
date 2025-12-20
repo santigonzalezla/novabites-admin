@@ -19,3 +19,21 @@
     align-items: center;
     justify-content: center;
 }
+
+/* Responsive para teléfonos */
+@media (max-width: 768px) {
+    .modalOverlay {
+        padding: 20px;
+    }
+
+    .modalContent {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalOverlay {
+        padding: 10px;
+    }
+}

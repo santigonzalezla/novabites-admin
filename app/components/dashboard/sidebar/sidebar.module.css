@@ -203,24 +203,84 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Overlay móvil */
+.mobileOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Botón de cerrar en móvil */
+.mobileCloseButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--sidebar-text);
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobileCloseButton:hover {
+    background: var(--sidebar-hover);
+    transform: scale(1.1);
+}
+
+.mobileCloseButton svg {
+    width: 20px;
+    height: 20px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        max-height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 999;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobileClosed {
+        transform: translateX(-100%);
+    }
+
+    .mobileOpen {
+        transform: translateX(0);
     }
 
     .collapsed {
-        width: 100%;
+        width: 280px;
     }
 
-    .collapseButton {
+    .logo {
+        padding: 20px;
+        min-height: 70px;
         position: relative;
-        bottom: auto;
-        right: auto;
-        margin: 16px auto;
     }
 }
 

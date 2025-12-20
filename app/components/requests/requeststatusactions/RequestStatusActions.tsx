@@ -160,7 +160,7 @@ const RequestStatusActions = ({ currentStatus, requestId, onStatusUpdate }: Requ
                                 {selectedAction.description}
                             </p>
 
-                            {/* ✅ Advertencia adicional según la acción */}
+                            {/*  Advertencia adicional según la acción */}
                             {selectedAction.variant === 'reject' && (
                                 <div className={styles.warningBox}>
                                     <span className={styles.warningIcon}>⚠️</span>
