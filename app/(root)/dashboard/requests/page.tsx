@@ -11,6 +11,8 @@ import { useFetch } from '@/hooks/useFetch';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
 import withAuth from '@/hoc/withAuth';
 import { Role } from '@/interfaces/enums';
+import { useAuth } from '@/context/AuthContext';
+import RequestCardList from '@/app/components/requests/requestcard/RequestCardList';
 
 interface RequestConfig {
     columns: any[];
@@ -28,6 +30,7 @@ const Requests = () =>
     const [filteredData, setFilteredData] = useState<StoreRequest[]>([]);
     const [config, setConfig] = useState<RequestConfig>({columns: []});
     const [currentFilters, setCurrentFilters] = useState<Record<string, string>>({});
+    const { user } = useAuth();
     const { isLoading, error, execute } = useFetch<StoreRequest[]>('/api/store-request', {
         immediate: false
     });
@@ -74,8 +77,21 @@ const Requests = () =>
         setFilteredData(requestsData); // Mostrar todos los datos sin filtrar
     };
 
+    const refreshRequests = async () =>
+    {
+        const requests = await execute();
+        if (requests)
+        {
+            setRequestsData(requests);
+            const filtered = filterItems(requests, currentFilters);
+            setFilteredData(filtered);
+        }
+    };
+
+    const isCourier = user?.role === Role.COURIER;
+
     return (
-        <div className={styles.orders}>
+        <div className={`${styles.orders} ${isCourier ? styles.courier : ''}`}>
             <div className={styles.ordersTop}>
                 <GenericFilter
                     filterConfig={filterConfig}
@@ -91,10 +107,17 @@ const Requests = () =>
                     />
                 </div>
             </div>
-            <GenericDataTable
-                data={filteredData}
-                config={config}
-            />
+            {isCourier ? (
+                <RequestCardList
+                    requests={filteredData}
+                    onRefresh={refreshRequests}
+                />
+            ) : (
+                <GenericDataTable
+                    data={filteredData}
+                    config={config}
+                />
+            )}
         </div>
     );
 }

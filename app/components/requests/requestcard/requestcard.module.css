@@ -1,0 +1,127 @@
+.cardList{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.card{
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cardHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.idBlock{
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.idLabel{
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.idValue{
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.typeBadge{
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--button-hover-bg);
+    color: var(--text-secondary);
+}
+
+.cardBody{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.row{
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.fieldLabel{
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.fieldValue{
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.cardFooter{
+    margin-top: 6px;
+}
+
+.emptyState{
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 24px 8px;
+}
+
+/* Details toggle */
+.detailsSection{
+    margin-top: 8px;
+}
+
+.detailsToggle{
+    width: 100%;
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.detailsPanel{
+    margin-top: 8px;
+    border: 1px dashed var(--border-color, #ddd);
+    border-radius: 8px;
+    padding: 8px;
+    display: grid;
+    gap: 6px;
+}
+
+.detailRow{
+    display: flex;
+    justify-content: space-between;
+}
+
+.detailName{
+    color: var(--text-primary);
+}
+
+.detailQty{
+    color: var(--text-secondary);
+}
+
+/* Mobile-first tweaks for courier */
+@media (max-width: 768px){
+    .card{
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .row{
+        flex-direction: row;
+    }
+}
