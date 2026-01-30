@@ -2,7 +2,6 @@
 
 import styles from './page.module.css';
 import mockData from "@/app/components/shared/data/mockData.json";
-import { Create, Download, Upload } from '@/app/components/svg';
 import { useEffect, useState } from 'react';
 import GenericFilter, { filterItems } from '@/app/components/shared/genericfilter/GenericFilter';
 import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDataTable';
@@ -79,11 +78,10 @@ const Requests = () =>
         setFilteredData(filtered);
     };
 
-    // Función para resetear filtros
     const handleResetFilters = () =>
     {
         setCurrentFilters({});
-        setFilteredData(requestsData); // Mostrar todos los datos sin filtrar
+        setFilteredData(requestsData);
     };
 
     const refreshRequests = async () =>
