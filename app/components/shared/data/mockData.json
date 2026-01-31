@@ -54,7 +54,7 @@
     },
     "inputConfig": {
       "fieldTypes": {
-        "name": "text",
+        "productName": "text",
         "categoryId": "select",
         "centralStock": "number",
         "basePrice": "text",
@@ -68,7 +68,7 @@
         ]
       },
       "labelTranslations": {
-        "name": "Nombre del Producto",
+        "productName": "Nombre del Producto",
         "categoryId": "Categoría",
         "centralStock": "Cantidad en Stock",
         "basePrice": "Precio Base",
@@ -76,7 +76,7 @@
         "available": "Estado"
       },
       "placeholderTranslations": {
-        "name": "Ingrese nombre del producto",
+        "productName": "Ingrese nombre del producto",
         "categoryId": "Seleccione categoría",
         "centralStock": "Ingrese stock central",
         "basePrice": "Ingrese precio base",
@@ -537,6 +537,8 @@
         "name": "text",
         "phone": "text",
         "address": "text",
+        "legalRepresentative": "text",
+        "idLegalRepresentative": "text",
         "type": "select",
         "managerId": "select",
         "available": "select"
@@ -549,6 +551,8 @@
         "name": "Nombre de la Tienda",
         "phone": "Teléfono",
         "address": "Dirección",
+        "legalRepresentative": "Representante Legal",
+        "idLegalRepresentative": "ID Representante Legal",
         "type": "Tipo de Tienda",
         "managerId": "ID del Gerente",
         "available": "Estado"
@@ -558,6 +562,8 @@
         "name": "Ingrese nombre de la tienda",
         "phone": "Ingrese teléfono",
         "address": "Ingrese dirección",
+        "legalRepresentative": "Ingrese representante legal",
+        "idLegalRepresentative": "Ingrese ID del representante legal",
         "type": "Seleccione tipo de tienda",
         "managerId": "Seleccione gerente",
         "available": "Seleccione disponibilidad"

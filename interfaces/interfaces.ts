@@ -94,6 +94,8 @@ export interface Store extends BaseEntityWithNumId {
     name: string;
     phone?: string;
     address?: string;
+    legalRepresentative?: string;
+    idLegalRepresentative?: string;
     type: TypeStore;
     imageUrl: string;
     managerId?: string;

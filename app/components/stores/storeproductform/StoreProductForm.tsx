@@ -40,6 +40,7 @@ const StoreProductForm = ({ storeProduct, handlePatchStoreProduct, onClose }: St
             if (formData.currentStock !== storeProduct.currentStock) updatedData.currentStock = formData.currentStock;
             if (formData.minStock !== storeProduct.minStock) updatedData.minStock = formData.minStock;
             if (formData.available !== storeProduct.available) updatedData.available = formData.available;
+            if (formData.price !== storeProduct.price) updatedData.price = formData.price;
 
             if (Object.keys(updatedData).length > 0)
             {
@@ -122,7 +123,7 @@ const StoreProductForm = ({ storeProduct, handlePatchStoreProduct, onClose }: St
                             id="price"
                             name="price"
                             value={formData.price}
-                            disabled
+                            onChange={(e) => handleChange('price', e.target.value)}
                             className={styles.formControl}
                         />
                     </div>

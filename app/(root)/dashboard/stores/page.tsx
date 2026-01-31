@@ -106,6 +106,7 @@ const Stores = () =>
 
         if (formData.phone) formDataToSend.append('phone', formData.phone);
         if (formData.address) formDataToSend.append('address', formData.address);
+        if (formData.legalRepresentative) formDataToSend.append('legalRepresentative', formData.legalRepresentative);
         if (formData.managerId) formDataToSend.append('managerId', formData.managerId);
 
         if (file) formDataToSend.append('image', file);
@@ -150,6 +151,8 @@ const Stores = () =>
         { key: 'name'},
         { key: 'phone' },
         { key: 'address' },
+        { key: 'legalRepresentative' },
+        { key: 'idLegalRepresentative' },
         { key: 'type' },
         { key: 'managerId' },
         { key: 'available' }

@@ -40,8 +40,6 @@ const StoreProductTable = ({ data, config, className, handleDeleteStoreProduct, 
     const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
-    console.log(currentItems);
-
     const statusArr = [
         "available", "unavailable", "completed", "processing", "pending",
         "rejected", "cancelled", "canceled", "on hold", "active",
@@ -172,7 +170,6 @@ const StoreProductTable = ({ data, config, className, handleDeleteStoreProduct, 
 
     const handleEdit = (item: StoreProduct) =>
     {
-        console.log('Editing store product:', item);
         if (setIsModalOpen) setIsModalOpen(true);
         if (setEditingStoreProduct) setEditingStoreProduct(item);
         else alert("No se ha proporcionado una función de edición");
@@ -180,14 +177,11 @@ const StoreProductTable = ({ data, config, className, handleDeleteStoreProduct, 
 
     const handleDelete = (storeProductId: string) =>
     {
-        console.log(storeProductId);
-
         if (handleDeleteStoreProduct)
         {
             const confirmed = window.confirm("¿Estás seguro de eliminar este producto de la tienda?");
             if (confirmed)
             {
-
                 handleDeleteStoreProduct(storeProductId);
             }
         }

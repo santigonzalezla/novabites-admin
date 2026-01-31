@@ -211,7 +211,12 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         try
         {
             const date = new Date(dateString);
-            const formattedDate = date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric'});
+            const formattedDate = date.toLocaleString('es-CO', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                timeZone: 'America/Bogota'
+            });
 
             return <span className={styles.dateValue}>{formattedDate}</span>;
         }

@@ -308,6 +308,32 @@ const StoreContent = ({ setData }: StoreContentProps) =>
                                         ))}
                                     </select>
                                 </div>
+                                <div className={styles.detailLabel}>
+                                    <div>Representante Legal</div>
+                                    <input
+                                        type="text"
+                                        name="legalRepresentative"
+                                        id="legalRepresentative"
+                                        placeholder="Legal Representative"
+                                        value={formData?.legalRepresentative || ''}
+                                        onChange={handleChange}
+                                        disabled={isDisabled}
+                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                    />
+                                </div>
+                                <div className={styles.detailLabel}>
+                                    <div>ID Representante Legal</div>
+                                    <input
+                                        type="text"
+                                        name="idLegalRepresentative"
+                                        id="idLegalRepresentative"
+                                        placeholder="ID Legal Representative"
+                                        value={formData?.idLegalRepresentative || ''}
+                                        onChange={handleChange}
+                                        disabled={isDisabled}
+                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                    />
+                                </div>
                             </div>
                         </div>
 

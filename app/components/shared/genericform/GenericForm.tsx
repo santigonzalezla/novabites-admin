@@ -101,6 +101,8 @@ const GenericForm = ({  hasImage, type, columns, onSubmit, onClose, inputConfig,
                 return basepriceNum < 0 ? '0' : basepriceValue;
             case 'name':
                 return value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+            case 'productName':
+                return value.replace(/[^a-zA-ZÀ-ÿ0-9\s]/g, '');
             case 'docId':
                 return value.replace(/[^0-9-]/g, '');
             case 'email':

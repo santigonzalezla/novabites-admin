@@ -149,7 +149,7 @@ const Inventory = () =>
     {
         const formDataToSend = new FormData();
 
-        formDataToSend.append('name', formData.name);
+        formDataToSend.append('name', formData.productName);
         formDataToSend.append('basePrice', formData.basePrice);
         formDataToSend.append('available', formData.available === 'ACTIVE' ? 'true' : 'false');
 
@@ -317,7 +317,7 @@ const Inventory = () =>
     };
 
     const columns = [
-        { key: 'name'},
+        { key: 'productName'},
         { key: 'categoryId'},
         { key: 'centralStock'},
         { key: 'basePrice'},
