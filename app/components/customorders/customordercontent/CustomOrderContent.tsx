@@ -149,6 +149,14 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
     {
         if (!defaultData) return false;
 
+        if (fieldPath === 'deliveryDate')
+        {
+            const originalDate = defaultData.deliveryDate
+                ? new Date(defaultData.deliveryDate).toISOString().split('T')[0]
+                : '';
+            return originalDate !== newValue;
+        }
+
         return defaultData[fieldPath as keyof CustomOrder] !== newValue;
     }
 
@@ -262,6 +270,22 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
                                         value={formData?.user?.name || ''}
                                         onChange={handleChange}
                                         disabled
+                                        className={isDisabled ? styles.disabled : styles.detailValue}
+                                    />
+                                </div>
+
+                                <div className={styles.detailLabel}>
+                                    <span>
+                                        Fecha de Entrega:
+                                    </span>
+                                    <input
+                                        id="deliveryDate"
+                                        type="date"
+                                        name="deliveryDate"
+                                        placeholder="Fecha de Entrega"
+                                        value={formData?.deliveryDate ? new Date(formData.deliveryDate).toISOString().split('T')[0] : ''}
+                                        onChange={handleChange}
+                                        disabled={isDisabled}
                                         className={isDisabled ? styles.disabled : styles.detailValue}
                                     />
                                 </div>

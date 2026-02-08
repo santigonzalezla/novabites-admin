@@ -23,7 +23,7 @@
         {"key": "numId", "header": "CÓDIGO", "width": "8%"},
         {"key": "client.name", "header": "CLIENTE", "width": "20%"},
         {"key": "totalPrice", "header": "TOTAL", "width": "10%", "renderType": "currency"},
-        {"key": "createdAt", "header": "FECHA", "width": "15%", "renderType": "date"},
+        {"key": "deliveryDate", "header": "FECHA ENTREGA", "width": "15%", "renderType": "date"},
         {"key": "store.name", "header": "TIENDA", "width": "15%"},
         {"key": "user.name", "header": "USUARIO", "width": "20%"},
         {"key": "status", "header": "ESTADO", "width": "15%"}
