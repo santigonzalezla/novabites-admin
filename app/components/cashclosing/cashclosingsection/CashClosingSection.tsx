@@ -14,7 +14,7 @@ import CashClosingExpenses from '@/app/components/cashclosing/cashclosingexpense
 
 const tabs = [
     "Resumen",
-    "Productos",
+    "Órdenes",
     "Gastos",
     "Historial"
 ]
@@ -66,7 +66,7 @@ const CashClosingSection = () =>
 
             {active === "Resumen" ? (
                 <CashClosingContent setId={setId} />
-            ) : active === "Productos" ? (
+            ) : active === "Órdenes" ? (
                 <CashClosingProduct />
             ) : active === "Gastos" ? (
                 <CashClosingExpenses />

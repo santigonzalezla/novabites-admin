@@ -1,27 +1,33 @@
 'use client';
 
 import styles from './cashclosingproducts.module.css';
-import { useEffect, useMemo, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { CashClosing, CategoryProduct, DetailOrder } from '@/interfaces/interfaces';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { CashClosing } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
+import { formatTimeLocal } from '@/lib/dateUtils';
 
-interface FlatProduct {
-    orderNumId: number;
-    productName: string;
-    categoryName: string;
-    quantity: number;
-    price: number | string;
-}
+const statusLabels: Record<string, string> = {
+    PENDING: 'Pendiente',
+    COMPLETED: 'Completada',
+    CANCELLED: 'Cancelada',
+    IN_PROGRESS: 'En progreso',
+};
 
-const CashClosingProducts = () =>
+const statusClass: Record<string, string> = {
+    PENDING: styles.statusPending,
+    COMPLETED: styles.statusCompleted,
+    CANCELLED: styles.statusCancelled,
+    IN_PROGRESS: styles.statusInProgress,
+};
+
+const CashClosingOrders = () =>
 {
     const pathname = usePathname();
+    const router = useRouter();
     const cashClosingId = pathname.split('/').pop();
     const [cashClosing, setCashClosing] = useState<CashClosing>();
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
     const { data, error } = useFetch<CashClosing>(`/api/cash-closing/${cashClosingId}`);
-    const { data: categoryData } = useFetch<CategoryProduct[]>(`/api/category-product`);
 
     useEffect(() =>
     {
@@ -31,122 +37,60 @@ const CashClosingProducts = () =>
     const formatPrice = (price: number | string) =>
     {
         const numPrice = typeof price === 'string' ? parseFloat(price) : price;
-        return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(numPrice);
+        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(numPrice);
     };
 
-    // Aplanar todos los productos de todas las órdenes del cierre
-    const flatProducts: FlatProduct[] = useMemo(() =>
-    {
-        if (!cashClosing?.orders) return [];
+    const formatTime = (date: Date | string) => formatTimeLocal(date);
 
-        const result: FlatProduct[] = [];
+    if (error) return <div className={styles.error}>Error al cargar las órdenes</div>;
+    if (!cashClosing) return <div className={styles.loading}>Cargando órdenes...</div>;
 
-        for (const orderRelation of cashClosing.orders)
-        {
-            const order = orderRelation.order;
-            if (!order?.details) continue;
-
-            for (const detail of order.details as DetailOrder[])
-            {
-                result.push({
-                    orderNumId: order.numId,
-                    productName: detail.product?.name ?? detail.productId ?? 'N/A',
-                    categoryName: detail.product?.category?.name ?? '—',
-                    quantity: detail.quantity,
-                    price: detail.price,
-                });
-            }
-        }
-
-        return result;
-    }, [cashClosing]);
-
-    const filteredProducts = useMemo(() =>
-    {
-        if (!selectedCategory) return flatProducts;
-        return flatProducts.filter(p => p.categoryName === selectedCategory);
-    }, [flatProducts, selectedCategory]);
-
-    // Categorías disponibles en los productos precargados
-    const availableCategories = useMemo(() =>
-    {
-        const names = flatProducts.map(p => p.categoryName).filter(n => n !== '—');
-        return [...new Set(names)];
-    }, [flatProducts]);
-
-    // Unión: categorías de los productos precargados + todas las del catálogo
-    const allCategories = useMemo(() =>
-    {
-        const catalogNames = categoryData
-            ? (Array.isArray(categoryData) ? categoryData : Object.values(categoryData) as CategoryProduct[]).map(c => c.name)
-            : [];
-        return [...new Set([...availableCategories, ...catalogNames])].sort();
-    }, [availableCategories, categoryData]);
-
-    if (error) return <div className={styles.error}>Error al cargar los productos</div>;
-    if (!cashClosing) return <div className={styles.loading}>Cargando productos...</div>;
+    const orders = cashClosing.orders ?? [];
 
     return (
-        <div className={styles.products}>
+        <div className={styles.orders}>
             <div className={styles.header}>
-                <div>
-                    <h2>Productos del Cierre</h2>
-                    <p>Total de líneas: {filteredProducts.length}</p>
-                </div>
-
-                {/* Selector de categoría */}
-                <div className={styles.categoryFilter}>
-                    <label htmlFor="categorySelect">Categoría:</label>
-                    <select
-                        id="categorySelect"
-                        value={selectedCategory}
-                        onChange={e => setSelectedCategory(e.target.value)}
-                        className={styles.categorySelect}
-                    >
-                        <option value="">Todas las categorías</option>
-                        {allCategories.map(name => (
-                            <option key={name} value={name}>{name}</option>
-                        ))}
-                    </select>
-                </div>
+                <h2>Órdenes del Cierre</h2>
+                <p>{orders.length} {orders.length === 1 ? 'orden' : 'órdenes'}</p>
             </div>
 
-            {filteredProducts.length === 0 ? (
-                <div className={styles.empty}>
-                    {selectedCategory
-                        ? `No hay productos de la categoría "${selectedCategory}" en este cierre`
-                        : 'No hay productos asociados a este cierre'}
-                </div>
+            {orders.length === 0 ? (
+                <div className={styles.empty}>No hay órdenes asociadas a este cierre</div>
             ) : (
-                <div className={styles.tableWrapper}>
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Orden #</th>
-                                <th>Producto</th>
-                                <th>Categoría</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredProducts.map((row, idx) => (
-                                <tr key={idx}>
-                                    <td>#{row.orderNumId}</td>
-                                    <td>{row.productName}</td>
-                                    <td>
-                                        <span className={styles.categoryBadge}>{row.categoryName}</span>
-                                    </td>
-                                    <td>{row.quantity}</td>
-                                    <td>{formatPrice(row.price)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                <div className={styles.cardList}>
+                    {orders.map((rel) =>
+                    {
+                        const order = rel.order;
+                        if (!order) return null;
+                        const itemCount = order.details?.length ?? 0;
+
+                        return (
+                            <div
+                                key={rel.id}
+                                className={styles.card}
+                                onClick={() => router.push(`/dashboard/orders/${order.id}`)}
+                            >
+                                <div className={styles.cardLeft}>
+                                    <span className={styles.orderNum}>#{order.numId}</span>
+                                    <span className={styles.orderTime}>{formatTime(order.createdAt)}</span>
+                                </div>
+                                <div className={styles.cardMiddle}>
+                                    <span className={`${styles.statusBadge} ${statusClass[order.status] ?? ''}`}>
+                                        {statusLabels[order.status] ?? order.status}
+                                    </span>
+                                    <span className={styles.items}>{itemCount} {itemCount === 1 ? 'producto' : 'productos'}</span>
+                                </div>
+                                <div className={styles.cardRight}>
+                                    <span className={styles.total}>{formatPrice(order.totalPrice)}</span>
+                                    <span className={styles.payment}>{order.paymentMethod}</span>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>
     );
 };
 
-export default CashClosingProducts;
+export default CashClosingOrders;

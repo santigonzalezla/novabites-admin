@@ -2,11 +2,12 @@ export const APP_TIMEZONE = 'America/Bogota';
 
 export const getTodayLocal = (): string =>
 {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return new Intl.DateTimeFormat("en-CA", {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: APP_TIMEZONE
+    }).format(new Date());
 };
 
 export const isToday = (dateString: string): boolean =>
@@ -36,16 +37,36 @@ export const localToUTC = (localDate: Date | string): string =>
 
 export const getStartOfDayUTC = (dateString: string): string =>
 {
-    const localDate = parseLocalDate(dateString);
-    localDate.setHours(0, 0, 0, 0);
-    return localDate.toISOString();
+    // dateString is YYYY-MM-DD in Colombia timezone (UTC-5)
+    // Midnight Colombia = 05:00 UTC
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(Date.UTC(year, month - 1, day, 5, 0, 0, 0)).toISOString();
 };
 
 export const getEndOfDayUTC = (dateString: string): string =>
 {
-    const localDate = parseLocalDate(dateString);
-    localDate.setHours(23, 59, 59, 999);
-    return localDate.toISOString();
+    // 23:59:59.999 Colombia (UTC-5) = next day 04:59:59.999 UTC
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(Date.UTC(year, month - 1, day + 1, 4, 59, 59, 999)).toISOString();
+};
+
+export const formatDateInput = (date: string | Date): string =>
+{
+    try
+    {
+        const dateObj = typeof date === 'string' ? new Date(date) : date;
+        if (isNaN(dateObj.getTime())) return '';
+        return new Intl.DateTimeFormat("en-CA", {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: APP_TIMEZONE
+        }).format(dateObj);
+    }
+    catch
+    {
+        return '';
+    }
 };
 
 export const formatDateLocal = (date: string | Date): string =>

@@ -8,6 +8,7 @@ import { CustomOrder } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { StatusOrder } from '@/interfaces/enums';
 import { formatEnumLabel } from '@/lib/enumUtils';
+import { formatDateShort, formatDateInput } from '@/lib/dateUtils';
 import { toast } from 'sonner';
 
 interface CustomOrderContentProps {
@@ -152,7 +153,7 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
         if (fieldPath === 'deliveryDate')
         {
             const originalDate = defaultData.deliveryDate
-                ? new Date(defaultData.deliveryDate).toISOString().split('T')[0]
+                ? formatDateInput(defaultData.deliveryDate)
                 : '';
             return originalDate !== newValue;
         }
@@ -283,7 +284,7 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
                                         type="date"
                                         name="deliveryDate"
                                         placeholder="Fecha de Entrega"
-                                        value={formData?.deliveryDate ? new Date(formData.deliveryDate).toISOString().split('T')[0] : ''}
+                                        value={formData?.deliveryDate ? formatDateInput(formData.deliveryDate) : ''}
                                         onChange={handleChange}
                                         disabled={isDisabled}
                                         className={isDisabled ? styles.disabled : styles.detailValue}
@@ -404,13 +405,13 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Creation Date</div>
                             <div className={styles.stockNumber}>
-                                {formData?.createdAt ? new Date(formData.createdAt).toLocaleDateString() : 'N/A'}
+                                {formData?.createdAt ? formatDateShort(formData.createdAt) : 'N/A'}
                             </div>
                         </div>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Update Date</div>
                             <div className={styles.stockNumber}>
-                                {formData?.updatedAt ? new Date(formData.updatedAt).toLocaleDateString() : 'N/A'}
+                                {formData?.updatedAt ? formatDateShort(formData.updatedAt) : 'N/A'}
                             </div>
                         </div>
                     </div>

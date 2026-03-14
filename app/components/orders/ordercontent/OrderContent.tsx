@@ -8,6 +8,7 @@ import { Order } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { StatusOrder } from '@/interfaces/enums';
 import { formatEnumLabel } from '@/lib/enumUtils';
+import { formatDateShort } from '@/lib/dateUtils';
 
 interface OrderContentProps {
     setId: (id: string) => void;
@@ -269,19 +270,19 @@ const OrderContent = ({ setId }: OrderContentProps) =>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Creation Date</div>
                             <div className={styles.stockNumber}>
-                                {formData?.createdAt ? new Date(formData.createdAt).toLocaleDateString() : 'N/A'}
+                                {formData?.createdAt ? formatDateShort(formData.createdAt) : 'N/A'}
                             </div>
                         </div>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Update Date</div>
                             <div className={styles.stockNumber}>
-                                {formData?.updatedAt ? new Date(formData.updatedAt).toLocaleDateString() : 'N/A'}
+                                {formData?.updatedAt ? formatDateShort(formData.updatedAt) : 'N/A'}
                             </div>
                         </div>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Fecha de Creación</div>
                             <div className={styles.stockNumber}>
-                                {formData?.createdAt ? new Date(formData.createdAt).toLocaleDateString() : 'N/A'}
+                                {formData?.createdAt ? formatDateShort(formData.createdAt) : 'N/A'}
                             </div>
                         </div>
                     </div>

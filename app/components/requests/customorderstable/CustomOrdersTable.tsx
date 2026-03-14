@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CustomOrder } from '@/interfaces/interfaces';
 import styles from './customorderstable.module.css';
 import OrderDetailsModal from '../orderdetailsmodal/OrderDetailsModal';
+import { formatTimeLocal } from '@/lib/dateUtils';
 
 interface CustomOrdersTableProps {
     orders?: CustomOrder[];
@@ -42,12 +43,7 @@ const CustomOrdersTable = ({ orders = [] }: CustomOrdersTableProps) => {
         return statusMap[status] || status;
     };
 
-    const formatTime = (date: string) => {
-        return new Date(date).toLocaleTimeString('es-ES', { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
-    };
+    const formatTime = (date: string) => formatTimeLocal(date);
 
     return (
         <>

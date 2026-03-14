@@ -51,7 +51,7 @@ const OrderDetailsModal = ({ order, onClose }: OrderDetailsModalProps) =>
                             <div className={styles.infoItem}>
                                 <span className={styles.label}>Hora:</span>
                                 <span className={styles.value}>
-                                    {new Date(order.createdAt).toLocaleTimeString()}
+                                    {formatTimeLocal(order.createdAt)}
                                 </span>
                             </div>
                             <div className={styles.infoItem}>

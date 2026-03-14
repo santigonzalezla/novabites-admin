@@ -1,16 +1,17 @@
-.products {
+.orders {
     padding-top: 30px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
 }
 
 .header h2 {
@@ -22,83 +23,129 @@
 .header p {
     font-size: 0.875rem;
     color: var(--text-secondary);
-    margin-top: 2px;
 }
 
-/* ── Selector de categoría ── */
+/* ── Lista scrolleable ── */
 
-.categoryFilter {
+.cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.cardList::-webkit-scrollbar {
+    width: 4px;
+}
+
+.cardList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cardList::-webkit-scrollbar-thumb {
+    background: var(--border-primary, #e5e7eb);
+    border-radius: 4px;
+}
+
+/* ── Card de orden ── */
+
+.card {
     display: flex;
     align-items: center;
-    gap: 8px;
-}
-
-.categoryFilter label {
-    font-size: 14px;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-.categorySelect {
-    font-family: 'Satoshi', sans-serif;
-    font-size: 14px;
-    height: 35px;
-    padding: 0 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    outline: none;
-    background-color: var(--surface-primary, #fff);
-    color: var(--text-primary);
-    cursor: pointer;
-    min-width: 180px;
-}
-
-/* ── Tabla de productos ── */
-
-.tableWrapper {
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
     border: 1px solid var(--border-primary, #e5e7eb);
     border-radius: 10px;
-    overflow: hidden;
-    overflow-x: auto;
+    background: var(--surface-primary);
+    cursor: pointer;
+    transition: box-shadow 0.18s, border-color 0.18s;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+.card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.table thead tr {
-    background-color: #f3f4f6;
+.cardLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 70px;
 }
 
-.table th {
-    text-align: left;
-    padding: 10px 16px;
-    font-weight: 600;
-    font-size: 13px;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-.table td {
-    padding: 10px 16px;
-    border-top: 1px solid var(--border-primary, #e5e7eb);
+.orderNum {
+    font-size: 15px;
+    font-weight: 700;
     color: var(--text-primary);
 }
 
-.table tbody tr:hover {
-    background-color: #f9fafb;
+.orderTime {
+    font-size: 12px;
+    color: var(--text-secondary);
 }
 
-.categoryBadge {
+.cardMiddle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 1;
+}
+
+.statusBadge {
     display: inline-block;
     padding: 3px 10px;
     border-radius: 12px;
-    background-color: #ede9fe;
-    color: #6d28d9;
     font-size: 12px;
     font-weight: 500;
+}
+
+.statusCompleted {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.statusPending {
+    background-color: #fef9c3;
+    color: #ca8a04;
+}
+
+.statusCancelled {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.statusInProgress {
+    background-color: #ede9fe;
+    color: #6d28d9;
+}
+
+.items {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.cardRight {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.total {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.payment {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: capitalize;
 }
 
 /* ── Estados ── */
@@ -119,15 +166,4 @@
 
 .error {
     color: #dc3545;
-}
-
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .categorySelect {
-        min-width: 140px;
-    }
 }

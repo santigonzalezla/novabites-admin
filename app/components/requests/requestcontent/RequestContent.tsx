@@ -8,6 +8,7 @@ import { StoreRequest } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { RequestStatus } from '@/interfaces/enums';
 import { formatEnumLabel } from '@/lib/enumUtils';
+import { formatDateInput } from '@/lib/dateUtils';
 import { toast } from 'sonner';
 import RequestStatusActions from '@/app/components/requests/requeststatusactions/RequestStatusActions';
 
@@ -90,7 +91,7 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                         id="createdAt"
                                         type="text"
                                         name="createdAt"
-                                        value={formData?.createdAt ? new Date(formData.createdAt).toISOString().split('T')[0] : ''}
+                                        value={formData?.createdAt ? formatDateInput(formData.createdAt) : ''}
                                         disabled
                                         className={styles.disabled}
                                     />
@@ -102,7 +103,7 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                             id="approvedDate"
                                             type="text"
                                             name="approvedDate"
-                                            value={formData?.approvedDate ? new Date(formData.approvedDate).toISOString().split('T')[0] : 'Sin Aprobar'}
+                                            value={formData?.approvedDate ? formatDateInput(formData.approvedDate) : 'Sin Aprobar'}
                                             disabled
                                             className={styles.disabled}
                                         />
@@ -115,7 +116,7 @@ const RequestContent = ({ setId }: RequestContentProps) =>
                                             id="completedDate"
                                             type="text"
                                             name="completedDate"
-                                            value={formData?.completedDate ? new Date(formData.completedDate).toISOString().split('T')[0] : 'Sin Completar'}
+                                            value={formData?.completedDate ? formatDateInput(formData.completedDate) : 'Sin Completar'}
                                             disabled
                                             className={styles.disabled}
                                         />

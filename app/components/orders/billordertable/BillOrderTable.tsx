@@ -3,6 +3,7 @@
 import styles from './datatable.module.css';
 import { ReactNode, useState } from 'react';
 import { Edit, Trash } from '@/app/components/svg';
+import { formatDateShort } from '@/lib/dateUtils';
 import { usePathname, useRouter } from 'next/navigation';
 
 export type Column = {
@@ -138,16 +139,11 @@ const BillOrderTable = ({ data, config, className = "" }: DataTableProps) =>
     {
         try
         {
-            const date = new Date(dateString);
-
-            // Formato: DD/MM/YYYY HH:mm
-            const formattedDate = date.toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric'});
-
-            return <span className={styles.dateValue}>{formattedDate}</span>;
+            return <span className={styles.dateValue}>{formatDateShort(dateString)}</span>;
         }
         catch (error)
         {
-            return dateString; // Sí hay error, mostrar valor original
+            return dateString;
         }
     };
 
