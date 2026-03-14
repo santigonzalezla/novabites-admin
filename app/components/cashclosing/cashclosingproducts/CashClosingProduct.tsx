@@ -78,7 +78,7 @@ const CashClosingProducts = () =>
     const allCategories = useMemo(() =>
     {
         const catalogNames = categoryData
-            ? (Array.isArray(categoryData) ? categoryData : Object.values(categoryData)).map((c: CategoryProduct) => c.name)
+            ? (Array.isArray(categoryData) ? categoryData : Object.values(categoryData) as CategoryProduct[]).map(c => c.name)
             : [];
         return [...new Set([...availableCategories, ...catalogNames])].sort();
     }, [availableCategories, categoryData]);
