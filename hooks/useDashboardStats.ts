@@ -133,7 +133,9 @@ export const useDashboardStats = (storeId?: string) =>
             let totalEarnings = 0;
 
             totalEarnings += filteredOrders.reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
-            totalEarnings += filteredCustomOrders.reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
+            totalEarnings += filteredCustomOrders
+                .filter(order => order.status === 'COMPLETED')
+                .reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
 
             let filteredCashClosings = Array.isArray(cashClosingsData) ? cashClosingsData : [];
             if (storeId && filteredCashClosings.length > 0)
@@ -198,7 +200,9 @@ export const useDashboardStats = (storeId?: string) =>
             };
 
             filteredOrders.forEach((order: Order) => addIncomeByDate(order.createdAt, order.totalPrice));
-            filteredCustomOrders.forEach((order: CustomOrder) => addIncomeByDate(order.createdAt, order.totalPrice));
+            filteredCustomOrders
+                .filter(order => order.status === 'COMPLETED')
+                .forEach((order: CustomOrder) => addIncomeByDate(order.createdAt, order.totalPrice));
             filteredCashClosings.forEach((closing: CashClosing) => addExpenseByDate(closing.closingDate, closing.totalExpenses));
 
             const nextChartData: DashboardChartPoint[] = dayKeys.map((key) => ({

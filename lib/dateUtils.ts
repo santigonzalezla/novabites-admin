@@ -91,6 +91,30 @@ export const formatDateLocal = (date: string | Date): string =>
     }
 };
 
+// Use for date-only fields (e.g. closingDate) stored as UTC midnight.
+// Extracts the YYYY-MM-DD part and formats at noon UTC to avoid any timezone shift.
+export const formatDateOnly = (date: string | Date): string =>
+{
+    try
+    {
+        const str = typeof date === 'string' ? date : date.toISOString();
+        const datePart = str.slice(0, 10); // "YYYY-MM-DD"
+        const [year, month, day] = datePart.split('-').map(Number);
+        const noonUTC = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+        return new Intl.DateTimeFormat("es-CO", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: 'UTC'
+        }).format(noonUTC);
+    }
+    catch (error)
+    {
+        console.error('Error formatting date only:', error, date);
+        return 'Fecha inválida';
+    }
+};
+
 export const formatDateShort = (date: string | Date): string =>
 {
     try

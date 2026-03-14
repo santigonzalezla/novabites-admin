@@ -222,7 +222,29 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         }
         catch (error)
         {
-            return dateString; // Sí hay error, mostrar valor original
+            return dateString;
+        }
+    };
+
+    const renderDateOnlyValue = (dateString: string) =>
+    {
+        try
+        {
+            const datePart = dateString.slice(0, 10); // "YYYY-MM-DD"
+            const [year, month, day] = datePart.split('-').map(Number);
+            const noonUTC = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+            const formatted = new Intl.DateTimeFormat('es-CO', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                timeZone: 'UTC'
+            }).format(noonUTC);
+
+            return <span className={styles.dateValue}>{formatted}</span>;
+        }
+        catch (error)
+        {
+            return dateString;
         }
     };
 
@@ -238,6 +260,11 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         if (column.renderType === 'date' && typeof value === 'string')
         {
             return renderDateValue(value);
+        }
+
+        if (column.renderType === 'dateOnly' && typeof value === 'string')
+        {
+            return renderDateOnlyValue(value);
         }
 
         if (column.renderType === 'currency')

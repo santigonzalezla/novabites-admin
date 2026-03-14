@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { CashClosing } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
-import { formatDateLocal, formatDateShort, formatTimeLocal } from '@/lib/dateUtils';
+import { formatDateOnly, formatDateShort, formatTimeLocal } from '@/lib/dateUtils';
 import Link from 'next/link';
 
 interface RequestContentProps {
@@ -70,7 +70,7 @@ const CashClosingContent = ({ setId }: RequestContentProps) =>
                                     <span>Fecha de Cierre:</span>
                                     <input
                                         type="text"
-                                        value={formatDateLocal(cashClosing.closingDate)}
+                                        value={formatDateOnly(cashClosing.closingDate)}
                                         disabled
                                         className={styles.disabled}
                                     />
