@@ -180,7 +180,8 @@ const OrderBill = () =>
         return acc + Number.parseFloat(String(item.unitPrice)) * item.quantity
     }, 0);
 
-    const total = subtotal && (subtotal + (subtotal * 0.21));
+    const total = subtotal || 0;
+    const formatAmount = (value: number) => value.toLocaleString('es-CO');
 
     return (
         <div className={styles.billContent}>
@@ -227,15 +228,11 @@ const OrderBill = () =>
                 <div className={styles.billSummary}>
                     <div className={styles.summaryItem}>
                         <span>Subtotal:</span>
-                        <span>€{subtotal?.toFixed(2)}</span>
-                    </div>
-                    <div className={styles.summaryItem}>
-                        <span>IVA (21%):</span>
-                        <span>€{(subtotal && (subtotal * 0.21))?.toFixed(2)}</span>
+                        <span>${formatAmount(subtotal || 0)}</span>
                     </div>
                     <div className={`${styles.summaryItem} ${styles.totalItem}`}>
                         <span>Total:</span>
-                        <span>€{total?.toFixed(2)}</span>
+                        <span>${formatAmount(total)}</span>
                     </div>
                 </div>
             </div>

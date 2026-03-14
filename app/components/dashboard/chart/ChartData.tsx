@@ -1,78 +1,52 @@
 'use client';
 
 import styles from './chartdata.module.css';
-import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
-    {
-        name: '',
-        uv: 2000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Ene',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Feb',
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: 'Mar',
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: 'Abr',
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: 'May',
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
-    {
-        name: 'Jun',
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
+interface ChartPoint {
+    name: string;
+    ingresos: number;
+    gastos: number;
+}
+
+interface ChartDataProps {
+    data?: ChartPoint[];
+}
+
+const fallbackData = [
+    { name: 'Ene', ganancias: 4000, gastos: 2400 },
+    { name: 'Feb', ganancias: 3000, gastos: 1398 },
+    { name: 'Mar', ganancias: 2000, gastos: 9800 },
+    { name: 'Abr', ganancias: 2780, gastos: 3908 },
+    { name: 'May', ganancias: 1890, gastos: 4800 },
+    { name: 'Jun', ganancias: 3490, gastos: 4300 },
 ];
 
-const ChartData = () =>
+const ChartData = ({ data }: ChartDataProps) =>
 {
+    const chartData = data && data.length > 0
+        ? data
+        : fallbackData.map(item => ({ name: item.name, ingresos: item.ganancias, gastos: item.gastos }));
+
     return (
         <div className={styles.chart}>
             <div className={styles.charttop}>
-                <h3>Total Clientes</h3>
-                <h3>Total Ganancias</h3>
+                <h3>Ingresos vs Gastos (Mes Actual)</h3>
             </div>
             <ResponsiveContainer width={'100%'} height={'100%'}>
                 <LineChart
                     className={styles.linechart}
                     width={500}
                     height={200}
-                    data={data}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        bottom: 5,
-                    }}
+                    data={chartData}
+                    margin={{ top: 5, right: 30, bottom: 5 }}
                 >
                     <XAxis dataKey="name" fontSize="12px" />
                     <YAxis fontSize="12px" />
-                    <Tooltip wrapperStyle={{ fontSize: '12px' }} />
-                    <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                    <Tooltip wrapperStyle={{ fontSize: '12px' }} formatter={(value: number) => `$${value.toLocaleString()}`} />
+                    <Legend wrapperStyle={{ fontSize: '12px' }} />
+                    <Line type="monotone" dataKey="ingresos" name="Ingresos" stroke="#82ca9d" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="gastos" name="Gastos" stroke="#ff6b6b" />
                 </LineChart>
             </ResponsiveContainer>
         </div>

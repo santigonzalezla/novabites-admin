@@ -67,15 +67,15 @@ const Sidebar = ({ isMobileOpen = false, onMobileClose }: SidebarProps) =>
         // Principal
         { item: 'Resumen', icon: <Dashboard />, link: '/dashboard', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Inventario', icon: <Inventory />, link: '/dashboard/inventory', roles: [Role.ADMIN, Role.MANAGER] },
-        { item: 'Insumos', icon: <Supplies />, link: '/dashboard/supplies', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Ordenes', icon: <Order />, link: '/dashboard/orders', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Ordenes Personalizadas', icon: <CustomOrder />, link: '/dashboard/customorders', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER] },
+        { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER] },
+        { item: 'Cierres de Caja', icon: <CashClosing />, link: '/dashboard/cashclosing', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER] },
 
         // Gestión
         { item: 'Proveedores', icon: <Supplier />, link: '/dashboard/suppliers', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Insumos', icon: <Supplies />, link: '/dashboard/supplies', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Clientes', icon: <Users />, link: '/dashboard/clients', roles: [Role.ADMIN, Role.MANAGER] },
-        { item: 'Cierres de Caja', icon: <CashClosing />, link: '/dashboard/cashclosing', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER] },
-        { item: 'Solicitudes', icon: <Request />, link: '/dashboard/requests', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER] },
         { item: 'Reportes', icon: <BarChart />, link: '/dashboard/reports', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Categorías', icon: <Tag />, link: '/dashboard/categories', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Subcategorías', icon: <Tags />, link: '/dashboard/subcategories', roles: [Role.ADMIN, Role.MANAGER] },
@@ -97,11 +97,11 @@ const Sidebar = ({ isMobileOpen = false, onMobileClose }: SidebarProps) =>
     const groupedOptions = useMemo(() =>
     {
         const principal = userOptions.filter(opt =>
-            ['Resumen', 'Inventario', 'Insumos', 'Ordenes', 'Ordenes Personalizadas'].includes(opt.item)
+            ['Resumen', 'Inventario',  'Ordenes', 'Ordenes Personalizadas','Solicitudes','Cierres de Caja'].includes(opt.item)
         );
 
         const management = userOptions.filter(opt =>
-            ['Proveedores', 'Clientes', 'Cierres de Caja', 'Solicitudes', 'Reportes', 'Categorías', 'Subcategorías'].includes(opt.item)
+            ['Proveedores', 'Insumos', 'Clientes',  'Reportes', 'Categorías', 'Subcategorías'].includes(opt.item)
         );
 
         const system = userOptions.filter(opt =>

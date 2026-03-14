@@ -87,6 +87,35 @@
     margin-top: 20px;
 }
 
+.tableSearchWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.tableSearchInput {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+}
+
+.tableSearchInput input {
+    font-family: 'Satoshi', sans-serif;
+    width: 100%;
+    height: 40px;
+    padding: 10px 40px 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.tableSearchInput svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .suppliesTable {
     width: 100%;
     border-collapse: collapse;
