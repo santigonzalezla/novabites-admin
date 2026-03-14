@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 export type Column = {
     key: string;
     header: string;
-    renderType?: 'date' | 'decimal' | 'currency' | 'boolean';
+    renderType?: 'date' | 'dateOnly' | 'decimal' | 'currency' | 'boolean';
     render?: (value: any, row: any) => ReactNode;
     width?: string;
 }
