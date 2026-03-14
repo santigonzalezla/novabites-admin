@@ -9,9 +9,11 @@ import { usePathname } from 'next/navigation';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadUnitButton from '@/app/components/shared/downloadunitbutton/DownloadUnitButton';
 import CustomOrderBill from '@/app/components/customorders/customorderbill/CustomOrderBill';
+import CustomOrderDescription from '@/app/components/customorders/customorderdescription/CustomOrderDescription';
 
 const tabs = [
     "Resumen",
+    "Descripción",
     "Factura",
     "Historial"
 ]
@@ -62,6 +64,8 @@ const CustomOrderSection = () =>
 
             {active === "Resumen" ? (
                 <CustomOrderContent setId={setId} />
+            ) : active === "Descripción" ? (
+                <CustomOrderDescription />
             ) : active === "Factura" ? (
                 <CustomOrderBill />
             ) : (

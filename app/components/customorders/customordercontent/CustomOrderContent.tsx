@@ -232,7 +232,7 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
                                         name="totalPrice"
                                         id="totalPrice"
                                         placeholder="Price"
-                                        value={`${formData?.totalPrice}`|| ''}
+                                        value={formData?.totalPrice != null ? `$${Number(formData.totalPrice).toLocaleString('es-CO')}` : ''}
                                         onChange={handleChange}
                                         disabled
                                         className={isDisabled ? styles.disabled : styles.detailValue}
@@ -391,12 +391,14 @@ const CustomOrderContent = ({ setId }: CustomOrderContentProps) =>
                     <div className={styles.stockSummary}>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Depósito</div>
-                            <div className={styles.stockNumber}>{formData?.depositAmount}</div>
+                            <div className={styles.stockNumber}>
+                                {formData?.depositAmount != null ? `$${Number(formData.depositAmount).toLocaleString('es-CO')}` : 'N/A'}
+                            </div>
                         </div>
                         <div className={styles.stockItem}>
                             <div className={styles.stockLabel}>Remanente</div>
                             <div className={styles.stockNumber}>
-                                {formData?.remainingAmount}
+                                {formData?.remainingAmount != null ? `$${Number(formData.remainingAmount).toLocaleString('es-CO')}` : 'N/A'}
                             </div>
                         </div>
                         <div className={styles.stockItem}>

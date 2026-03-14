@@ -192,12 +192,13 @@
   "requestProduct": {
     "config": {
       "columns": [
-        {"key": "product.numId", "header": "CÓDIGO", "width": "10%"},
-        {"key": "product.name", "header": "PRODUCTO", "width": "25%"},
-        {"key": "requestedQuantity", "header": "CANTIDAD", "width": "12%"},
+        {"key": "product.numId", "header": "CÓDIGO", "width": "8%"},
+        {"key": "product.name", "header": "PRODUCTO", "width": "22%"},
+        {"key": "product.category.name", "header": "CATEGORÍA", "width": "15%"},
+        {"key": "requestedQuantity", "header": "CANTIDAD", "width": "10%"},
         {"key": "unitPrice", "header": "PRECIO UNIT.", "width": "15%", "renderType": "currency"},
         {"key": "totalPrice", "header": "TOTAL", "width": "15%", "renderType": "currency"},
-        {"key": "returnReason", "header": "MOTIVO", "width": "23%"}
+        {"key": "returnReason", "header": "MOTIVO", "width": "15%"}
       ],
       "itemsPerPage": 5,
       "pageLabels": {

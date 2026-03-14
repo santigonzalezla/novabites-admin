@@ -65,7 +65,7 @@ const Sidebar = ({ isMobileOpen = false, onMobileClose }: SidebarProps) =>
 
     const options = [
         // Principal
-        { item: 'Resumen', icon: <Dashboard />, link: '/dashboard', roles: [Role.ADMIN, Role.MANAGER] },
+        { item: 'Resumen', icon: <Dashboard />, link: '/dashboard', roles: [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER] },
         { item: 'Inventario', icon: <Inventory />, link: '/dashboard/inventory', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Insumos', icon: <Supplies />, link: '/dashboard/supplies', roles: [Role.ADMIN, Role.MANAGER] },
         { item: 'Ordenes', icon: <Order />, link: '/dashboard/orders', roles: [Role.ADMIN, Role.MANAGER] },
