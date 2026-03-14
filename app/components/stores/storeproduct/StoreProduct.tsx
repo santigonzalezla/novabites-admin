@@ -75,6 +75,7 @@ const StoreProduct = () =>
     const [minStock, setMinStock] = useState("");
     const [price, setPrice] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [tableSearchTerm, setTableSearchTerm] = useState('');
 
     // Filtrar productos que no están ya agregados a la tienda
     const filteredProducts = productData?.filter((product) =>
@@ -88,6 +89,22 @@ const StoreProduct = () =>
             product.numId.toString().includes(searchTerm);
 
         return matchesSearch && !isAlreadyAdded;
+    });
+
+    const filteredStoreProducts = storeProductData.filter((storeProduct) =>
+    {
+        if (!tableSearchTerm.trim()) return true;
+
+        const query = tableSearchTerm.toLowerCase();
+        const productName = storeProduct.product?.name?.toLowerCase() || '';
+        const productNumId = storeProduct.product?.numId?.toString() || '';
+        const productId = storeProduct.productId?.toLowerCase() || '';
+
+        return (
+            productName.includes(query) ||
+            productNumId.includes(query) ||
+            productId.includes(query)
+        );
     });
 
     const handleProductSelect = (product: Product) =>
@@ -398,8 +415,19 @@ const StoreProduct = () =>
             </div>
 
             <div className={styles.tableContainer}>
+                <div className={styles.tableSearchWrapper}>
+                    <div className={styles.tableSearchInput}>
+                        <input
+                            type="text"
+                            placeholder="Buscar en productos de la tienda..."
+                            value={tableSearchTerm}
+                            onChange={(e) => setTableSearchTerm(e.target.value)}
+                        />
+                        <Search />
+                    </div>
+                </div>
                 <StoreProductTable
-                    data={storeProductData}
+                    data={filteredStoreProducts}
                     setIsModalOpen={setIsModalOpen}
                     setEditingStoreProduct={setEditingStoreProduct}
                     config={config}
