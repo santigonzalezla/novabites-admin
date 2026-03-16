@@ -269,3 +269,39 @@
     background-color: #cccccc;
     cursor: not-allowed;
 }
+
+.approveBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 0 0;
+    gap: 1rem;
+}
+
+.approveInfo {
+    font-size: 0.875rem;
+    color: var(--text-muted, #888);
+}
+
+.approveButton {
+    font-family: 'Satoshi', sans-serif;
+    padding: 10px 24px;
+    background: #8200FF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.approveButton:hover:not(:disabled) {
+    background: #6a00d4;
+}
+
+.approveButton:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}

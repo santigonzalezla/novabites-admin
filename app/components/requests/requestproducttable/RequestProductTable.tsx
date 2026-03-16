@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 export type Column = {
     key: string;
     header: string;
-    renderType?: 'date' | 'decimal';
+    renderType?: 'date' | 'decimal' | 'editable-number';
     render?: (value: any, row: any) => ReactNode;
     width?: string;
 }
@@ -26,9 +26,10 @@ type DataTableProps = {
     data: any[];
     config: TableConfig;
     className?: string;
+    onCellChange?: (rowId: string, key: string, value: number) => void;
 }
 
-const RequestProductTable = ({ data, config, className = "" }: DataTableProps) =>
+const RequestProductTable = ({ data, config, className = "", onCellChange }: DataTableProps) =>
 {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
@@ -158,6 +159,23 @@ const RequestProductTable = ({ data, config, className = "" }: DataTableProps) =
         if (column.renderType === 'date' && typeof value === 'string')
         {
             return renderDateValue(value);
+        }
+
+        if (column.renderType === 'editable-number')
+        {
+            return (
+                <input
+                    type="number"
+                    min={0}
+                    value={value ?? ''}
+                    className={styles.editableInput}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) =>
+                    {
+                        if (onCellChange) onCellChange(row.id, column.key, Number(e.target.value));
+                    }}
+                />
+            );
         }
 
         if (typeof value === 'string' && statusArr.includes(value.toLowerCase()))

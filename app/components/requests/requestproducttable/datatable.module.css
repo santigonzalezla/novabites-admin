@@ -204,3 +204,24 @@
 {
     stroke: #AB2A2A;
 }
+
+.editableInput
+{
+    width: 70px;
+    padding: 4px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: var(--text-primary, #111);
+    background: white;
+    transition: border-color 0.2s;
+}
+
+.editableInput:focus
+{
+    outline: none;
+    border-color: #8200FF;
+    box-shadow: 0 0 0 2px rgba(130, 0, 255, 0.12);
+}
