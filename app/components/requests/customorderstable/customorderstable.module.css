@@ -8,97 +8,238 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
-.filters {
+.topBar {
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+.filtersRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: max-content;
+    max-width: 100%;
+    flex: 0 1 auto;
+}
+
+.filterBar {
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    border-radius: 12px;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-sm);
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 50px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    flex: 0 1 auto;
+}
+
+.filterBar:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.filterBar > div,
+.filterBar > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--border-primary);
+    padding: 15px 12px;
+    min-height: 50px;
+    transition: all 0.3s ease;
+}
+
+.filterBar > :last-child {
+    border-right: none;
+}
+
+.filterIcon {
+    width: 72px;
+    background: var(--surface-secondary);
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.filterIcon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.filterLabel {
+    color: var(--text-secondary);
+    min-width: 160px;
+    font-weight: 500;
+    background: var(--surface-secondary);
+    justify-content: flex-start;
+}
+
+.filterContent,
+.filterReset {
+    width: 100%;
+}
+
+.filterContent {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--surface-primary);
+    min-width: 180px;
+}
+
+.filterContent:hover {
+    background: var(--surface-secondary);
+}
+
+.filterContent svg {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-secondary);
+    width: 16px;
+    height: 16px;
+    transition: all 0.3s ease;
+}
+
+.filterContent:hover svg {
+    color: var(--primary-color);
+    transform: translateY(-50%) rotate(180deg);
 }
 
 .filterInput,
 .filterSelect {
-    padding: 10px 12px;
-    border: 1px solid var(--border-color, #d1d5db);
-    border-radius: 8px;
-    background: var(--bg-tertiary, #ffffff);
-    color: var(--text-primary, #111827);
+    width: calc(100% - 40px);
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
     font-size: 14px;
-    min-width: 180px;
+    min-width: 0;
     font-family: inherit;
+    min-height: 100%;
+    padding: 0 15px;
+    font-weight: 500;
+    appearance: none;
+}
+
+.dateInput {
+    min-width: 160px;
 }
 
 .filterInput::placeholder {
-    color: var(--text-secondary, #6b7280);
+    color: var(--text-muted);
+    font-weight: 400;
 }
 
 .filterInput:focus,
 .filterSelect:focus {
     outline: none;
-    border-color: var(--primary-color, #2563eb);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
 }
 
 .filterSelect {
     cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.filterReset {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 180px;
+    justify-content: center;
+    font-weight: 500;
+    color: #dc143c;
+    cursor: pointer;
+    background: var(--surface-primary);
+    border: none;
+}
+
+.filterReset:hover {
+    background: rgba(220, 20, 60, 0.1);
+    color: #b91c3c;
+}
+
+.filterReset svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.filterReset:hover svg {
+    transform: rotate(180deg);
 }
 
 .tableWrapper {
     overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 18px;
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-lg);
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
+    background: var(--surface-primary);
 }
 
 .table thead {
-    background: var(--bg-secondary, #f9fafb);
-    border-bottom: 2px solid var(--border-color, #e5e7eb);
+    background: var(--surface-secondary);
+    border-bottom: 2px solid var(--border-primary);
 }
 
 .table th {
     padding: 1rem;
     text-align: left;
-    font-weight: 600;
-    color: var(--text-primary, #111827);
+    font-weight: 800;
+    color: var(--text-primary);
     text-transform: uppercase;
     font-size: 0.875rem;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
 }
 
 .table tbody tr {
-    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    border-bottom: 1px solid var(--border-primary);
 }
 
-.tableRow {
+.clickableRow {
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.tableRow:hover {
-    background-color: var(--bg-hover, #f3f4f6);
+.clickableRow:hover {
+    background-color: var(--hover-bg);
+    box-shadow: inset 4px 0 0 var(--orange);
 }
 
 .table td {
     padding: 1rem;
-    color: var(--text-primary, #374151);
+    color: var(--text-secondary);
+    vertical-align: middle;
 }
 
-.orderId {
+.orderNumber {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--primary-color, #2563eb);
+    color: var(--orange);
 }
 
 .time {
-    font-weight: 600;
+    font-weight: 800;
     font-size: 1.1rem;
-    color: var(--text-primary, #111827);
+    color: var(--text-primary);
 }
 
 .details {
@@ -107,55 +248,71 @@
     gap: 0.5rem;
 }
 
-.detailBadge {
+.badge {
     display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: var(--accent-bg, #dbeafe);
-    color: var(--accent-text, #1e40af);
-    border-radius: 12px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    padding: 0.35rem 0.8rem;
+    background: var(--accent-purple-light);
+    color: var(--purple);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
     white-space: nowrap;
 }
 
-.amount {
-    font-weight: 500;
+.price {
+    font-weight: 700;
+    color: var(--text-secondary);
 }
 
-.total {
+.totalPrice {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--success-color, #059669);
+    color: var(--orange);
 }
 
-.statusBadge {
+.status {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.875rem;
+    min-width: 150px;
+    text-align: center;
+    padding: 0.62rem 1.15rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 0.76rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
+    border: 1px solid transparent;
 }
 
-.statusPending {
-    background-color: #fef3c7;
-    color: #92400e;
+.pending {
+    background-color: #fdf1e4;
+    border-color: #f9dfc2;
+    color: #ec8a33;
 }
 
-.statusInProgress {
-    background-color: #dbeafe;
-    color: #1e40af;
+.in_progress {
+    background-color: #efe7fb;
+    border-color: #dfcff7;
+    color: #8a5ad6;
 }
 
-.statusCompleted {
-    background-color: #d1fae5;
-    color: #065f46;
+.completed {
+    background-color: #dff3ec;
+    border-color: #c8e9df;
+    color: #0da37f;
 }
 
-.statusCancelled {
-    background-color: #fee2e2;
-    color: #991b1b;
+.cancelled {
+    background-color: #fae1e1;
+    border-color: #f3caca;
+    color: #ef5350;
+}
+
+.noData {
+    padding: 28px;
+    text-align: center;
+    color: var(--text-muted);
+    font-weight: 600;
+    background: var(--surface-secondary);
 }
 
 /* Responsive */
@@ -167,5 +324,43 @@
     .table th,
     .table td {
         padding: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .topBar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filtersRow {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .filterBar {
+        flex-wrap: wrap;
+        height: auto;
+        width: 100%;
+    }
+
+    .filterBar > div,
+    .filterBar > button {
+        border-bottom: 1px solid var(--border-primary);
+    }
+
+    .filterIcon,
+    .filterLabel {
+        width: 50%;
+    }
+
+    .filterContent {
+        width: 50%;
+    }
+
+    .filterReset {
+        width: 100%;
+        border-bottom: none;
     }
 }

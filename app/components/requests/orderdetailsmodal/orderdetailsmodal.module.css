@@ -107,6 +107,44 @@
     font-weight: 500;
 }
 
+.imageGallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.galleryItem {
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-secondary, #f9fafb);
+}
+
+.imageButton {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: zoom-in;
+}
+
+.galleryImageWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.galleryImage {
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+.imageButton:hover .galleryImage,
+.imageButton:hover .cakeImage {
+    transform: scale(1.03);
+}
+
 .cakeDetails {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -131,6 +169,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.2s ease;
 }
 
 .cakeInfo {
@@ -141,6 +180,32 @@
     margin: 0.5rem 0;
     font-size: 0.95rem;
     color: var(--text-primary, #374151);
+}
+
+.detailDescription {
+    margin-top: 0.95rem;
+    padding: 0.95rem 1rem;
+    border: 1px dashed var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    background: var(--bg-primary, #fff);
+}
+
+.detailDescriptionTitle {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary, #6b7280);
+    margin-bottom: 0.45rem;
+}
+
+.detailDescriptionText {
+    margin: 0;
+    font-size: 1.08rem;
+    line-height: 1.6;
+    color: var(--text-primary, #111827);
+    font-weight: 600;
 }
 
 .cakeInfo strong {
@@ -247,6 +312,73 @@
     background-color: var(--primary-hover, #1d4ed8);
 }
 
+.lightboxBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 1100;
+}
+
+.lightboxContent {
+    position: relative;
+    width: min(92vw, 1100px);
+    height: min(86vh, 860px);
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(17, 24, 39, 0.96);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.lightboxImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.lightboxImage {
+    object-fit: contain;
+}
+
+.lightboxDescription {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    margin: 0;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: rgba(17, 24, 39, 0.68);
+    color: #f9fafb;
+    font-size: 1.02rem;
+    line-height: 1.62;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+}
+
+.lightboxClose {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+}
+
+.lightboxClose:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .backdrop {
@@ -269,5 +401,14 @@
 
     .cakeDetails {
         grid-template-columns: 1fr;
+    }
+
+    .lightboxBackdrop {
+        padding: 12px;
+    }
+
+    .lightboxContent {
+        width: 100%;
+        height: min(78vh, 620px);
     }
 }

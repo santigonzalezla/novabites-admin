@@ -3,44 +3,99 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 16px;
+}
+
+.tabsTopRow {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    overflow-x: auto;
 }
 
 .tabsHeader {
     display: flex;
-    gap: 0;
-    border-bottom: 2px solid var(--border-color, #e5e7eb);
-    background: var(--bg-secondary, #f9fafb);
-    padding: 0 1rem;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 0;
+    background: transparent;
+    border-bottom: none;
+    margin-left: auto;
 }
 
 .tab {
-    padding: 1rem 2rem;
-    background: transparent;
-    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 18px;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-secondary, #6b7280);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
     transition: all 0.2s ease;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
 }
 
 .tab:hover {
-    color: var(--primary-color, #2563eb);
-    background: var(--bg-hover, #f3f4f6);
+    color: var(--text-primary);
+    background: var(--surface-secondary);
+    border-color: var(--border-secondary);
 }
 
 .tab.active {
-    color: var(--primary-color, #2563eb);
-    border-bottom-color: var(--primary-color, #2563eb);
-    background: var(--bg-primary, #fff);
-    font-weight: 600;
+    color: var(--surface-primary);
+    background: var(--orange);
+    border-color: var(--orange);
+    box-shadow: var(--shadow-sm);
+}
+
+.tabBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--orange) 18%, var(--surface-primary));
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.active .tabBadge {
+    background: var(--surface-primary);
+    color: var(--orange);
+}
+
+.requestsView {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
 .tabContent {
     flex: 1;
     overflow: auto;
-    padding: 1.5rem;
-    background: var(--bg-primary, #fff);
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+@media (max-width: 640px) {
+    .tabsHeader {
+        margin-left: auto;
+    }
+
+    .tabsTopRow {
+        justify-content: flex-end;
+    }
 }
