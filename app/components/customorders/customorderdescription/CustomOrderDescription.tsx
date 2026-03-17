@@ -14,7 +14,7 @@ const CustomOrderDescription = () =>
     const pathname = usePathname();
     const orderId = pathname.split('/').pop();
     const [formData, setFormData] = useState<CustomOrder>();
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedDetail, setSelectedDetail] = useState<DetailCustomOrder | null>(null);
     const { error, execute } = useFetch<CustomOrder>(`/api/custom-order/${orderId}`);
 
     useEffect(() =>
@@ -57,8 +57,8 @@ const CustomOrderDescription = () =>
                             <div key={detail.id ?? index} className={styles.card}>
                                 <div
                                     className={styles.imageWrapper}
-                                    onClick={() => setSelectedImage(detail.imageUrl || '/placeholder.jpg')}
-                                    title="Ver imagen"
+                                    onClick={() => setSelectedDetail(detail)}
+                                    title="Ver orden"
                                 >
                                     <Image
                                         src={detail.imageUrl || '/placeholder.jpg'}
@@ -68,7 +68,7 @@ const CustomOrderDescription = () =>
                                         className={styles.thumbnail}
                                     />
                                     <div className={styles.imageOverlay}>
-                                        <span>Ver imagen</span>
+                                        <span>Ver orden</span>
                                     </div>
                                 </div>
 
@@ -134,17 +134,26 @@ const CustomOrderDescription = () =>
                 )}
             </section>
 
-            {/* Modal de imagen */}
-            {selectedImage && (
-                <Modal onClose={() => setSelectedImage(null)}>
+            {/* Modal de orden */}
+            {selectedDetail && (
+                <Modal onClose={() => setSelectedDetail(null)}>
                     <div className={styles.modalImageWrapper}>
                         <Image
-                            src={selectedImage}
+                            src={selectedDetail.imageUrl || '/placeholder.jpg'}
                             alt="Imagen de orden interna"
                             width={500}
                             height={500}
                             className={styles.modalImage}
                         />
+                        <div className={styles.modalDetails}>
+                            <div className={styles.modalDetailRow}>
+                                <span><strong>Libras:</strong> {selectedDetail.pounds}</span>
+                                <span><strong>Pisos:</strong> {selectedDetail.tiers}</span>
+                            </div>
+                            {selectedDetail.description && (
+                                <p className={styles.modalDescription}>{selectedDetail.description}</p>
+                            )}
+                        </div>
                     </div>
                 </Modal>
             )}

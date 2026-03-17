@@ -161,10 +161,11 @@
     border-radius: 10px;
     padding: 16px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
     max-width: 90vw;
     max-height: 90vh;
+    overflow-y: auto;
 }
 
 .modalImage
@@ -172,7 +173,31 @@
     width: auto;
     height: auto;
     max-width: 500px;
-    max-height: 75vh;
+    max-height: 60vh;
     object-fit: contain;
     border-radius: 6px;
+}
+
+.modalDetails
+{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.modalDetailRow
+{
+    display: flex;
+    gap: 24px;
+}
+
+.modalDescription
+{
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.4;
 }

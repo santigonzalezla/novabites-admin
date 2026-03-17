@@ -393,6 +393,7 @@ export interface DetailCustomOrder extends BaseEntity {
     pounds: number;
     tiers: number;
     price: number | string; // Decimal
+    description?: string | null;
 
     // Relations
     customOrder?: CustomOrder;
