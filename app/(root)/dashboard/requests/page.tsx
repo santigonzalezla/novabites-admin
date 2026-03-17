@@ -6,11 +6,11 @@ import { Create, Download, Upload } from '@/app/components/svg';
 import { useEffect, useState } from 'react';
 import GenericFilter, { filterItems } from '@/app/components/shared/genericfilter/GenericFilter';
 import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDataTable';
-import { StoreRequest } from '@/interfaces/interfaces';
+import { CustomOrder, StoreRequest } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
 import withAuth from '@/hoc/withAuth';
-import { Role, RequestType, RequestStatus } from '@/interfaces/enums';
+import { Role } from '@/interfaces/enums';
 import { useAuth } from '@/context/AuthContext';
 import RequestCardList from '@/app/components/requests/requestcard/RequestCardList';
 import ManufacturerTabs from '@/app/components/requests/manufacturertabs/ManufacturerTabs';
@@ -29,11 +29,15 @@ const Requests = () =>
     const [isGenerating, setIsGenerating] = useState(false);
     const [requestsData, setRequestsData] = useState<StoreRequest[]>([]);
     const [filteredData, setFilteredData] = useState<StoreRequest[]>([]);
+    const [customOrdersData, setCustomOrdersData] = useState<CustomOrder[]>([]);
     const [config, setConfig] = useState<RequestConfig>({columns: []});
     const [currentFilters, setCurrentFilters] = useState<Record<string, string>>({});
     const { user } = useAuth();
     const [isMobile, setIsMobile] = useState(false);
     const { isLoading, error, execute } = useFetch<StoreRequest[]>('/api/store-request', {
+        immediate: false
+    });
+    const { error: customOrdersError, execute: executeCustomOrders } = useFetch<CustomOrder[]>('/api/custom-order', {
         immediate: false
     });
     const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/store-request/export', {
@@ -66,6 +70,9 @@ const Requests = () =>
             setRequestsData(requests || []);
             const filtered = filterItems(requests || [], currentFilters);
             setFilteredData(filtered);
+
+            const customOrders = await executeCustomOrders();
+            setCustomOrdersData(customOrders || []);
         }
 
         fetchRequest();
@@ -103,6 +110,7 @@ const Requests = () =>
                 <ManufacturerTabs
                     requestsData={filteredData}
                     requestsConfig={config}
+                    ordersData={customOrdersData}
                     onRefreshRequests={refreshRequests}
                 />
             ) : (
