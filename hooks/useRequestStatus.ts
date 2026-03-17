@@ -27,7 +27,7 @@ export const useRequestStatus = ({ currentStatus, onStatusChange }: UseRequestSt
 
         const canApprove = [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER].includes(userRole);
         const canCancel = [Role.ADMIN, Role.MANAGER].includes(userRole);
-        const canProgress = [Role.ADMIN, Role.MANAGER, Role.COURIER].includes(userRole);
+        const canProgress = [Role.ADMIN, Role.MANAGER, Role.MANUFACTURER, Role.COURIER].includes(userRole);
 
         switch (currentStatus)
         {
