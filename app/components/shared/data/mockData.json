@@ -289,10 +289,11 @@
   "billDetails": {
     "config": {
       "columns": [
-        {"key": "productName", "header": "PRODUCTO", "width": "15%"},
+        {"key": "productName", "header": "PRODUCTO", "width": "20%"},
         {"key": "quantity", "header": "CANTIDAD", "width": "8%"},
-        {"key": "unitPrice", "header": "PRECIO C/U", "width": "10%", "renderType": "currency"},
-        {"key": "subtotal", "header": "TOTAL", "width": "10%", "renderType": "currency"}
+        {"key": "unitPrice", "header": "PRECIO C/U", "width": "12%", "renderType": "currency"},
+        {"key": "discount", "header": "DESCUENTO", "width": "12%", "renderType": "discount"},
+        {"key": "subtotal", "header": "TOTAL", "width": "12%", "renderType": "currency"}
       ],
       "itemsPerPage": 4,
       "pageLabels": {

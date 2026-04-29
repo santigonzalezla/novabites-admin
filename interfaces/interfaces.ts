@@ -441,6 +441,7 @@ export interface DetailBill extends BaseEntity {
     quantity: number;
     unitPrice: number | string; // Decimal
     subtotal: number | string; // Decimal
+    discount?: number | string; // Decimal
 
     // Relations
     bill?: Bill;

@@ -73,7 +73,7 @@ const RequestProduct = () =>
             { key: "product.numId", header: "CÓDIGO", width: "8%" },
             { key: "product.name", header: "PRODUCTO", width: "22%" },
             { key: "product.category.name", header: "CATEGORÍA", width: "15%" },
-            { key: "requestedQuantity", header: "CANT. SOLICITADA", width: "14%" },
+            { key: "requestedQuantity", header: "CANT. SOLICITADA", width: "15%" },
         ];
 
         const approvedColumn = isPendingSupply
@@ -91,7 +91,7 @@ const RequestProduct = () =>
             columns: approvedColumn
                 ? [...baseColumns, approvedColumn, ...priceColumns]
                 : [...baseColumns, ...priceColumns],
-            itemsPerPage: 5,
+            itemsPerPage: 4,
             pageLabels: { showing: "Mostrando", of: "de" }
         };
     }, [isPendingSupply, storeRequestData?.status]);

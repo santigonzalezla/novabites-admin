@@ -5,7 +5,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border: #D5D5D5 1px solid;
     background-color: #F3F3F3;
-    height: 285px;
+    height: 255px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -40,7 +40,7 @@
 .dataTable tbody tr
 {
     border-bottom: 1px solid #eaeaea;
-    height: 35px;
+    height: 30px;
     cursor: pointer;
 }
 
@@ -73,7 +73,7 @@
 .dataTable tbody td
 {
     color: #333;
-    padding: 10px 0 10px 30px;
+    padding: 7px 0 7px 30px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

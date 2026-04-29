@@ -177,10 +177,15 @@ const OrderBill = () =>
 
     const subtotal = billData?.details?.reduce((acc, item) =>
     {
-        return acc + Number.parseFloat(String(item.unitPrice)) * item.quantity
+        return acc + Number.parseFloat(String(item.unitPrice)) * item.quantity;
     }, 0);
 
-    const total = subtotal || 0;
+    const totalDiscount = billData?.details?.reduce((acc, item) =>
+    {
+        return acc + Number.parseFloat(String(item.discount || 0));
+    }, 0);
+
+    const total = Number.parseFloat(String(billData?.totalPrice || 0));
     const formatAmount = (value: number) => value.toLocaleString('es-CO');
 
     return (
@@ -230,6 +235,12 @@ const OrderBill = () =>
                         <span>Subtotal:</span>
                         <span>${formatAmount(subtotal || 0)}</span>
                     </div>
+                    {(totalDiscount || 0) > 0 && (
+                        <div className={styles.summaryItem}>
+                            <span>Descuentos:</span>
+                            <span style={{ color: '#FF7A00' }}>-${formatAmount(totalDiscount || 0)}</span>
+                        </div>
+                    )}
                     <div className={`${styles.summaryItem} ${styles.totalItem}`}>
                         <span>Total:</span>
                         <span>${formatAmount(total)}</span>

@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 export type Column = {
     key: string;
     header: string;
-    renderType?: 'date' | 'decimal' | 'currency';
+    renderType?: 'date' | 'decimal' | 'currency' | 'discount';
     render?: (value: any, row: any) => ReactNode;
     width?: string;
 }
@@ -164,6 +164,13 @@ const BillOrderTable = ({ data, config, className = "" }: DataTableProps) =>
         if (column.renderType === 'currency')
         {
             return renderCurrencyValue(value);
+        }
+
+        if (column.renderType === 'discount')
+        {
+            const num = parseFloat(String(value || 0));
+            if (num <= 0) return <span style={{ color: '#ABBBC2' }}>—</span>;
+            return <span style={{ color: '#FF7A00' }}>-${num.toLocaleString('es-CO')}</span>;
         }
 
         if (typeof value === 'string' && statusArr.includes(value.toLowerCase()))
