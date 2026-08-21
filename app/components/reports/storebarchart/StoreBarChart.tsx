@@ -14,7 +14,7 @@ import {
 } from 'recharts';
 import { useFetch } from '@/hooks/useFetch';
 import { useEffect, useMemo, useState } from 'react';
-import { CustomOrder, Order, Store } from '@/interfaces/interfaces';
+import { CustomOrder, Order, PaginatedResponse, Store } from '@/interfaces/interfaces';
 
 interface ChartData {
     storeName: string;
@@ -40,22 +40,24 @@ const StoreBarChart = () =>
     });
 
     const {
-        data: orders,
+        data: ordersResponse,
         error: orderError,
         isLoading: ordersLoading,
         execute: fetchOrders
-    } = useFetch<Order[]>(`/api/order`, {
+    } = useFetch<PaginatedResponse<Order>>(`/api/order?limit=500`, {
         immediate: false,
     });
+    const orders = ordersResponse?.data ?? null;
 
     const {
-        data: customOrders,
+        data: customOrdersResponse,
         error: customOrderError,
         isLoading: customOrderLoading,
         execute: fetchCustomOrders
-    } = useFetch<CustomOrder[]>(`/api/custom-order`, {
+    } = useFetch<PaginatedResponse<CustomOrder>>(`/api/custom-order?limit=500`, {
         immediate: false,
     });
+    const customOrders = customOrdersResponse?.data ?? null;
 
     const processStoreData = (stores: Store[], orders: Order[], customOrders: CustomOrder[]) =>
     {

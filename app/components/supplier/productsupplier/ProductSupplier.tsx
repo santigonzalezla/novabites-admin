@@ -5,7 +5,7 @@ import styles from "./productsupplier.module.css"
 import { Download, Upload } from '@/app/components/svg';
 import mockData from '@/app/components/shared/data/mockData.json';
 import { useFetch } from '@/hooks/useFetch';
-import { Product, ProductSupply as ProductSupplyData, Supply } from '@/interfaces/interfaces';
+import { PaginatedResponse, Product, ProductSupply as ProductSupplyData, Supply } from '@/interfaces/interfaces';
 import { usePathname } from 'next/navigation';
 import ProductSupplierTable from '@/app/components/supplier/productsuppliertable/ProductSupplierTable';
 import { toast } from 'sonner';
@@ -25,7 +25,8 @@ const ProductSupplier = () =>
     const supplierId = pathname.split('/').pop();
     const [config, setConfig] = useState<ProductSupplyConfig>({columns: []});
     const [productSupplierData, setProductSupplierData] = useState<Product[]>([]);
-    const { data, error, execute } = useFetch<Product[]>(`/api/product?supplierId=${supplierId}`);
+    const { data: productsResponse, error, execute } = useFetch<PaginatedResponse<Product>>(`/api/product?supplierId=${supplierId}&limit=500`);
+    const data = productsResponse?.data ?? null;
 
     useEffect(() =>
     {

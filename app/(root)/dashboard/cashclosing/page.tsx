@@ -3,11 +3,11 @@
 import styles from './page.module.css';
 import mockData from "@/app/components/shared/data/mockData.json";
 import { useEffect, useState } from 'react';
-import GenericFilter, { filterItems } from '@/app/components/shared/genericfilter/GenericFilter';
+import GenericFilter from '@/app/components/shared/genericfilter/GenericFilter';
 import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDataTable';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
-import { CashClosing } from '@/interfaces/interfaces';
+import { CashClosing, PaginatedResponse } from '@/interfaces/interfaces';
 import withAuth from '@/hoc/withAuth';
 import { Role } from '@/interfaces/enums';
 
@@ -20,14 +20,35 @@ interface CashClosingConfig {
     }
 }
 
+const FILTER_TO_QUERY_PARAM: Record<string, string> = {
+    'store.name': 'storeName',
+    'user.name': 'userName',
+    closingDate: 'closingDate',
+};
+
+const buildQueryString = (page: number, limit: number, filters: Record<string, string>) =>
+{
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    params.set('limit', String(limit));
+
+    Object.entries(filters).forEach(([field, value]) =>
+    {
+        const paramName = FILTER_TO_QUERY_PARAM[field];
+        if (paramName && value && value.trim() !== '') params.set(paramName, value.trim());
+    });
+
+    return params.toString();
+};
+
 const CashClosings = () =>
 {
     const [isGenerating, setIsGenerating] = useState(false);
-    const [cashClosingsData, setCashClosingsData] = useState<CashClosing[]>([]);
-    const [filteredData, setFilteredData] = useState<CashClosing[]>([]);
-    const [config, setConfig] = useState<CashClosingConfig>({ columns: [] });
+    const [response, setResponse] = useState<PaginatedResponse<CashClosing> | null>(null);
+    const [config] = useState<CashClosingConfig>(mockData.cashClosing.config);
+    const [page, setPage] = useState(1);
     const [currentFilters, setCurrentFilters] = useState<Record<string, string>>({});
-    const { isLoading, error, execute } = useFetch<CashClosing[]>('/api/cash-closing', {
+    const { isLoading, error, execute } = useFetch<PaginatedResponse<CashClosing>>('/api/cash-closing', {
         immediate: false
     });
     const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/cash-closing/export', {
@@ -40,35 +61,31 @@ const CashClosings = () =>
         { field: 'closingDate', placeholder: 'Fecha', label: 'fecha' }
     ];
 
+    const limit = config.itemsPerPage || 10;
+
     useEffect(() =>
     {
         const fetchCashClosings = async () =>
         {
-            const closings = await execute();
+            const qs = buildQueryString(page, limit, currentFilters);
+            const result = await execute({}, `/api/cash-closing?${qs}`);
 
-            if (closings)
-            {
-                setCashClosingsData(closings);
-                const filtered = filterItems(closings, currentFilters);
-                setFilteredData(filtered);
-            }
+            if (result) setResponse(result);
         };
 
         fetchCashClosings();
-        setConfig(mockData.cashClosing.config);
-    }, []);
+    }, [page, currentFilters, limit]);
 
     const handleFilterChange = (filters: Record<string, string>) =>
     {
         setCurrentFilters(filters);
-        const filtered = filterItems(cashClosingsData, filters);
-        setFilteredData(filtered);
+        setPage(1);
     };
 
     const handleResetFilters = () =>
     {
         setCurrentFilters({});
-        setFilteredData(cashClosingsData);
+        setPage(1);
     };
 
     return (
@@ -89,8 +106,15 @@ const CashClosings = () =>
                 </div>
             </div>
             <GenericDataTable
-                data={filteredData}
+                data={response?.data ?? []}
                 config={config}
+                pagination={{
+                    page,
+                    limit,
+                    totalItems: response?.meta.total ?? 0,
+                    totalPages: response?.meta.totalPages ?? 1,
+                    onPageChange: setPage,
+                }}
             />
         </div>
     );

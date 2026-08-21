@@ -4,11 +4,11 @@ import styles from './page.module.css';
 import mockData from "@/app/components/shared/data/mockData.json";
 import { Create, Download, Upload } from '@/app/components/svg';
 import { ReactNode, useEffect, useState } from 'react';
-import GenericFilter, { filterItems } from '@/app/components/shared/genericfilter/GenericFilter';
+import GenericFilter from '@/app/components/shared/genericfilter/GenericFilter';
 import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDataTable';
 import Modal from '@/app/components/shared/modal/Modal';
 import GenericForm from '@/app/components/shared/genericform/GenericForm';
-import { CategoryProduct, Product } from '@/interfaces/interfaces';
+import { CategoryProduct, PaginatedResponse, Product } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { toast } from 'sonner';
 import { LoadErrorModal } from '@/app/components/shared/loaderrormodal/LoadErrorModal';
@@ -32,14 +32,34 @@ interface InputConfig {
     placeholderTranslations: Record<string, string>;
 }
 
+const FILTER_TO_QUERY_PARAM: Record<string, string> = {
+    name: 'name',
+    'category.name': 'categoryName',
+    available: 'available',
+};
+
+const buildQueryString = (page: number, limit: number, filters: Record<string, string>) =>
+{
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    params.set('limit', String(limit));
+
+    Object.entries(filters).forEach(([field, value]) =>
+    {
+        const paramName = FILTER_TO_QUERY_PARAM[field];
+        if (paramName && value && value.trim() !== '') params.set(paramName, value.trim());
+    });
+
+    return params.toString();
+};
+
 const Inventory = () =>
 {
     const [isUploading, setIsUploading] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
     const [uploadFile, setUploadFile] = useState<File | null>(null);
-    const [inventoryData, setInventoryData] = useState<Product[]>([]);
-    const [filteredData, setFilteredData] = useState<Product[]>([]);
-    const [config, setConfig] = useState<InventoryConfig>({columns: []});
+    const [response, setResponse] = useState<PaginatedResponse<Product> | null>(null);
+    const [config] = useState<InventoryConfig>(mockData.inventory.config);
     const [inputConfig, setInputConfig] = useState<InputConfig>({
         fieldTypes: {},
         selectOptions: {},
@@ -49,8 +69,9 @@ const Inventory = () =>
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
     const [uploadResult, setUploadResult] = useState(null);
+    const [page, setPage] = useState(1);
     const [currentFilters, setCurrentFilters] = useState<Record<string, string>>({});
-    const { isLoading, error, execute } = useFetch<Product[]>('/api/product', {
+    const { isLoading, error, execute } = useFetch<PaginatedResponse<Product> | Product>('/api/product', {
         immediate: false
     });
     const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/product/upload', {
@@ -66,6 +87,18 @@ const Inventory = () =>
         { field: 'available', placeholder: 'Estado', label: 'estado' }
     ];
 
+    const limit = config.itemsPerPage || 10;
+
+    const fetchProducts = async () =>
+    {
+        const qs = buildQueryString(page, limit, currentFilters);
+        const result = await execute({}, `/api/product?${qs}`) as PaginatedResponse<Product> | null;
+
+        if (result) setResponse(result);
+
+        return result;
+    };
+
     useEffect(() =>
     {
         if (error)
@@ -77,67 +110,51 @@ const Inventory = () =>
                 position: 'top-right'
             });
         }
+    }, [error]);
 
-        try
+    useEffect(() =>
+    {
+        const fetchCategories = async () =>
         {
-            const fetchData = async () =>
+            const categoriesData = await executeCategories();
+
+            if (categoriesData)
             {
-                const products = await execute();
+                const baseConfig = mockData.inventory.inputConfig;
+                const categoryOptions = categoriesData.map((category) => ({
+                    value: category.id,
+                    label: category.name
+                }));
 
-                if (products)
-                {
-                    setInventoryData(products);
-                    const filtered = filterItems(products, currentFilters);
-                    setFilteredData(filtered);
-                }
-
-                const categoriesData = await executeCategories();
-
-                if (categoriesData)
-                {
-                    const baseConfig = mockData.inventory.inputConfig;
-                    const categoryOptions = categoriesData.map((category) => ({
-                        value: category.id,
-                        label: category.name
-                    }));
-
-                    setInputConfig({
-                        ...baseConfig,
-                        selectOptions: {
-                            ...baseConfig.selectOptions,
-                            'categoryId': categoryOptions
-                        }
-                    });
-                }
+                setInputConfig({
+                    ...baseConfig,
+                    selectOptions: {
+                        ...baseConfig.selectOptions,
+                        'categoryId': categoryOptions
+                    }
+                });
             }
+        }
 
-            fetchData();
-            setConfig(mockData.inventory.config);
-        }
-        catch (err)
-        {
-            console.error("Error fetching data:", err);
-            toast.error(`Error al cargar los datos: ${err}`, {
-                description: "Por favor, inténtalo de nuevo más tarde.",
-                duration: 3000,
-                richColors: true,
-                position: 'top-right'
-            });
-        }
+        fetchCategories();
     }, []);
+
+    useEffect(() =>
+    {
+        fetchProducts();
+    }, [page, currentFilters, limit]);
 
     const handleFilterChange = (filters: Record<string, string>) =>
     {
         setCurrentFilters(filters);
-        const filtered = filterItems(inventoryData, filters);
-        setFilteredData(filtered);
+        setPage(1);
     };
 
     // Función para resetear filtros
     const handleResetFilters = () =>
     {
         setCurrentFilters({});
-        setFilteredData(inventoryData); // Mostrar todos los datos sin filtrar
+        setPage(1);
     };
 
     const handleOverlayClick = () =>
@@ -180,13 +197,7 @@ const Inventory = () =>
                     position: 'top-right'
                 });
 
-                const products = await execute();
-
-                if (products)
-                {
-                    setInventoryData(products);
-                    setFilteredData(products);
-                }
+                await fetchProducts();
             }
         }
         catch (e)
@@ -259,8 +270,6 @@ const Inventory = () =>
             const formData = new FormData();
             formData.append('file', file);
 
-            console.log("estoy aqui");
-
             const result = await executeFile({
                 method: 'POST',
                 body: formData,
@@ -288,13 +297,7 @@ const Inventory = () =>
                     setIsErrorModalOpen(true);
                 }
 
-                const inventory = await execute();
-
-                if (inventory)
-                {
-                    setInventoryData(inventory);
-                    setFilteredData(inventory);
-                }
+                await fetchProducts();
             }
         }
         catch (e)
@@ -381,8 +384,15 @@ const Inventory = () =>
                 </div>
             </div>
             <GenericDataTable
-                data={filteredData}
+                data={response?.data ?? []}
                 config={config}
+                pagination={{
+                    page,
+                    limit,
+                    totalItems: response?.meta.total ?? 0,
+                    totalPages: response?.meta.totalPages ?? 1,
+                    onPageChange: setPage,
+                }}
             />
             {isModalOpen && (
                 <Modal children={createProduct()} onClose={handleOverlayClick} />

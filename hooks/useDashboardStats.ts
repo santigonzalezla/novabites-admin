@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFetch } from '@/hooks/useFetch';
 import { Role } from '@/interfaces/enums'; // Ajusta la ruta
 import { useAuth } from '@/context/AuthContext';
-import { CashClosing, CustomOrder, Order } from '@/interfaces/interfaces';
+import { CashClosing, CustomOrder, Order, PaginatedResponse, StoreRequest } from '@/interfaces/interfaces';
 
 interface DashboardStats {
     totalProducts: number;
@@ -33,7 +33,18 @@ interface CardConfig {
     roles: Role[];
 }
 
-export const useDashboardStats = (storeId?: string) =>
+const getCurrentMonth = () => new Date().toISOString().slice(0, 7);
+
+const getMonthRange = (month: string) =>
+{
+    const [year, monthNum] = month.split('-').map(Number);
+    const startDate = `${month}-01`;
+    const lastDay = new Date(year, monthNum, 0).getDate();
+    const endDate = `${month}-${String(lastDay).padStart(2, '0')}`;
+    return { startDate, endDate };
+};
+
+export const useDashboardStats = (storeId?: string, selectedMonth: string = getCurrentMonth()) =>
 {
     const { user } = useAuth();
     const [stats, setStats] = useState<DashboardStats>({
@@ -49,11 +60,20 @@ export const useDashboardStats = (storeId?: string) =>
         completedToday: 0
     });
     const [chartData, setChartData] = useState<DashboardChartPoint[]>([]);
-    const productsUrl = storeId ? `/api/product/?storeId=${storeId}` : '/api/product/';
-    const ordersUrl = storeId ? `/api/order/?storeId=${storeId}` : '/api/order/';
-    const customOrdersUrl = storeId ? `/api/custom-order/?storeId=${storeId}` : '/api/custom-order/';
-    const storeRequestsUrl = storeId ? `/api/store-request/?storeId=${storeId}` : '/api/store-request/';
-    const cashClosingsUrl = storeId ? `/api/cash-closing/?storeId=${storeId}` : '/api/cash-closing/';
+    const { startDate, endDate } = getMonthRange(selectedMonth);
+    const productsUrl = '/api/product/?limit=500';
+    const ordersUrl = storeId
+        ? `/api/order/?storeId=${storeId}&startDate=${startDate}&endDate=${endDate}&limit=500`
+        : `/api/order/?startDate=${startDate}&endDate=${endDate}&limit=500`;
+    const customOrdersUrl = storeId
+        ? `/api/custom-order/?storeId=${storeId}&startDate=${startDate}&endDate=${endDate}&limit=500`
+        : `/api/custom-order/?startDate=${startDate}&endDate=${endDate}&limit=500`;
+    const storeRequestsUrl = storeId ? `/api/store-request/?storeId=${storeId}&limit=500` : '/api/store-request/?limit=500';
+    const cashClosingsUrl = storeId
+        ? `/api/cash-closing/?storeId=${storeId}&startDate=${startDate}&endDate=${endDate}&limit=500`
+        : `/api/cash-closing/?startDate=${startDate}&endDate=${endDate}&limit=500`;
+
+    const extractArray = <T,>(response: any): T[] => Array.isArray(response) ? response : (response?.data ?? []);
 
 
     const { data: productsData, isLoading: productsLoading, error: productsError, execute: fetchProducts } = useFetch(productsUrl, {
@@ -68,7 +88,7 @@ export const useDashboardStats = (storeId?: string) =>
     const { data: storeRequestsData, isLoading: storeRequestsLoading, error: storeRequestsError, execute: fetchStoreRequests } = useFetch(storeRequestsUrl, {
         immediate: false
     });
-    const { data: cashClosingsData, isLoading: cashClosingsLoading, error: cashClosingsError, execute: fetchCashClosings } = useFetch<CashClosing[]>(cashClosingsUrl, {
+    const { data: cashClosingsData, isLoading: cashClosingsLoading, error: cashClosingsError, execute: fetchCashClosings } = useFetch<PaginatedResponse<CashClosing>>(cashClosingsUrl, {
         immediate: false
     });
 
@@ -86,26 +106,26 @@ export const useDashboardStats = (storeId?: string) =>
         };
 
         fetchAllData();
-    }, [storeId]);
+    }, [storeId, selectedMonth]);
 
     useEffect(() =>
     {
         if (productsData && ordersData && customOrdersData && storeRequestsData)
         {
-            let filteredProducts = Array.isArray(productsData) ? productsData : [];
+            let filteredProducts = extractArray<any>(productsData);
 
             const totalProducts = filteredProducts.length;
 
-            let filteredOrders = Array.isArray(ordersData) ? ordersData : [];
+            let filteredOrders = extractArray<Order>(ordersData);
             if (storeId && filteredOrders.length > 0) filteredOrders = filteredOrders.filter(o => o.storeId === storeId);
 
             const totalOrders = filteredOrders.length;
 
-            let filteredCustomOrders = Array.isArray(customOrdersData) ? customOrdersData : [];
+            let filteredCustomOrders = extractArray<CustomOrder>(customOrdersData);
             if (storeId && filteredCustomOrders.length > 0) filteredCustomOrders = filteredCustomOrders.filter(o => o.storeId === storeId);
 
             const totalCustomOrders = filteredCustomOrders.length;
-            let filteredStoreRequests = Array.isArray(storeRequestsData) ? storeRequestsData : [];
+            let filteredStoreRequests = extractArray<StoreRequest>(storeRequestsData);
 
             if (storeId && filteredStoreRequests.length > 0)
             {
@@ -137,7 +157,7 @@ export const useDashboardStats = (storeId?: string) =>
                 .filter(order => order.status === 'COMPLETED')
                 .reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
 
-            let filteredCashClosings = Array.isArray(cashClosingsData) ? cashClosingsData : [];
+            let filteredCashClosings = extractArray<CashClosing>(cashClosingsData);
             if (storeId && filteredCashClosings.length > 0)
             {
                 filteredCashClosings = filteredCashClosings.filter(closing => closing.storeId === storeId);
@@ -147,13 +167,15 @@ export const useDashboardStats = (storeId?: string) =>
 
             const ordersRelation = totalOrders + totalCustomOrders;
 
-            const now = new Date();
-            const currentYear = now.getFullYear();
-            const currentMonth = now.getMonth();
-            const currentDay = now.getDate();
+            const [selectedYear, selectedMonthNum] = selectedMonth.split('-').map(Number);
+            const currentYear = selectedYear;
+            const currentMonth = selectedMonthNum - 1;
+            const isCurrentRealMonth = selectedMonth === getCurrentMonth();
+            const daysInSelectedMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const lastDayToShow = isCurrentRealMonth ? new Date().getDate() : daysInSelectedMonth;
             const dayKeys: string[] = [];
 
-            for (let day = 1; day <= currentDay; day++)
+            for (let day = 1; day <= lastDayToShow; day++)
             {
                 const dayKey = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 dayKeys.push(dayKey);
@@ -226,7 +248,7 @@ export const useDashboardStats = (storeId?: string) =>
 
             setChartData(nextChartData);
         }
-    }, [productsData, ordersData, customOrdersData, storeRequestsData, cashClosingsData, storeId]);
+    }, [productsData, ordersData, customOrdersData, storeRequestsData, cashClosingsData, storeId, selectedMonth]);
 
     const getCardsForRole = (): CardConfig[] => {
         const userRole = user?.role as Role;

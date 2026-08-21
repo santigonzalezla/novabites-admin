@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './genericfilter.module.css';
 import { ArrowDown, Filter, Reset } from '@/app/components/svg';
 
@@ -47,16 +47,22 @@ export const filterItems = (items: any[], filters: Record<string, string>): any[
 const GenericFilter = ({ filterConfig, onFilterChange, onResetFilters }: DynamicFilterProps) =>
 {
     const [filters, setFilters] = useState<Record<string, string>>({});
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleFilterChange = (field: string, value: string) =>
     {
         const newFilters = { ...filters, [field]: value };
         setFilters(newFilters);
-        onFilterChange(newFilters);
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+
+        debounceRef.current = setTimeout(() => onFilterChange(newFilters), 400);
     };
 
     const handleResetFilters = () =>
     {
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+
         setFilters({});
         onResetFilters();
     };

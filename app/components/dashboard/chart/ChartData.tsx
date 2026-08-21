@@ -11,7 +11,19 @@ interface ChartPoint {
 
 interface ChartDataProps {
     data?: ChartPoint[];
+    month?: string;
 }
+
+const formatMonthLabel = (month?: string) =>
+{
+    if (!month) return 'Mes Actual';
+
+    const [year, monthNum] = month.split('-').map(Number);
+    const date = new Date(year, monthNum - 1, 1);
+    const label = date.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
+
+    return label.charAt(0).toUpperCase() + label.slice(1);
+};
 
 const fallbackData = [
     { name: 'Ene', ganancias: 4000, gastos: 2400 },
@@ -22,7 +34,7 @@ const fallbackData = [
     { name: 'Jun', ganancias: 3490, gastos: 4300 },
 ];
 
-const ChartData = ({ data }: ChartDataProps) =>
+const ChartData = ({ data, month }: ChartDataProps) =>
 {
     const chartData = data && data.length > 0
         ? data
@@ -31,7 +43,7 @@ const ChartData = ({ data }: ChartDataProps) =>
     return (
         <div className={styles.chart}>
             <div className={styles.charttop}>
-                <h3>Ingresos vs Gastos (Mes Actual)</h3>
+                <h3>Ingresos vs Gastos ({formatMonthLabel(month)})</h3>
             </div>
             <ResponsiveContainer width={'100%'} height={'100%'}>
                 <LineChart

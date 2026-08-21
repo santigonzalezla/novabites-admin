@@ -8,16 +8,21 @@ import ChartData from '@/app/components/dashboard/chart/ChartData';
 import { useDashboardStats } from '@/hooks/useDashboardStats';
 import { JSX, useEffect, useState } from 'react';
 import StoreFilter from '@/app/components/dashboard/storefilter/StoreFilter';
+import MonthFilter from '@/app/components/dashboard/monthfilter/MonthFilter';
 import { useAuth } from '@/context/AuthContext';
 import { Role } from '@/interfaces/enums';
+
+const getCurrentMonth = () => new Date().toISOString().slice(0, 7);
 
 const Dashboard = () =>
 {
     const { user } = useAuth();
     const [selectedStoreId, setSelectedStoreId] = useState<string>('');
+    const [selectedMonth, setSelectedMonth] = useState<string>(getCurrentMonth());
     const [isMobile, setIsMobile] = useState(false);
-    const { stats, chartData, isLoading, error, cardsConfig } = useDashboardStats(selectedStoreId);
+    const { stats, chartData, isLoading, error, cardsConfig } = useDashboardStats(selectedStoreId, selectedMonth);
     const handleStoreChange = (storeId: string) => setSelectedStoreId(storeId);
+    const handleMonthChange = (month: string) => setSelectedMonth(month);
 
     useEffect(() =>
     {
@@ -82,15 +87,21 @@ const Dashboard = () =>
 
     return (
         <div className={styles.dashboard}>
-            {shouldShowStoreFilter && (
-                <StoreFilter
-                    selectedStoreId={selectedStoreId}
-                    onStoreChange={handleStoreChange}
+            <div className={styles.filtersRow}>
+                {shouldShowStoreFilter && (
+                    <StoreFilter
+                        selectedStoreId={selectedStoreId}
+                        onStoreChange={handleStoreChange}
+                    />
+                )}
+                <MonthFilter
+                    selectedMonth={selectedMonth}
+                    onMonthChange={handleMonthChange}
                 />
-            )}
+            </div>
             {shouldPrioritizeAdminMobile && (
                 <div className={styles.infoapp}>
-                    <ChartData data={chartData} />
+                    <ChartData data={chartData} month={selectedMonth} />
                     <NotificationCard />
                 </div>
             )}
@@ -109,7 +120,7 @@ const Dashboard = () =>
             </div>
             {!shouldPrioritizeAdminMobile && (
                 <div className={styles.infoapp}>
-                    <ChartData data={chartData} />
+                    <ChartData data={chartData} month={selectedMonth} />
                     <NotificationCard />
                 </div>
             )}

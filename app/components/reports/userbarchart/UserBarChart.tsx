@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './userbarchart.module.css';
 import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, BarChart, Rectangle, Bar, CartesianGrid } from 'recharts';
-import { CustomOrder, Order, User } from '@/interfaces/interfaces';
+import { CustomOrder, Order, PaginatedResponse, User } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 
 interface ChartData {
@@ -26,12 +26,14 @@ const UserBarChart = () => {
     const { data: users, error: userError, isLoading: usersLoading, execute: fetchUsers } = useFetch<User[]>(`/api/user`, {
         immediate: false,
     });
-    const { data: orders, error: orderError, isLoading: ordersLoading, execute: fetchOrders } = useFetch<Order[]>(`/api/order`, {
+    const { data: ordersResponse, error: orderError, isLoading: ordersLoading, execute: fetchOrders } = useFetch<PaginatedResponse<Order>>(`/api/order?limit=500`, {
         immediate: false,
     });
-    const { data: customOrders, error: customOrderError, isLoading: customOrderLoading, execute: fetchCustomOrders } = useFetch<CustomOrder[]>(`/api/custom-order`, {
+    const orders = ordersResponse?.data ?? null;
+    const { data: customOrdersResponse, error: customOrderError, isLoading: customOrderLoading, execute: fetchCustomOrders } = useFetch<PaginatedResponse<CustomOrder>>(`/api/custom-order?limit=500`, {
         immediate: false,
     });
+    const customOrders = customOrdersResponse?.data ?? null;
 
     const processUserData = (users: User[], orders: Order[], customOrders: CustomOrder[]) => 
     {

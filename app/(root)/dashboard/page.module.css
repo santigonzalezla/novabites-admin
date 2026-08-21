@@ -9,6 +9,13 @@
     transition: background-color 0.3s ease;
 }
 
+.filtersRow {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
 .cards {
     display: flex;
     gap: 10px;

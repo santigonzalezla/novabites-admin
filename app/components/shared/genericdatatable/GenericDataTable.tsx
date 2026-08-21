@@ -21,18 +21,27 @@ export type TableConfig = {
     }
 }
 
+export type ServerPagination = {
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+    onPageChange: (page: number) => void;
+}
+
 type DataTableProps = {
     data: any[];
     config: TableConfig;
     className?: string;
+    pagination?: ServerPagination;
 }
 
-const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
+const GenericDataTable = ({ data, config, className = "", pagination }: DataTableProps) =>
 {
     const pathname = usePathname();
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = config.itemsPerPage || 10;
+    const itemsPerPage = pagination?.limit || config.itemsPerPage || 10;
     const statusArr =  [
         "approved",
         "available",
@@ -60,27 +69,31 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
         "courier"
     ];
 
-    // Calcular índices para paginación
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(data.length / itemsPerPage);
+    // Paginación: en modo servidor `data` ya es la página actual; en modo local se hace slice en memoria.
+    const activePage = pagination?.page ?? currentPage;
+    const totalItems = pagination?.totalItems ?? data.length;
+    const totalPages = pagination?.totalPages ?? Math.ceil(data.length / itemsPerPage);
+    const indexOfLastItem = pagination ? Math.min(activePage * itemsPerPage, totalItems) : currentPage * itemsPerPage;
+    const indexOfFirstItem = pagination
+        ? (totalItems === 0 ? 0 : (activePage - 1) * itemsPerPage)
+        : indexOfLastItem - itemsPerPage;
+    const currentItems = pagination ? data : data.slice(indexOfFirstItem, indexOfLastItem);
 
     // Cambiar página
     const goToNextPage = () =>
     {
-        if (currentPage < totalPages)
-        {
-            setCurrentPage(currentPage + 1);
-        }
+        if (activePage >= totalPages) return;
+
+        if (pagination) pagination.onPageChange(activePage + 1);
+        else setCurrentPage(currentPage + 1);
     }
 
     const goToPreviousPage = () =>
     {
-        if (currentPage > 1)
-        {
-            setCurrentPage(currentPage - 1);
-        }
+        if (activePage <= 1) return;
+
+        if (pagination) pagination.onPageChange(activePage - 1);
+        else setCurrentPage(currentPage - 1);
     }
 
     const getUrl = (id: string) =>
@@ -357,13 +370,13 @@ const GenericDataTable = ({ data, config, className = "" }: DataTableProps) =>
 
             <div className={styles.pagination}>
                 <span>
-                    {pageLabels.showing} {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, data.length)} {pageLabels.of} {data.length}
+                    {pageLabels.showing} {totalItems === 0 ? 0 : indexOfFirstItem + 1}-{indexOfLastItem} {pageLabels.of} {totalItems}
                 </span>
                 <div className={styles.paginationControls}>
-                    <button onClick={goToPreviousPage} disabled={currentPage === 1} className={styles.paginationButton}>
+                    <button onClick={goToPreviousPage} disabled={activePage === 1} className={styles.paginationButton}>
                         &lt;
                     </button>
-                    <button onClick={goToNextPage} disabled={currentPage === totalPages} className={styles.paginationButton}>
+                    <button onClick={goToNextPage} disabled={activePage === totalPages} className={styles.paginationButton}>
                         &gt;
                     </button>
                 </div>

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from "./requestsupply.module.css"
 import mockData from '@/app/components/shared/data/mockData.json';
-import { Product, StoreRequest, StoreRequestDetail } from '@/interfaces/interfaces';
+import { PaginatedResponse, Product, StoreRequest, StoreRequestDetail } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
@@ -38,7 +38,8 @@ const RequestProduct = () =>
     const { execute: patchExecute } = useFetch(`/api/store-request/${requestId}`, {
         immediate: false,
     });
-    const { data: productData, error: productError } = useFetch(`/api/product`);
+    const { data: productsResponse, error: productError } = useFetch<PaginatedResponse<Product>>(`/api/product?limit=500`);
+    const productData = productsResponse?.data ?? null;
 
     const isPendingSupply =
         storeRequestData?.status === RequestStatus.PENDING &&

@@ -4,9 +4,9 @@ import styles from './page.module.css';
 import mockData from "@/app/components/shared/data/mockData.json";
 import { Create, Download, Upload } from '@/app/components/svg';
 import { useEffect, useState } from 'react';
-import GenericFilter, { filterItems } from '@/app/components/shared/genericfilter/GenericFilter';
+import GenericFilter from '@/app/components/shared/genericfilter/GenericFilter';
 import GenericDataTable from '@/app/components/shared/genericdatatable/GenericDataTable';
-import { Order } from '@/interfaces/interfaces';
+import { Order, PaginatedResponse } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 import DownloadButton from '@/app/components/shared/downloadbutton/DownloadButton';
 import withAuth from '@/hoc/withAuth';
@@ -21,14 +21,35 @@ interface OrderConfig {
     }
 }
 
+const FILTER_TO_QUERY_PARAM: Record<string, string> = {
+    'client.name': 'clientName',
+    deliveryDate: 'date',
+    status: 'status',
+};
+
+const buildQueryString = (page: number, limit: number, filters: Record<string, string>) =>
+{
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    params.set('limit', String(limit));
+
+    Object.entries(filters).forEach(([field, value]) =>
+    {
+        const paramName = FILTER_TO_QUERY_PARAM[field];
+        if (paramName && value && value.trim() !== '') params.set(paramName, value.trim());
+    });
+
+    return params.toString();
+};
+
 const Orders = () =>
 {
     const [isGenerating, setIsGenerating] = useState(false);
-    const [ordersData, setOrdersData] = useState<Order[]>([]);
-    const [filteredData, setFilteredData] = useState<Order[]>([]);
-    const [config, setConfig] = useState<OrderConfig>({columns: []});
+    const [response, setResponse] = useState<PaginatedResponse<Order> | null>(null);
+    const [config] = useState<OrderConfig>(mockData.orders.config);
+    const [page, setPage] = useState(1);
     const [currentFilters, setCurrentFilters] = useState<Record<string, string>>({});
-    const { isLoading, error, execute } = useFetch<Order[]>('/api/order', {
+    const { isLoading, error, execute } = useFetch<PaginatedResponse<Order>>('/api/order', {
         immediate: false
     });
     const { isLoading: isLoadingFile, error: errorFile, execute: executeFile } = useFetch('/api/order/upload', {
@@ -41,36 +62,31 @@ const Orders = () =>
         { field: 'status', placeholder: 'Estado', label: 'estado' }
     ]
 
+    const limit = config.itemsPerPage || 10;
+
     useEffect(() =>
     {
         const fetchOrders = async () =>
         {
-            const orders = await execute();
+            const qs = buildQueryString(page, limit, currentFilters);
+            const result = await execute({}, `/api/order?${qs}`);
 
-            if (orders)
-            {
-                setOrdersData(orders);
-                const filtered = filterItems(orders, currentFilters);
-                setFilteredData(filtered);
-            }
+            if (result) setResponse(result);
         }
 
         fetchOrders();
-        setConfig(mockData.orders.config);
-    }, []);
+    }, [page, currentFilters, limit]);
 
     const handleFilterChange = (filters: Record<string, string>) =>
     {
         setCurrentFilters(filters);
-        const filtered = filterItems(ordersData, filters);
-        setFilteredData(filtered);
+        setPage(1);
     };
 
-    // Función para resetear filtros
     const handleResetFilters = () =>
     {
         setCurrentFilters({});
-        setFilteredData(ordersData); // Mostrar todos los datos sin filtrar
+        setPage(1);
     };
 
     return (
@@ -91,8 +107,15 @@ const Orders = () =>
                 </div>
             </div>
             <GenericDataTable
-                data={filteredData}
+                data={response?.data ?? []}
                 config={config}
+                pagination={{
+                    page,
+                    limit,
+                    totalItems: response?.meta.total ?? 0,
+                    totalPages: response?.meta.totalPages ?? 1,
+                    onPageChange: setPage,
+                }}
             />
         </div>
     );

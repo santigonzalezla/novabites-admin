@@ -4,7 +4,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import styles from './salesareachart.module.css';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useFetch } from '@/hooks/useFetch';
-import { CustomOrder, Order } from '@/interfaces/interfaces';
+import { CustomOrder, Order, PaginatedResponse } from '@/interfaces/interfaces';
 
 interface ChartData {
     period: string;
@@ -21,12 +21,14 @@ const SalesAreaChart = () =>
     const [chartData, setChartData] = useState<ChartData[]>([]);
     const [isLoadingData, setIsLoadingData] = useState(false);
     const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('monthly');
-    const { data: orders, error: orderError, isLoading: orderLoading, execute: fetchOrders } = useFetch<Order[]>(`/api/order`, {
+    const { data: ordersResponse, error: orderError, isLoading: orderLoading, execute: fetchOrders } = useFetch<PaginatedResponse<Order>>(`/api/order?limit=500`, {
         immediate: false,
     });
-    const { data: customOrders, error: customOrderError, isLoading: customOrderLoading, execute: fetchCustomOrders } = useFetch<CustomOrder[]>(`/api/custom-order`, {
+    const orders = ordersResponse?.data ?? null;
+    const { data: customOrdersResponse, error: customOrderError, isLoading: customOrderLoading, execute: fetchCustomOrders } = useFetch<PaginatedResponse<CustomOrder>>(`/api/custom-order?limit=500`, {
         immediate: false,
     });
+    const customOrders = customOrdersResponse?.data ?? null;
 
     const formatPeriod = (date: Date, periodType: 'daily' | 'weekly' | 'monthly') => 
     {

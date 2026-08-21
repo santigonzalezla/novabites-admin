@@ -1,0 +1,41 @@
+.filterContainer
+{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+
+.label
+{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.input
+{
+    font-family: var(--font-family), sans-serif;
+    padding: 5px 15px;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 5px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 160px;
+    transition: all 0.3s ease;
+}
+
+.input:hover
+{
+    border-color: var(--text-secondary);
+}
+
+.input:focus
+{
+    outline: none;
+    border-color: #2B3138;
+}

@@ -5,7 +5,7 @@ import styles from "./storeproduct.module.css"
 import { AddItem, Download, Search, Upload } from '@/app/components/svg';
 import mockData from '@/app/components/shared/data/mockData.json';
 import { useFetch } from '@/hooks/useFetch';
-import { Product, StoreProduct as StoreProductData } from '@/interfaces/interfaces';
+import { PaginatedResponse, Product, StoreProduct as StoreProductData } from '@/interfaces/interfaces';
 import { usePathname } from 'next/navigation';
 import Modal from '@/app/components/shared/modal/Modal';
 import StoreProductForm from '@/app/components/stores/storeproductform/StoreProductForm';
@@ -33,7 +33,8 @@ const StoreProduct = () =>
     const { error: storeProductError, execute: storeProductExecute } = useFetch(`/api/store-product`, {
         immediate: false,
     });
-    const { data: productData, error: productError } = useFetch<Product[]>(`/api/product`);
+    const { data: productsResponse, error: productError } = useFetch<PaginatedResponse<Product>>(`/api/product?limit=500`);
+    const productData = productsResponse?.data ?? null;
     const [selectedProductData, setSelectedProductData] = useState<Product | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 

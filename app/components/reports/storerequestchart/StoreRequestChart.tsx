@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './storerequestchart.module.css';
 import { Bar, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { StoreRequest } from '@/interfaces/interfaces';
+import { PaginatedResponse, StoreRequest } from '@/interfaces/interfaces';
 import { useFetch } from '@/hooks/useFetch';
 
 interface ChartData {
@@ -23,9 +23,10 @@ const StoreRequestChart = () =>
     const [isLoadingData, setIsLoadingData] = useState(false);
     const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
     const [requestType, setRequestType] = useState<'ALL' | 'SUPPLY_REQUEST' | 'RETURN_REQUEST'>('ALL');
-    const { data: storeRequests, error: requestError, isLoading: requestLoading, execute: fetchRequests } = useFetch<StoreRequest[]>(`/api/store-request`, {
+    const { data: storeRequestsResponse, error: requestError, isLoading: requestLoading, execute: fetchRequests } = useFetch<PaginatedResponse<StoreRequest>>(`/api/store-request?limit=500`, {
         immediate: false,
     });
+    const storeRequests = storeRequestsResponse?.data ?? null;
 
     const formatPeriod = (date: Date, periodType: 'daily' | 'weekly' | 'monthly') =>
     {
